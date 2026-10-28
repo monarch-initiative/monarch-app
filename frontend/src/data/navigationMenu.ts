@@ -188,6 +188,11 @@ export default [
         to: "/tools/sssom",
       },
       {
+        label: "OpenScientist",
+        key: "openscientist",
+        to: "/tools/openscientist",
+      },
+      {
         label: "OAK",
         key: "oak",
         to: "/tools/oak",

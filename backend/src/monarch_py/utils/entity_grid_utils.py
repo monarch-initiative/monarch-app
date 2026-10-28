@@ -1,6 +1,8 @@
 """Utilities for building generic entity grids."""
 
-from typing import Dict, List, Optional, Set
+import logging
+
+from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.model import (
     EntityGridResponse,
@@ -11,7 +13,72 @@ from monarch_py.datamodels.model import (
     Qualifier,
 )
 from monarch_py.datamodels.grid_configs import GridTypeConfig
-from monarch_py.datamodels.grid_groupings import RowGroupingConfig
+from monarch_py.datamodels.grid_groupings import RowGroupingConfig, bin_facet_key
+
+logger = logging.getLogger(__name__)
+
+
+def parse_bin_facets(
+    facets: Dict[str, Any],
+    ordered_bin_ids: List[str],
+) -> tuple[Dict[str, int], Dict[str, str]]:
+    """Read the grid bin facet into per-bin counts and a row-entity -> bin assignment.
+
+    Replaces deriving bins from a `_closure` field on every row association. The
+    closure describes the row entity, not the edge, so fetching it per association
+    re-sent the same ancestor lists once per edge.
+
+    A bin with no matches has a count but no `entities` sub-facet, so its absence is
+    normal and not an error.
+
+    Returns:
+        (bin_id -> association count, row entity ID -> bin ID)
+    """
+    counts: Dict[str, int] = {}
+    entity_bins: Dict[str, str] = {}
+
+    for index, bin_id in enumerate(ordered_bin_ids):
+        facet = facets.get(bin_facet_key(index)) or {}
+        counts[bin_id] = facet.get("count", 0)
+        entities = facet.get("entities", {})
+        buckets = entities.get("buckets", [])
+        _warn_if_bin_truncated(bin_id, entities, buckets)
+        for bucket in buckets:
+            entity_id = bucket.get("val")
+            # Bins are checked in grouping order and the first match wins, so an entity
+            # under several bins lands in the same one the closure scan used to pick.
+            if entity_id and entity_id not in entity_bins:
+                entity_bins[entity_id] = bin_id
+
+    return counts, entity_bins
+
+
+def _warn_if_bin_truncated(bin_id: str, entities: Dict[str, Any], buckets: List[dict]) -> None:
+    """Log when a bin held more row entities than the facet returned.
+
+    An entity cut from its own bin's bucket list either lands in a later bin it also
+    matches -- moving it to the wrong place in the grid -- or, if it matches no other,
+    disappears from the grid entirely. Both look like a complete grid.
+    """
+    total = entities.get("numBuckets")
+    if total is not None and total > len(buckets):
+        logger.warning(
+            "Bin %s truncated: %d row entities matched but only %d returned "
+            "(BIN_FACET_ENTITY_LIMIT). Entities past the limit are misbinned or missing.",
+            bin_id,
+            total,
+            len(buckets),
+        )
+
+
+def bin_members(facets: Dict[str, Any], ordered_bin_ids: List[str]) -> Dict[str, List[str]]:
+    """Row entity IDs per bin, including entities that fall under more than one bin."""
+    members: Dict[str, List[str]] = {}
+    for index, bin_id in enumerate(ordered_bin_ids):
+        facet = facets.get(bin_facet_key(index)) or {}
+        buckets = facet.get("entities", {}).get("buckets", [])
+        members[bin_id] = sorted(b["val"] for b in buckets if b.get("val"))
+    return members
 
 
 def build_entity_grid(
@@ -22,7 +89,7 @@ def build_entity_grid(
     grouping: RowGroupingConfig,
     column_docs: List[dict],
     row_docs: List[dict],
-    facet_counts: Dict[str, int],
+    facets: Dict[str, Any],
 ) -> EntityGridResponse:
     """Build entity grid from Solr documents.
 
@@ -34,16 +101,18 @@ def build_entity_grid(
         grouping: Row grouping configuration
         column_docs: List of column association Solr documents
         row_docs: List of row association Solr documents
-        facet_counts: Dict of facet query results for bin counts
+        facets: The `facets` block of the row query's JSON Facet response
 
     Returns:
         EntityGridResponse with columns, rows, bins, and cells
     """
+    bin_counts, entity_bins = parse_bin_facets(facets, grouping.bin_ids)
+
     columns = _build_columns(column_docs, context_id, config)
     column_map = {c.id: c for c in columns}
-    rows = _build_rows(row_docs, config, grouping)
+    rows = _build_rows(row_docs, config, entity_bins)
     cells = _build_cells(row_docs, column_map, config)
-    bins = _build_bins(facet_counts, grouping, config)
+    bins = _build_bins(bin_counts, grouping)
 
     return EntityGridResponse(
         context_id=context_id,
@@ -157,29 +226,27 @@ def sort_columns_by_category(
 def _build_rows(
     row_docs: List[dict],
     config: GridTypeConfig,
-    grouping: RowGroupingConfig,
+    entity_bins: Dict[str, str],
 ) -> List[GridRowEntity]:
     """Extract unique row entities and assign to bins.
 
     Args:
         row_docs: List of row association Solr documents
         config: Grid type configuration
-        grouping: Row grouping configuration
+        entity_bins: Row entity ID -> bin ID, from `parse_bin_facets`
 
     Returns:
-        List of GridRowEntity objects, deduplicated by row ID
+        List of GridRowEntity objects, deduplicated by row ID. Entities that fall in
+        no bin are dropped, as they were when bins came from the closure field.
     """
     seen_rows: Dict[str, GridRowEntity] = {}
-    bin_ids = set(grouping.bin_ids)
 
     for doc in row_docs:
         row_id = doc.get(config.row_entity_field)
         if not row_id or row_id in seen_rows:
             continue
 
-        row_closure = doc.get(f"{config.row_entity_field}_closure", [])
-        bin_id = _find_bin_for_entity(row_closure, bin_ids, grouping.bin_ids)
-
+        bin_id = entity_bins.get(row_id)
         if bin_id is None:
             continue
 
@@ -192,38 +259,6 @@ def _build_rows(
         seen_rows[row_id] = row
 
     return list(seen_rows.values())
-
-
-def _find_bin_for_entity(
-    entity_closure: List[str],
-    bin_ids: Set[str],
-    ordered_bin_ids: List[str],
-) -> Optional[str]:
-    """Find the bin for an entity based on its closure.
-
-    Uses the ordered bin IDs to ensure consistent assignment
-    when an entity could belong to multiple bins.
-
-    Args:
-        entity_closure: List of ancestor term IDs for the entity
-        bin_ids: Set of valid bin IDs
-        ordered_bin_ids: Ordered list of bin IDs (determines priority)
-
-    Returns:
-        The bin ID if found, None otherwise
-    """
-    closure_set = set(entity_closure)
-    intersection = closure_set & bin_ids
-
-    if not intersection:
-        return None
-
-    # Return first match in ordered list for consistency
-    for bin_id in ordered_bin_ids:
-        if bin_id in intersection:
-            return bin_id
-
-    return intersection.pop()
 
 
 def _build_cells(
@@ -276,16 +311,14 @@ def _build_cells(
 
 
 def _build_bins(
-    facet_counts: Dict[str, int],
+    bin_counts: Dict[str, int],
     grouping: RowGroupingConfig,
-    config: GridTypeConfig,
 ) -> List[GridBin]:
-    """Build bin list from Solr facet query results.
+    """Build bin list from parsed bin facet counts.
 
     Args:
-        facet_counts: Dict of facet query results
+        bin_counts: Bin ID -> association count, from `parse_bin_facets`
         grouping: Row grouping configuration
-        config: Grid type configuration
 
     Returns:
         List of GridBin objects in grouping order
@@ -293,8 +326,7 @@ def _build_bins(
     bins = []
 
     for bin_id in grouping.bin_ids:
-        facet_key = f'{config.row_entity_field}_closure:"{bin_id}"'
-        count = facet_counts.get(facet_key, 0)
+        count = bin_counts.get(bin_id, 0)
 
         bin_obj = GridBin(
             id=bin_id,

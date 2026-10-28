@@ -4,10 +4,10 @@ imports:
 - linkml:types
 prefixes:
   rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  linkml: https://w3id.org/linkml/
+  dct: http://purl.org/dc/terms/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
   biolink: https://w3id.org/biolink/vocab/
-  dct: http://purl.org/dc/terms/
-  linkml: https://w3id.org/linkml/
 default_prefix: https://w3id.org/monarch-initiative/koza/graph-schema/
 default_range: string
 slots:
@@ -159,21 +159,10 @@ slots:
     - biolink:knowledge_level
     slot_uri: biolink:knowledge_level
     range: string
-  original_predicate:
-    exact_mappings:
-    - biolink:original_predicate
-    slot_uri: biolink:original_predicate
-    range: uriorcurie
   primary_knowledge_source:
     exact_mappings:
     - biolink:primary_knowledge_source
     slot_uri: biolink:primary_knowledge_source
-  has_evidence:
-    exact_mappings:
-    - biolink:has_evidence
-    slot_uri: biolink:has_evidence
-    range: uriorcurie
-    multivalued: true
   publications:
     exact_mappings:
     - biolink:publications
@@ -186,31 +175,12 @@ slots:
     slot_uri: biolink:qualifiers
     range: uriorcurie
     multivalued: true
-  negated:
+  has_evidence:
     exact_mappings:
-    - biolink:negated
-    slot_uri: biolink:negated
-    range: boolean
-  FDA_adverse_event_level:
-    exact_mappings:
-    - biolink:FDA_adverse_event_level
-    slot_uri: biolink:FDA_adverse_event_level
-    range: string
-  disease_context_qualifier:
-    exact_mappings:
-    - biolink:disease_context_qualifier
-    slot_uri: biolink:disease_context_qualifier
+    - biolink:has_evidence
+    slot_uri: biolink:has_evidence
     range: uriorcurie
-  object_category:
-    exact_mappings:
-    - biolink:object_category
-    slot_uri: biolink:object_category
-    range: uriorcurie
-  subject_category:
-    exact_mappings:
-    - biolink:subject_category
-    slot_uri: biolink:subject_category
-    range: uriorcurie
+    multivalued: true
   frequency_qualifier:
     exact_mappings:
     - biolink:frequency_qualifier
@@ -236,6 +206,11 @@ slots:
     - biolink:has_total
     slot_uri: biolink:has_total
     range: integer
+  negated:
+    exact_mappings:
+    - biolink:negated
+    slot_uri: biolink:negated
+    range: boolean
   onset_qualifier:
     exact_mappings:
     - biolink:onset_qualifier
@@ -246,10 +221,35 @@ slots:
     - biolink:sex_qualifier
     slot_uri: biolink:sex_qualifier
     range: uriorcurie
+  object_category:
+    exact_mappings:
+    - biolink:object_category
+    slot_uri: biolink:object_category
+    range: uriorcurie
+  original_predicate:
+    exact_mappings:
+    - biolink:original_predicate
+    slot_uri: biolink:original_predicate
+    range: uriorcurie
+  subject_category:
+    exact_mappings:
+    - biolink:subject_category
+    slot_uri: biolink:subject_category
+    range: uriorcurie
+  disease_context_qualifier:
+    exact_mappings:
+    - biolink:disease_context_qualifier
+    slot_uri: biolink:disease_context_qualifier
+    range: uriorcurie
   object_aspect_qualifier:
     exact_mappings:
     - biolink:object_aspect_qualifier
     slot_uri: biolink:object_aspect_qualifier
+    range: string
+  FDA_adverse_event_level:
+    exact_mappings:
+    - biolink:FDA_adverse_event_level
+    slot_uri: biolink:FDA_adverse_event_level
     range: string
   species_context_qualifier:
     exact_mappings:
@@ -384,25 +384,25 @@ classes:
     - agent_type
     - aggregator_knowledge_source
     - knowledge_level
-    - original_predicate
     - primary_knowledge_source
     - file_source
     - provided_by
-    - has_evidence
     - publications
     - qualifiers
-    - negated
-    - FDA_adverse_event_level
-    - disease_context_qualifier
+    - has_evidence
     - frequency_qualifier
     - has_count
     - has_percentage
     - has_quotient
     - has_total
+    - negated
     - onset_qualifier
     - sex_qualifier
+    - original_predicate
+    - disease_context_qualifier
     - has_attribute
     - object_aspect_qualifier
+    - FDA_adverse_event_level
     - species_context_qualifier
     - stage_qualifier
     - qualifier

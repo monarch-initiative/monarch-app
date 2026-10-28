@@ -1,4 +1,6 @@
 import os
+
+from loguru import logger
 from functools import lru_cache
 
 from pydantic import BaseModel
@@ -6,6 +8,19 @@ from pydantic import BaseModel
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.spacy.spacy_implementation import SpacyImplementation
 from monarch_py.service.semsim_service import SemsimianService
+
+
+def _log_level_env(name: str, default: str) -> str:
+    """Parse a log-level env var, falling back to `default` on an unknown name.
+
+    Same reasoning as `_int_env`: loguru raises on an unrecognised level, and at import
+    time that takes down every worker. A typo here should degrade, not crash.
+    """
+    level = os.getenv(name, default).strip().upper()
+    if level not in logger._core.levels:  # noqa: SLF001 - loguru exposes no public list
+        logger.warning(f"Unknown {name}={level!r}; falling back to {default}")
+        return default
+    return level
 
 
 def _int_env(name: str, default: int) -> int:
@@ -35,6 +50,10 @@ class Settings(BaseModel):
     # per-worker DuckDB caps (tunable for memory-constrained hosts: workers x limit must fit RAM)
     ducksim_memory_limit: str = os.getenv("DUCKSIM_MEMORY_LIMIT", "2GB")
     ducksim_threads: int = _int_env("DUCKSIM_THREADS", 2)
+
+    # INFO rather than loguru's DEBUG default, which logs a line per Solr query and
+    # rotates production logs away in hours. Set MONARCH_LOG_LEVEL=DEBUG to get it back.
+    log_level: str = _log_level_env("MONARCH_LOG_LEVEL", "INFO")
 
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")

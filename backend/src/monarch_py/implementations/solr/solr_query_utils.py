@@ -1,10 +1,19 @@
+import json
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
+from monarch_py.datamodels.grid_groupings import bin_facet_key
 from monarch_py.datamodels.category_enums import AssociationPredicate
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
+
+# Upper bound on row associations fetched for a grid. Cells are built one association
+# at a time, so a truncated fetch renders a grid that looks complete but is missing
+# observations; `_warn_if_row_query_truncated` reports it when that happens. The
+# largest grid currently needs well under this, so it is a backstop, not a working
+# limit.
+MAX_ROW_ASSOCIATIONS = 50000
 
 
 @dataclass
@@ -233,28 +242,125 @@ def build_multi_entity_association_query(
     return query
 
 
+def escape_phrase(value: str) -> str:
+    """Escape a value for use inside a Lucene quoted phrase.
+
+    Only backslashes and double quotes can terminate or corrupt a phrase; everything
+    else (including `:`) is literal once quoted, so this deliberately does less than
+    `utils.escape`.
+    """
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+LUCENE_SPECIAL_CHARS = set('+-&|!(){}[]^"~*?:\\/ \t\n\r')
+
+
+def escape_term(value: str) -> str:
+    """Escape a value for use as a bare (unquoted) Lucene term.
+
+    A prefix query cannot be quoted — `subsets:"venom_*"` matches the literal string
+    `venom_*` — so the term has to carry its own escaping. Whitespace is in the escape set
+    because an unescaped space ends the term and hands the remainder to the query parser as
+    a clause against the default field, which the entity core does not define, so Solr
+    answers 400 and the endpoint 500s.
+    """
+    return "".join(f"\\{char}" if char in LUCENE_SPECIAL_CHARS else char for char in value)
+
+
+def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
+    """Build a filter query over the multivalued `subsets` field.
+
+    A trailing `*` is passed through to Solr as a prefix wildcard, so a caller can
+    exclude a whole family (`venom_*`) without enumerating its members. `subsets` is
+    a `string` field, so wildcards match the whole stored value rather than tokens.
+    """
+    clauses = []
+    for subset in subsets:
+        if subset.endswith("*"):
+            clauses.append(f"subsets:{escape_term(subset[:-1])}*")
+        else:
+            clauses.append(f'subsets:"{escape_phrase(subset)}"')
+    joined = " OR ".join(clauses)
+    return f"-({joined})" if exclude else f"({joined})"
+
+
+def exact_match_filter_query(q: str) -> str:
+    """Entities that `q` names: its `name` or one of its `exact_synonym`s, case-insensitively.
+
+    Both fields have a `*_grounding` copy (KeywordTokenizer + LowerCase), so a hit here *is*
+    an exact match and nothing needs to re-check it. Matching the raw `exact_synonym` field
+    instead would not do: it is a `string`, so comparison is case-sensitive and would miss
+    the Title Case text that grounding callers actually send.
+
+    `q` is stripped because on a KeywordTokenizer field the padding is part of the term, and
+    callers feeding NER spans are the ones most likely to pass it.
+    """
+    escaped = escape_phrase(q.strip())
+    return f'name_grounding:"{escaped}" OR exact_synonym_grounding:"{escaped}"'
+
+
 def build_search_query(
     q: str = "*:*",
     offset: int = 0,
     limit: int = 20,
     category: List[str] = None,
+    namespace: List[str] = None,
+    exclude_namespace: List[str] = None,
+    in_taxon: List[str] = None,
     in_taxon_label: List[str] = None,
+    subset: List[str] = None,
+    exclude_subset: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
+    facet_limit: Optional[int] = None,
     filter_queries: List[str] = None,
     highlighting: bool = False,
+    exact_filter: Optional[str] = None,
     sort: Optional[str] = None,
+    facet_method: Optional[str] = None,
+    fields: Optional[str] = None,
 ) -> SolrQuery:
+    empty_search = q == "*:*"
     query = SolrQuery(start=offset, rows=limit, sort=sort)
+    if facet_limit is not None:
+        query.facet_limit = facet_limit
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
-    query.hl = highlighting
-    query.boost = entity_boost(text=q, empty_search=(q == "*:*"))
+    # An empty search matches everything and has no terms, so there is nothing for the
+    # highlighter to mark up. Asking for it anyway makes Solr do the work regardless.
+    query.hl = highlighting and not empty_search
+    query.facet_method = facet_method
+    # Solr omits the relevance score unless the field list asks for it, which would leave
+    # `score` null on every SearchResult. Callers that pass an explicit list are
+    # responsible for including it; callers that pass none still get everything.
+    query.fields = fields or "*,score"
+    query.boost = entity_boost(text=q, empty_search=empty_search)
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
+    if namespace:
+        query.add_filter_query(" OR ".join([f'namespace:"{escape_phrase(n)}"' for n in namespace]))
+    if exclude_namespace:
+        excluded = " OR ".join([f'namespace:"{escape_phrase(n)}"' for n in exclude_namespace])
+        query.add_filter_query(f"-({excluded})")
+    if in_taxon:
+        query.add_filter_query(" OR ".join([f'in_taxon:"{escape_phrase(t)}"' for t in in_taxon]))
     if in_taxon_label:
-        query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
+        query.add_filter_query(" OR ".join([f'in_taxon_label:"{escape_phrase(t)}"' for t in in_taxon_label]))
+    if subset:
+        query.add_filter_query(subset_filter_query(subset))
+    if exclude_subset:
+        query.add_filter_query(subset_filter_query(exclude_subset, exclude=True))
+    if exact_filter:
+        query.add_filter_query(exact_filter)
+        # The filter fully determines the result set, so leaving the raw text as the edismax
+        # `q` can only subtract from it — and with q.op=AND and mm=100%, text that parses as
+        # operators rather than terms vetoes a true whole-string match. Uppercased NER output
+        # is the realistic case: "…, NOT Otherwise Specified" reads `NOT` as an operator and
+        # matches nothing, so exact mode would abstain on a string that differs from a stored
+        # name only by case. The boost above still sees the original text, so ordering among
+        # several exact matches is unaffected.
+        query.q = "*:*"
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:
@@ -449,7 +555,7 @@ def association_search_query_fields():
 def build_case_phenotype_query(
     disease_id: str,
     direct_only: bool,
-    rows: int = 50000,
+    rows: int = MAX_ROW_ASSOCIATIONS,
 ) -> Dict[str, Any]:
     """Build Solr query for case-phenotype matrix.
 
@@ -457,11 +563,11 @@ def build_case_phenotype_query(
     for cases that have a specific disease association.
 
     The query structure:
-    1. Main query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
+    1. Filter query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
        - Joins on `subject` field (the case ID)
        - Inner query filters diseases by object (direct) or object_closure (indirect)
     2. Filter query: Restrict results to phenotype associations only
-    3. Facet queries: Count phenotypes per HistoPheno bin
+    3. JSON facet: per HistoPheno bin, its count and the phenotypes it contains
 
     Args:
         disease_id: MONDO disease ID to query
@@ -492,11 +598,14 @@ def build_case_phenotype_query(
         f'AND {disease_field}:"{escape(disease_id)}")'
     )
 
-    facet_queries = [f'object_closure:"{bin_key.value}"' for bin_key in HistoPhenoKeys]
+    bin_ids = [bin_key.value for bin_key in HistoPhenoKeys]
 
+    # `fq`, not `q`: only filter queries are filterCache-eligible, and these result sets
+    # are larger than solrconfig's queryResultMaxDocsCached, so a join in `q` is
+    # re-executed on every request instead of being cached and reused.
     return {
-        "q": join_query,
-        "fq": 'category:"biolink:CaseToPhenotypicFeatureAssociation"',
+        "q": "*:*",
+        "fq": [join_query, 'category:"biolink:CaseToPhenotypicFeatureAssociation"'],
         "rows": rows,
         "fl": ",".join(
             [
@@ -504,15 +613,13 @@ def build_case_phenotype_query(
                 "subject_label",  # Case label
                 "object",  # Phenotype ID
                 "object_label",  # Phenotype label
-                "object_closure",  # For bin assignment
                 "negated",  # Explicit absence
                 "publications",  # Supporting evidence
                 "onset_qualifier",  # Age of onset (ISO8601)
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet("object", bin_ids)),
     }
 
 
@@ -543,6 +650,47 @@ def build_case_disease_query(
         "fq": 'category:"biolink:CaseToDiseaseAssociation"',
         "rows": rows,
         "fl": "subject,subject_label,object,object_label",
+    }
+
+
+# Row-entity IDs returned per bin by the grid bin facet. A bin's membership is the
+# union of row entities across every column, which the grid's column cap does not
+# bound, so this is a real ceiling rather than a formality: the largest bin across all
+# association categories a grid can use currently holds ~8.6k distinct entities. The
+# facet asks for `numBuckets` so `parse_bin_facets` can tell when the cap was hit
+# instead of silently reassigning or dropping the entities beyond it.
+BIN_FACET_ENTITY_LIMIT = 10000
+
+
+def build_bin_facet(row_entity_field: str, bin_ids: List[str]) -> Dict[str, Any]:
+    """JSON facet giving, per bin, its association count and the row entities in it.
+
+    This replaces fetching `{row_entity_field}_closure` on every row association. The
+    closure is a property of the row entity, not of the association, so requesting it
+    per association re-sent the same ancestor list once per edge, which dominated the
+    response body.
+
+    `dvhash` keeps the sub-facet off the global ordinal map, which costs more to build
+    than the facet saves at these domain sizes. Solr treats it as a hint and falls back
+    if the field is unsuitable, so it cannot make the counts wrong.
+    """
+    return {
+        bin_facet_key(index): {
+            "type": "query",
+            "q": f'{row_entity_field}_closure:"{bin_id}"',
+            "facet": {
+                "entities": {
+                    "type": "terms",
+                    "field": row_entity_field,
+                    "limit": BIN_FACET_ENTITY_LIMIT,
+                    "method": "dvhash",
+                    # So a caller can distinguish "this bin holds N entities" from
+                    # "this bin holds at least N and the rest were cut".
+                    "numBuckets": True,
+                }
+            },
+        }
+        for index, bin_id in enumerate(bin_ids)
     }
 
 
@@ -588,8 +736,12 @@ def build_grid_column_query(
             f"{{!join from={config.row_context_field} to={config.column_field}}}"
             f'category:"{config.row_assoc_category.value}"'
         )
-        q = existence_join
-        # Add context filter to fq instead of q
+        # `fq`, not `q`: only filter queries are filterCache-eligible, and these result
+        # sets are larger than solrconfig's queryResultMaxDocsCached, so a join in `q`
+        # is re-executed on every request. This one carries no context term, so a
+        # single cached entry serves every entity.
+        q = "*:*"
+        fq.append(existence_join)
         fq.append(f'{context_field}:"{context_id}"')
     else:
         q = f'{context_field}:"{context_id}"'
@@ -658,8 +810,12 @@ def build_multi_category_column_query(
         # appears in row associations. This filters out columns with no rows.
         row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
         existence_join = f"{{!join from={row_context_field} to={column_field}}}({row_category_filter})"
-        q = existence_join
-        # Add context filter to fq instead of q
+        # `fq`, not `q`: only filter queries are filterCache-eligible, and these result
+        # sets are larger than solrconfig's queryResultMaxDocsCached, so a join in `q`
+        # is re-executed on every request. This one carries no context term, so a
+        # single cached entry serves every entity.
+        q = "*:*"
+        fq.append(existence_join)
         fq.append(f'{ctx_field}:"{context_id}"')
     else:
         q = f'{ctx_field}:"{context_id}"'
@@ -700,7 +856,7 @@ def build_multi_category_row_query(
     row_entity_field: str,
     grouping: "RowGroupingConfig",
     direct_only: bool,
-    rows: int = 50000,
+    rows: int = MAX_ROW_ASSOCIATIONS,
 ) -> Dict[str, Any]:
     """Build Solr query for grid row entities using JOIN with multiple column categories.
 
@@ -733,15 +889,15 @@ def build_multi_category_row_query(
         f'{{!join from={column_field} to={row_context_field}}}(({category_filter}) AND {ctx_field}:"{context_id}")'
     )
 
-    # Build facet queries for bin counts
-    facet_queries = [f'{row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
-
     # Build OR query for multiple row categories
     row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
 
+    # `fq`, not `q`: only filter queries are filterCache-eligible, and these result sets
+    # are larger than solrconfig's queryResultMaxDocsCached, so a join in `q` is
+    # re-executed on every request instead of being cached and reused.
     return {
-        "q": join_query,
-        "fq": f"({row_category_filter})",
+        "q": "*:*",
+        "fq": [join_query, f"({row_category_filter})"],
         "rows": rows,
         "fl": ",".join(
             [
@@ -749,15 +905,13 @@ def build_multi_category_row_query(
                 f"{row_context_field}_label",  # Column entity label
                 row_entity_field,  # Row entity ID
                 f"{row_entity_field}_label",  # Row entity label
-                f"{row_entity_field}_closure",  # For bin assignment
                 "negated",
                 "publications",
                 "onset_qualifier",
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet(row_entity_field, grouping.bin_ids)),
     }
 
 
@@ -766,7 +920,7 @@ def build_grid_row_query(
     config: "GridTypeConfig",
     grouping: "RowGroupingConfig",
     direct_only: bool,
-    rows: int = 50000,
+    rows: int = MAX_ROW_ASSOCIATIONS,
 ) -> Dict[str, Any]:
     """Build Solr query for grid row entities using JOIN.
 
@@ -802,12 +956,12 @@ def build_grid_row_query(
         f'AND {context_field}:"{context_id}")'
     )
 
-    # Build facet queries for bin counts
-    facet_queries = [f'{config.row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
-
+    # `fq`, not `q`: only filter queries are filterCache-eligible, and these result sets
+    # are larger than solrconfig's queryResultMaxDocsCached, so a join in `q` is
+    # re-executed on every request instead of being cached and reused.
     return {
-        "q": join_query,
-        "fq": f'category:"{config.row_assoc_category.value}"',
+        "q": "*:*",
+        "fq": [join_query, f'category:"{config.row_assoc_category.value}"'],
         "rows": rows,
         "fl": ",".join(
             [
@@ -815,13 +969,11 @@ def build_grid_row_query(
                 f"{config.row_context_field}_label",  # Column entity label
                 config.row_entity_field,  # Row entity ID
                 f"{config.row_entity_field}_label",  # Row entity label
-                f"{config.row_entity_field}_closure",  # For bin assignment
                 "negated",
                 "publications",
                 "onset_qualifier",
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet(config.row_entity_field, grouping.bin_ids)),
     }

@@ -22,7 +22,9 @@ from monarch_py.datamodels.model import (
     NodeHierarchy,
     NodeRelationship,
     SearchResults,
+    SearchScopeResolution,
 )
+from monarch_py.datamodels.search_scopes import resolve_scope
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
@@ -45,6 +47,7 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
+    exact_match_filter_query,
     build_association_counts_query,
     build_association_query,
     build_association_table_query,
@@ -58,6 +61,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_multi_entity_association_query,
     build_search_query,
     build_grounding_query,
+    MAX_ROW_ASSOCIATIONS,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
@@ -72,6 +76,29 @@ from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
+
+# Upper bound on the candidate set exact-match search scans before the scope check in
+# parse_search. Whole-string collisions are usually a handful, but short gene symbols are
+# shared by well over a thousand entities, so this is sized for that tail rather than the
+# common case. The scan requests only the three fields match_provenance reads.
+
+
+def _warn_if_row_query_truncated(context_id: str, row_result: dict, row_docs: list) -> None:
+    """Log when Solr had more row associations than we asked for.
+
+    Cells come from these documents one association at a time, so a truncated fetch
+    renders a grid that looks complete but is missing observations.
+    """
+    found = row_result.get("response", {}).get("numFound", 0)
+    if found > len(row_docs):
+        logger.warning(
+            "Grid for %s truncated: %d row associations matched but only %d fetched "
+            "(MAX_ROW_ASSOCIATIONS=%d). The grid is missing cells.",
+            context_id,
+            found,
+            len(row_docs),
+            MAX_ROW_ASSOCIATIONS,
+        )
 
 
 @dataclass
@@ -651,14 +678,24 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         q: str = "*:*",
         category: Union[List[EntityCategory], None] = None,
+        namespace: Union[List[str], None] = None,
+        exclude_namespace: Union[List[str], None] = None,
+        in_taxon: Union[List[str], None] = None,
         in_taxon_label: Union[List[str], None] = None,
+        subset: Union[List[str], None] = None,
+        exclude_subset: Union[List[str], None] = None,
+        scope: Union[str, None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
         filter_queries: Union[List[str], None] = None,
         sort: Optional[str] = None,
         highlighting: bool = False,
+        exact: bool = False,
         offset: int = 0,
         limit: int = 20,
+        facet_method: Optional[str] = None,
+        fields: Optional[str] = None,
     ) -> SearchResults:
         """Search for entities by label, with optional filters
 
@@ -667,31 +704,125 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
+            namespace (List[str]): Filter to only entities whose CURIE uses one of these namespaces
+                (e.g. ["MONDO", "HP"]). Defaults to None.
+            exclude_namespace (List[str]): Drop entities whose CURIE uses one of these namespaces.
+                Defaults to None.
+            scope (str): A named filter bundle (see `search_scopes`). Supplies category, namespace,
+                subset, exclude_subset and in_taxon where they were not passed explicitly; an
+                explicit value wins for that axis. Defaults to None.
+            in_taxon (List[str]): Filter to only entities matching the specified taxon CURIEs. Defaults to None.
             in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
+            subset (List[str]): Filter to only entities in the specified subsets, `venom_*` prefixes
+                allowed. Defaults to None.
+            exclude_subset (List[str]): Drop entities in the specified subsets, same syntax as
+                `subset`. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
+            facet_limit (int): Maximum facet values per field; -1 for all. Solr defaults to 100,
+                which silently truncates `subsets`. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.
             sort (str): Sort results by the specified field. Defaults to None.
+            exact (bool): Return only entities whose name or exact synonym equals `q` as a whole
+                string, and an empty result set when none does. Defaults to False.
+            facet_method (str): Solr facet.method for `facet_fields`, applied per field.
+                Defaults to None, which leaves Solr's default (`fc`) in place.
+            fields (str): Solr field list to return. Defaults to None, meaning every
+                stored field plus the score, which is what CLI and other non-browse
+                callers expect.
 
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
-        query = build_search_query(
-            q=q,
+        # A scope only supplies axes the caller left unset, so `resolved` is what was
+        # actually applied and is safe to echo back verbatim.
+        resolved = resolve_scope(
+            scope,
             category=[c.value for c in category] if category else None,
+            namespace=namespace,
+            exclude_namespace=exclude_namespace,
+            subset=subset,
+            exclude_subset=exclude_subset,
+            in_taxon=in_taxon,
             in_taxon_label=in_taxon_label,
-            facet_fields=facet_fields,
+        )
+        build_kwargs = dict(
+            category=resolved.get("category"),
+            namespace=resolved.get("namespace"),
+            exclude_namespace=resolved.get("exclude_namespace"),
+            in_taxon=resolved.get("in_taxon"),
+            in_taxon_label=resolved.get("in_taxon_label"),
+            subset=resolved.get("subset"),
+            exclude_subset=resolved.get("exclude_subset"),
             facet_queries=facet_queries,
-            filter_queries=filter_queries,
             highlighting=highlighting,
             sort=sort,
+            facet_method=facet_method,
+            fields=fields,
+        )
+        if exact:
+            results = self._exact_search(
+                q=q,
+                filter_queries=filter_queries,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+        else:
+            query = build_search_query(
+                q=q,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
+                filter_queries=filter_queries,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+            solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+            results = parse_search(solr.query(query), offset=offset, limit=limit, q=q)
+        if scope:
+            results.scope = SearchScopeResolution(name=str(scope), **resolved)
+        return results
+
+    def _exact_search(
+        self,
+        q: str,
+        filter_queries: Union[List[str], None] = None,
+        facet_fields: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
+        offset: int = 0,
+        limit: int = 20,
+        **build_kwargs,
+    ) -> SearchResults:
+        """Run `search` under the exact-match contract.
+
+        `name` and `exact_synonym` both have a `*_grounding` copy, so Solr can decide the
+        whole thing: one filter, and it does the counting, ordering, paging and faceting
+        natively. Nothing needs re-checking in Python.
+        """
+        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+
+        if not q or q.strip() in ("", "*:*"):
+            # A blank search is a browse, not a claim that some entity is named "*:*". There
+            # is nothing here that could be an exact match, so don't ask Solr.
+            return SearchResults(items=[], limit=limit, offset=offset, total=0)
+
+        query = build_search_query(
+            q=q,
+            exact_filter=exact_match_filter_query(q),
+            facet_fields=facet_fields,
+            facet_limit=facet_limit,
+            filter_queries=filter_queries,
             offset=offset,
             limit=limit,
+            **build_kwargs,
         )
-        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query_result = solr.query(query)
-        results = parse_search(query_result)
-        return results
+        # Not `exact=True`: every row this returns is exact by construction, so re-deciding
+        # it here could only drop a row Solr counted, leaving `total` disagreeing with
+        # `items`. Provenance is still annotated.
+        return parse_search(solr.query(query), offset=offset, limit=limit, q=q)
 
     def autocomplete(
         self, q: str, category: List[EntityCategory] = None, prioritized_predicates: List[AssociationPredicate] = None
@@ -868,6 +999,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         text: str,
         prefix: Optional[List[str]] = None,
         category: Optional[List[str]] = None,
+        fields: Optional[str] = None,
     ) -> List[Entity]:
         """Grounds a single entity
 
@@ -877,12 +1009,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 uses one of these CURIE prefixes (e.g. ["MONDO", "HP"]). Defaults to None.
             category (List[str], optional): Restrict results to entities of one of these
                 biolink categories (e.g. ["biolink:Disease"]). Defaults to None.
+            fields (str, optional): Solr field list to return. Defaults to None, meaning
+                every stored field, which is what the CLI expects.
 
         Returns:
             Entity: Dataclass representing a single entity
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query = build_grounding_query(text, prefix=prefix, category=category)
+        query.fields = fields
         query_result = solr.query(query)
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]
@@ -949,10 +1084,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         phenotype_query_params = build_case_phenotype_query(
             disease_id=disease_id,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         phenotype_result = self._raw_solr_query(phenotype_query_params)
         phenotype_docs = phenotype_result.get("response", {}).get("docs", [])
-        facet_counts = phenotype_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(disease_id, phenotype_result, phenotype_docs)
+        facets = phenotype_result.get("facets", {})
 
         # Step 4: Build matrix
         return build_matrix(
@@ -960,7 +1097,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             disease_name=self._get_entity_name(disease_id),
             case_docs=case_docs,
             phenotype_docs=phenotype_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
     def get_entity_grid(
@@ -1037,10 +1174,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             config=config,
             grouping=grouping,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
-        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(context_id, row_result, row_docs)
+        facets = row_result.get("facets", {})
 
         # Step 5: Build grid
         return build_entity_grid(
@@ -1051,7 +1190,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             grouping=grouping,
             column_docs=col_docs,
             row_docs=row_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
     def get_generic_entity_grid(
@@ -1209,10 +1348,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             row_entity_field=row_entity_field,
             grouping=grouping,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
-        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(context_id, row_result, row_docs)
+        facets = row_result.get("facets", {})
 
         # Create a dynamic config for build_entity_grid
         # Determine column entity category from association type
@@ -1256,7 +1397,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             grouping=grouping,
             column_docs=col_docs,
             row_docs=row_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
         # Step 6: Optionally sort columns by category

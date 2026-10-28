@@ -1,3 +1,6 @@
+import json
+import urllib.parse
+
 import pytest
 
 from monarch_py.datamodels.category_enums import (
@@ -24,7 +27,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_multi_category_row_query,
 )
 from monarch_py.datamodels.grid_configs import get_grid_config
-from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
+from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType, bin_facet_key
 from monarch_py.utils.utils import compare_dicts, dict_diff
 
 
@@ -276,7 +279,7 @@ def test_column_query_direct_vs_indirect(direct_only, expected_field):
         config=config,
         direct_only=direct_only,
     )
-    fq_str = str(params.get("fq", ""))
+    fq_str = " ".join(params.get("fq", []))
     assert expected_field in fq_str
 
 
@@ -293,7 +296,10 @@ def test_column_query_join_filtering(filter_empty, expect_join):
         direct_only=True,
         filter_empty_columns=filter_empty,
     )
-    assert ("{!join" in params["q"]) == expect_join
+    # The join is an `fq`, not the `q`: only there is it filterCache-eligible, and
+    # without caching it is re-executed on every grid request.
+    assert ("{!join" in " ".join(params["fq"])) == expect_join
+    assert "{!join" not in params["q"]
 
 
 # =====================================================================
@@ -314,10 +320,15 @@ def test_row_query_structure():
         grouping=grouping,
         direct_only=True,
     )
-    assert "{!join" in params["q"]
+    assert params["q"] == "*:*"
+    assert any("{!join" in clause for clause in params["fq"])
     assert 'category:"biolink:CaseToPhenotypicFeatureAssociation"' in params["fq"]
-    assert params["facet"] == "true"
-    assert 'object_closure:"BIN:001"' in params["facet.query"]
+    # Bins come from a JSON facet rather than `object_closure` on every association;
+    # the closure describes the phenotype, so per-association it was re-sent per edge.
+    assert "object_closure" not in params["fl"]
+    facet = json.loads(params["json.facet"])
+    assert facet[bin_facet_key(0)]["q"] == 'object_closure:"BIN:001"'
+    assert facet[bin_facet_key(0)]["facet"]["entities"]["field"] == "object"
 
 
 def test_row_query_indirect():
@@ -333,7 +344,7 @@ def test_row_query_indirect():
         grouping=grouping,
         direct_only=False,
     )
-    assert "object_closure" in params["q"]
+    assert "object_closure" in " ".join(params["fq"])
 
 
 # =====================================================================
@@ -353,7 +364,7 @@ def test_multi_category_column_query_multiple_categories():
         column_field="object",
         direct_only=True,
     )
-    fq_str = str(params.get("fq", ""))
+    fq_str = " ".join(params.get("fq", []))
     assert "CausalGeneToDiseaseAssociation" in fq_str
     assert "CorrelatedGeneToDiseaseAssociation" in fq_str
     assert " OR " in fq_str
@@ -379,7 +390,10 @@ def test_multi_category_column_query_join_filtering(filter_empty, expect_join):
         filter_empty_columns=filter_empty,
         **extra_kwargs,
     )
-    assert ("{!join" in params["q"]) == expect_join
+    # The join is an `fq`, not the `q`: only there is it filterCache-eligible, and
+    # without caching it is re-executed on every grid request.
+    assert ("{!join" in " ".join(params["fq"])) == expect_join
+    assert "{!join" not in params["q"]
 
 
 def test_multi_category_column_query_includes_source_fields():
@@ -423,7 +437,7 @@ def test_build_multi_category_row_query_multiple_row_categories():
     )
 
     # Should build OR filter for multiple categories
-    fq = query_params.get("fq", "")
+    fq = " ".join(query_params.get("fq", []))
     assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
     assert "biolink:CaseToPhenotypicFeatureAssociation" in fq
     assert " OR " in fq
@@ -450,10 +464,12 @@ def test_build_multi_category_row_query_single_row_category_in_list():
         direct_only=True,
     )
 
-    fq = query_params.get("fq", "")
-    assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
+    fq = query_params["fq"]
+    # The join and the row-category filter are separate `fq` clauses so Solr can cache
+    # and reuse each independently.
+    assert any("{!join" in clause for clause in fq)
     # Single category should still be wrapped in parens (from OR join)
-    assert fq == '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")'
+    assert '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")' in fq
 
 
 def test_build_grounding_query_no_filters():
@@ -486,3 +502,143 @@ def test_build_grounding_query_with_prefix_and_category():
     query = build_grounding_query("Marfan syndrome", prefix=["MONDO"], category=["biolink:Disease"])
     assert "namespace:MONDO" in query.filter_queries
     assert r"category:biolink\:Disease" in query.filter_queries
+
+
+def test_empty_search_skips_highlighting():
+    """An empty search matches everything and has no terms to mark up, so asking Solr
+    to highlight is work with no output. A real query still highlights."""
+    assert build_search_query(q="*:*", highlighting=True).hl is False
+    assert build_search_query(q="fanconi", highlighting=True).hl is True
+
+
+def test_search_highlighting_stays_off_when_not_requested():
+    assert build_search_query(q="fanconi", highlighting=False).hl is False
+
+
+def test_facet_method_is_emitted_per_field():
+    """Per field, not globally: `enum` is much cheaper than the default for a
+    low-cardinality field against a warm filterCache, and wrong for a large one."""
+    query = build_search_query(q="*:*", facet_fields=["category", "in_taxon_label"], facet_method="enum")
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert params["f.category.facet.method"] == "enum"
+    assert params["f.in_taxon_label.facet.method"] == "enum"
+    assert "facet.method" not in params
+
+
+def test_no_facet_method_by_default():
+    """Callers that do not opt in keep Solr's default method."""
+    query = build_search_query(q="*:*", facet_fields=["category"])
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert not [key for key in params if key.endswith("facet.method")]
+
+
+def test_field_list_is_passed_through_as_fl():
+    query = build_search_query(q="*:*", fields="id,name,category")
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert params["fl"] == "id,name,category"
+
+
+def test_no_field_list_by_default():
+    """The CLI dumps whole records, so an unrestricted search must stay unrestricted --
+    plus `score`, which Solr omits unless the field list names it."""
+    query = build_search_query(q="*:*")
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert params["fl"] == "*,score"
+
+
+def test_misspelled_facet_mincount_is_not_sent():
+    """`facet_min_count` serialized to a parameter Solr does not recognise and silently
+    ignored; `facet_mincount` -> `facet.mincount` is the one that does the work. Both
+    were being sent, so every query carried a junk parameter."""
+    params = dict(urllib.parse.parse_qsl(build_search_query(q="*:*").query_string()))
+    assert "facet_min_count" not in params
+    assert params["facet.mincount"] == "1"
+
+
+@pytest.mark.parametrize(
+    "term",
+    ["fields", "boost", "sort", "q_op", "def_type", "hl_method", "filter_queries", "facet_mincount"],
+)
+def test_query_text_is_never_rewritten_as_a_parameter_name(term):
+    """A user searching for one of these words must search for that word.
+
+    The python-attribute-to-Solr-parameter map used to be applied to values as well as
+    keys, so `q=fields` reached Solr as `q=fl` and `q=def_type` as `q=defType` -- an
+    ordinary search silently returning results for something else.
+    """
+    params = dict(urllib.parse.parse_qsl(build_search_query(q=term).query_string()))
+    assert params["q"] == term
+
+
+def test_boolean_values_are_still_rendered_for_solr():
+    """Booleans are the one thing a value does need rewriting for."""
+    params = dict(urllib.parse.parse_qsl(build_search_query(q="x", highlighting=True).query_string()))
+    assert params["facet"] == "true"
+    assert params["hl"] == "true"
+    assert dict(urllib.parse.parse_qsl(build_search_query(q="x").query_string()))["hl"] == "false"
+
+
+# =====================================================================
+# Search field groups
+# =====================================================================
+
+
+def test_bulk_field_groups_are_opt_in():
+    """Phenotype annotations and descendants are ~69% and ~33% of a search response.
+    Everything else in the model is about 1%, so only these two are withheld."""
+    from monarch_py.api.utils.entity_fields import DESCENDANT_FIELDS, PHENOTYPE_FIELDS, entity_fields
+
+    from monarch_py.datamodels.model import Entity
+
+    default = entity_fields(include_phenotypes=False, include_descendants=False).split(",")
+    assert not set(default) & set(PHENOTYPE_FIELDS + DESCENDANT_FIELDS)
+    # ...and nothing else is dropped: a caller loses only the bulk groups.
+    expected = [f for f in Entity.model_fields if f not in set(PHENOTYPE_FIELDS + DESCENDANT_FIELDS + ["score"])]
+    assert default == expected
+
+
+@pytest.mark.parametrize(
+    "phenotypes,descendants",
+    [(True, False), (False, True), (True, True)],
+)
+def test_opting_in_restores_each_group(phenotypes, descendants):
+    from monarch_py.api.utils.entity_fields import DESCENDANT_FIELDS, PHENOTYPE_FIELDS, entity_fields
+
+    fields = set(entity_fields(phenotypes, descendants).split(","))
+    assert set(PHENOTYPE_FIELDS).issubset(fields) == phenotypes
+    assert set(DESCENDANT_FIELDS).issubset(fields) == descendants
+
+
+def test_score_is_never_requested():
+    """`score` is a Solr pseudo-field; an unrestricted `fl` does not return it today, so
+    listing it would start populating a field that has always been null."""
+    from monarch_py.api.utils.entity_fields import entity_fields
+
+    assert "score" not in entity_fields(True, True).split(",")
+
+
+def test_grounding_and_search_share_one_field_definition():
+    """`Entity` and `SearchResult` declare the same stored fields, so the two endpoints
+    must not drift into disagreeing about what counts as bulk.
+
+    `SearchResult` additionally carries `score` (a Solr pseudo-field) and the two
+    match-provenance fields, which `parse_search` computes rather than reading from the
+    index -- none of them are things `entity_fields` can or should derive.
+    """
+    from monarch_py.datamodels.model import Entity, SearchResult
+
+    computed = {"score", "matched_field", "match_type"}
+    assert set(Entity.model_fields) == set(SearchResult.model_fields) - computed
+
+
+def test_default_fields_cover_match_provenance():
+    """`match_provenance` decides `matched_field`/`match_type`, and exact mode drops
+    anything not "exact", by reading these off the returned doc. If the field list stops
+    requesting them every hit silently becomes a non-exact match and exact search
+    returns nothing."""
+    from monarch_py.api.utils.entity_fields import entity_fields
+    from monarch_py.implementations.solr.solr_parsers import SYNONYM_SCOPES
+
+    fields = set(entity_fields().split(","))
+    assert "name" in fields
+    assert set(SYNONYM_SCOPES).issubset(fields)

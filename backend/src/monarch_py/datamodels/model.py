@@ -77,6 +77,46 @@ class MatchCriteriaEnum(str, Enum):
     """
 
 
+class MatchedFieldEnum(str, Enum):
+    """
+    The entity field that a search query matched as a whole string
+    """
+    name = "name"
+    """
+    The query matched the entity's primary label
+    """
+    exact_synonym = "exact_synonym"
+    """
+    The query matched a synonym asserted to mean the same thing as the entity's label
+    """
+    broad_synonym = "broad_synonym"
+    """
+    The query matched a synonym broader than the entity
+    """
+    narrow_synonym = "narrow_synonym"
+    """
+    The query matched a synonym narrower than the entity
+    """
+    related_synonym = "related_synonym"
+    """
+    The query matched a synonym merely related to the entity
+    """
+
+
+class MatchTypeEnum(str, Enum):
+    """
+    How defensible a search hit is as an identification of the query text
+    """
+    exact = "exact"
+    """
+    Whole-string, case-insensitive match on the entity's name or one of its exact synonyms — the query names this entity and no other reading is implied
+    """
+    synonym = "synonym"
+    """
+    Whole-string match on a broad, narrow or related synonym — the query is adjacent to this entity but does not name it
+    """
+
+
 class AssociationDirectionEnum(str, Enum):
     """
     The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
@@ -206,25 +246,25 @@ class Association(ConfiguredBaseModel):
     agent_type: str = Field(default=..., description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""")
     aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
     knowledge_level: str = Field(default=..., description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""")
-    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
     primary_knowledge_source: Optional[str] = Field(default=None)
     file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     provided_by: Optional[str] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
     publications: Optional[list[str]] = Field(default=None)
     qualifiers: Optional[list[str]] = Field(default=None)
-    negated: Optional[bool] = Field(default=None)
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
+    has_evidence: Optional[list[str]] = Field(default=None)
     frequency_qualifier: Optional[str] = Field(default=None)
     has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
     has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
     has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
     has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
+    negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
     sex_qualifier: Optional[str] = Field(default=None)
+    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
+    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     has_attribute: Optional[list[str]] = Field(default=None)
     object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
     species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
     stage_qualifier: Optional[str] = Field(default=None)
     qualifier: Optional[str] = Field(default=None)
@@ -320,25 +360,25 @@ class ExpandedAssociation(Association):
     agent_type: str = Field(default=..., description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""")
     aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
     knowledge_level: str = Field(default=..., description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""")
-    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
     primary_knowledge_source: Optional[str] = Field(default=None)
     file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     provided_by: Optional[str] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
     publications: Optional[list[str]] = Field(default=None)
     qualifiers: Optional[list[str]] = Field(default=None)
-    negated: Optional[bool] = Field(default=None)
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
+    has_evidence: Optional[list[str]] = Field(default=None)
     frequency_qualifier: Optional[str] = Field(default=None)
     has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
     has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
     has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
     has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
+    negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
     sex_qualifier: Optional[str] = Field(default=None)
+    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
+    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     has_attribute: Optional[list[str]] = Field(default=None)
     object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
     species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
     stage_qualifier: Optional[str] = Field(default=None)
     qualifier: Optional[str] = Field(default=None)
@@ -401,25 +441,25 @@ class DirectionalAssociation(ExpandedAssociation):
     agent_type: str = Field(default=..., description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""")
     aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
     knowledge_level: str = Field(default=..., description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""")
-    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
     primary_knowledge_source: Optional[str] = Field(default=None)
     file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     provided_by: Optional[str] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
     publications: Optional[list[str]] = Field(default=None)
     qualifiers: Optional[list[str]] = Field(default=None)
-    negated: Optional[bool] = Field(default=None)
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
+    has_evidence: Optional[list[str]] = Field(default=None)
     frequency_qualifier: Optional[str] = Field(default=None)
     has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
     has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
     has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
     has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
+    negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
     sex_qualifier: Optional[str] = Field(default=None)
+    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
+    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     has_attribute: Optional[list[str]] = Field(default=None)
     object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
     species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
     stage_qualifier: Optional[str] = Field(default=None)
     qualifier: Optional[str] = Field(default=None)
@@ -673,8 +713,24 @@ class MultiEntityAssociationResults(Results):
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
+class SearchScopeResolution(ConfiguredBaseModel):
+    """
+    The filters a named `scope` resolved to, echoed back so a caller can see what was filtered, log it, and reproduce or override it with the raw filter parameters. These are the filters actually applied, so an explicit parameter that overrode part of the scope is reflected here.
+    """
+    name: Optional[str] = Field(default=None, description="""The scope that was requested""")
+    category: Optional[list[str]] = Field(default=None, description="""The biolink categories the search was restricted to""")
+    namespace: Optional[list[str]] = Field(default=None, description="""The CURIE namespaces the search was restricted to""")
+    exclude_namespace: Optional[list[str]] = Field(default=None, description="""A CURIE namespace that entities were excluded by""")
+    subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were restricted to""")
+    exclude_subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were excluded by""")
+    in_taxon: Optional[list[str]] = Field(default=None, description="""The taxon CURIEs the search was restricted to""")
+    in_taxon_label: Optional[list[str]] = Field(default=None, description="""The taxon labels the search was restricted to""")
+
+
 class SearchResult(Entity):
     score: Optional[float] = Field(default=None)
+    matched_field: Optional[MatchedFieldEnum] = Field(default=None, description="""Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match""")
+    match_type: Optional[MatchTypeEnum] = Field(default=None, description="""How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself.""")
     id: str = Field(default=...)
     category: str = Field(default=...)
     name: str = Field(default=...)
@@ -715,6 +771,7 @@ class SearchResults(Results):
     items: list[SearchResult] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
     facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
     facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
+    scope: Optional[SearchScopeResolution] = Field(default=None, description="""The concrete filters a named search scope resolved to""")
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
@@ -904,6 +961,7 @@ CategoryGroupedAssociationResults.model_rebuild()
 EntityResults.model_rebuild()
 MappingResults.model_rebuild()
 MultiEntityAssociationResults.model_rebuild()
+SearchScopeResolution.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()
