@@ -1,12 +1,13 @@
 import { describe, expect, test } from "vitest";
 import {
-  defaultPredicateFor,
+  defaultPredicatesFor,
   expandLabelFor,
   isPredicateFilterable,
   predicateFilterState,
 } from "@/util/predicateFilterConfig";
 
 const TREATS = "biolink:treats";
+const PREVENTS = "biolink:preventative_for_condition";
 const CTD = "biolink:treats_or_applied_or_studied_to_treat";
 
 describe("isPredicateFilterable", () => {
@@ -24,22 +25,25 @@ describe("isPredicateFilterable", () => {
   });
 });
 
-describe("defaultPredicateFor", () => {
-  test("drug_indications defaults to biolink:treats (indications)", () => {
-    expect(defaultPredicateFor("drug_indications")).toBe("biolink:treats");
+describe("defaultPredicatesFor", () => {
+  test("drug_indications defaults to the approved uses", () => {
+    expect(defaultPredicatesFor("drug_indications")).toEqual([
+      TREATS,
+      PREVENTS,
+    ]);
   });
 
   test("undefined for non-filterable sections", () => {
     expect(
-      defaultPredicateFor("biolink:GeneToPhenotypicFeatureAssociation"),
+      defaultPredicatesFor("biolink:GeneToPhenotypicFeatureAssociation"),
     ).toBe(undefined);
   });
 });
 
 describe("expandLabelFor", () => {
-  test("drug_indications expands to investigational treatments", () => {
+  test("drug_indications expands to investigational uses", () => {
     expect(expandLabelFor("drug_indications")).toBe(
-      "Include investigational (studied/applied) treatments",
+      "Include investigational uses (clinical trials, studied, applied)",
     );
   });
 
@@ -68,6 +72,18 @@ describe("predicateFilterState", () => {
     expect(
       predicateFilterState("drug_indications", [TREATS, CTD], true),
     ).toEqual({ showToggle: true, filterIds: [] });
+  });
+
+  test("both default predicates present → scope to both", () => {
+    expect(
+      predicateFilterState("drug_indications", [TREATS, PREVENTS, CTD], false),
+    ).toEqual({ showToggle: true, filterIds: [TREATS, PREVENTS] });
+  });
+
+  test("only default predicates present → no toggle, no filter", () => {
+    expect(
+      predicateFilterState("drug_indications", [TREATS, PREVENTS], false),
+    ).toEqual({ showToggle: false, filterIds: [] });
   });
 
   test("only the default predicate present → no toggle, no filter", () => {

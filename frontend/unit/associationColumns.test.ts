@@ -142,6 +142,66 @@ describe("buildAssociationCols", () => {
     expect(k).toContain("predicate");
   });
 
+  it("drug_indications (Disease, Direct): keeps the condition when rows target a phenotype in the disease's context", () => {
+    const cols = buildAssociationCols(
+      makeCtx({
+        nodeCategory: "biolink:Disease",
+        isDirect: true,
+        categoryId: "drug_indications",
+        items: [
+          makeRow({
+            subject_category: "biolink:Drug",
+            object_category: "biolink:PhenotypicFeature",
+            predicate: "biolink:treats",
+            disease_context_qualifier: "MONDO:0018608",
+          }),
+        ],
+      }),
+    );
+    const k = keys(cols);
+    expect(k).toContain("object_label");
+    expect(cols.find((c) => c.key === "object_label")?.heading).toBe(
+      "Condition",
+    );
+    // the context is the page disease itself on its direct tab
+    expect(k).not.toContain("disease_context_qualifier");
+  });
+
+  it("drug sections (Drug page): show disease context after the condition when present", () => {
+    const cols = buildAssociationCols(
+      makeCtx({
+        nodeCategory: "biolink:Drug",
+        isDirect: true,
+        categoryId: "drug_contraindications",
+        items: [
+          makeRow({ predicate: "biolink:contraindicated_in" }),
+          makeRow({
+            predicate: "biolink:contraindicated_in",
+            disease_context_qualifier: "MONDO:0005148",
+          }),
+        ],
+      }),
+    );
+    const k = keys(cols);
+    expect(k.indexOf("disease_context_qualifier")).toBe(
+      k.indexOf("object_label") + 1,
+    );
+  });
+
+  it("drug sections: no disease context column when no row has one", () => {
+    const k = keys(
+      buildAssociationCols(
+        makeCtx({
+          nodeCategory: "biolink:Drug",
+          categoryId: "drug_indications",
+          items: [makeRow({ predicate: "biolink:treats" })],
+        }),
+      ),
+    );
+    expect(k).toContain("object_label");
+    expect(k).not.toContain("disease_context_qualifier");
+  });
+
   it("GenotypeToDiseaseAssociation: removes predicate, ensures Taxon before Subject; adds Source before Details on Direct", () => {
     const cols = buildAssociationCols(
       makeCtx({

@@ -17,6 +17,13 @@ export interface ColumnContext {
   getCategoryLabel: (idOrDefault: string) => string;
 }
 
+/** drug → condition sections (association_type_mappings.yaml) */
+const DRUG_SECTIONS = new Set([
+  "drug_indications",
+  "drug_contraindications",
+  "drug_diagnostics",
+]);
+
 /** Build the AppTable columns for an association category. . */
 export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   const { categoryId, nodeCategory, isDirect, items, getCategoryLabel } = ctx;
@@ -52,6 +59,13 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     },
   ];
   const isDisease = nodeCategory === "biolink:Disease";
+  const isDrugSection = DRUG_SECTIONS.has(categoryId);
+  // a drug row can target a phenotype "in the context of" a disease (e.g.
+  // droxidopa treats lightheadedness in pure autonomic failure); such rows
+  // reach a disease page through disease_context_qualifier, not the object
+  const hasDiseaseContext = (items ?? []).some(
+    (r) => !!r?.disease_context_qualifier,
+  );
 
   const extraCols: Cols<Datum> = [];
 
@@ -125,12 +139,13 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       if (
         categoryId === "biolink:CorrelatedGeneToDiseaseAssociation" ||
         categoryId === "biolink:GenotypeToDiseaseAssociation" ||
-        // drug indications: the disease is the object, so drop it and keep the
-        // chemical/treatment (subject) rather than showing the page node itself
-        categoryId === "drug_indications"
+        // drug sections: the object is usually the page disease itself, so
+        // drop it, unless some rows target a phenotype in this disease's context
+        (isDrugSection && !hasDiseaseContext)
       ) {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
       } else if (
+        !isDrugSection &&
         categoryId !== "biolink:GeneToPhenotypicFeatureAssociation" &&
         categoryId !== "biolink:CausalGeneToDiseaseAssociation" &&
         categoryId !== "biolink:VariantToDiseaseAssociation"
@@ -203,6 +218,24 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
         const idxSubject = baseCols.findIndex((c) => c.key === "subject_label");
         if (idxSubject > -1) baseCols.splice(idxSubject, 0, diseaseCol as any);
         else baseCols.unshift(diseaseCol as any);
+      }
+    }
+  }
+
+  // Drug sections: name the target "Condition" (it may be a disease or a
+  // phenotype) and show the disease context next to it, except on a disease's
+  // direct tab, where the context is the page disease itself
+  if (isDrugSection) {
+    const iObj = baseCols.findIndex((c) => c.key === "object_label");
+    if (iObj > -1) {
+      baseCols[iObj] = { ...baseCols[iObj], heading: "Condition" };
+      if (hasDiseaseContext && !(isDisease && isDirect)) {
+        baseCols.splice(iObj + 1, 0, {
+          slot: "disease_context",
+          key: "disease_context_qualifier" as Datum,
+          heading: "Disease Context",
+          sortable: true,
+        } as any);
       }
     }
   }
