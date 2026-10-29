@@ -9,7 +9,7 @@
   <div class="drug-uses">
     <!-- direct vs. inferred (subtypes), as in the other association sections -->
     <AppAssociationTabs
-      v-if="isDiseasePage && allCount > 0"
+      v-if="hasTabs && allCount > 0"
       :has-direct-associations="directCount > 0"
       :show-all-tab="allCount > directCount"
       :direct-active="activeTab === 'direct'"
@@ -27,16 +27,19 @@
       <span class="muted">
         ·
         {{ plural(summary.data.value.unique.grouping_key ?? 0, "statement") }}
-        from {{ plural(summary.data.value.total, "label assertion") }}
+        from {{ plural(summary.data.value.total, "assertion") }}
       </span>
     </p>
     <AppStatus v-else-if="summary.isLoading.value" code="loading"
       >Loading summary</AppStatus
     >
+    <AppStatus v-else-if="summary.isError.value" code="error"
+      >Error loading {{ sectionNoun }}</AppStatus
+    >
 
     <div class="chips">
       <button
-        v-for="j in jurisdictions.data.value.groups"
+        v-for="j in jurisdictionChips"
         :key="j.value"
         :class="['chip', { active: jurisdiction === j.value }]"
         :title="`Only show ${groupNoun}s with a ${jurisdictionName(j.value)} label`"
@@ -45,11 +48,16 @@
         {{ jurisdictionName(j.value) }}
         <span class="chip-count">{{ j.unique[side] }}</span>
       </button>
-      <template v-if="isIndications && investigationalCount > 0">
+      <template
+        v-if="
+          predicateState.showToggle &&
+          (investigationalCount > 0 || includeInvestigational)
+        "
+      >
         <span class="chip-sep" />
         <button
           :class="['chip', { active: includeInvestigational }]"
-          title="Clinical-trial, studied and off-label (applied) uses"
+          :title="`${plural(investigationalCount, groupNoun)} with only clinical-trial, studied or off-label (applied) uses`"
           @click="includeInvestigational = !includeInvestigational"
         >
           + investigational
@@ -59,7 +67,7 @@
     </div>
 
     <!-- level 1: one row per drug / condition -->
-    <ul class="groups">
+    <ul v-if="!summary.isError.value" class="groups">
       <li v-for="group in groups" :key="group.value" class="group">
         <!-- the whole row toggles; names inside it are links -->
         <div
@@ -105,6 +113,9 @@
                 >{{ target.label ?? target.value }}</AppLink
               >
             </template>
+            <span v-if="moreTargets(group) > 0" class="muted">
+              +{{ moreTargets(group) }} more</span
+            >
           </span>
           <span class="where">
             <span
@@ -125,6 +136,9 @@
         <div v-if="expanded === group.value" class="statements">
           <AppStatus v-if="statements.isLoading.value" code="loading"
             >Loading statements</AppStatus
+          >
+          <AppStatus v-else-if="statements.isError.value" code="error"
+            >Error loading statements</AppStatus
           >
           <ul v-else>
             <li
@@ -200,12 +214,15 @@
               <!-- level 3: the label assertions behind one statement -->
               <div v-if="openStatement === st.value" class="assertions">
                 <AppStatus v-if="assertions.isLoading.value" code="loading"
-                  >Loading labels</AppStatus
+                  >Loading assertions</AppStatus
+                >
+                <AppStatus v-else-if="assertions.isError.value" code="error"
+                  >Error loading assertions</AppStatus
                 >
                 <template v-else>
                   <p class="muted assertion-summary">
-                    {{ plural(assertions.data.value.total, "label") }} ·
-                    {{ plural(distinctTextCount, "distinct indication text") }}
+                    {{ plural(assertions.data.value.total, "assertion") }} ·
+                    {{ plural(distinctTextCount, "distinct supporting text") }}
                   </p>
                   <div
                     v-for="block in assertionBlocks"
@@ -213,9 +230,13 @@
                     class="jurisdiction-block"
                   >
                     <h4 class="jurisdiction-head">
-                      {{ jurisdictionName(block.jurisdiction) }}
+                      {{
+                        block.jurisdiction
+                          ? jurisdictionName(block.jurisdiction)
+                          : "Other sources"
+                      }}
                       <span class="muted"
-                        >{{ plural(block.labelCount, "label") }} ·
+                        >{{ plural(block.labelCount, recordNoun(block)) }} ·
                         {{ block.sources.join(", ") }}</span
                       >
                     </h4>
@@ -227,7 +248,7 @@
                       <p class="supporting">{{ text.text }}</p>
                       <div class="assertion-links">
                         <span class="muted">{{
-                          plural(text.rows.length, "label")
+                          plural(text.rows.length, recordNoun(block))
                         }}</span>
                         <span v-if="text.firstApproved" class="muted"
                           >first approved {{ text.firstApproved }}</span
@@ -238,7 +259,7 @@
                           :href="link"
                           target="_blank"
                           rel="noopener"
-                          >label {{ i + 1 }}</a
+                          >{{ recordNoun(block) }} {{ i + 1 }}</a
                         >
                         <span v-if="text.links.length > 8" class="muted"
                           >+{{ text.links.length - 8 }} more</span
@@ -256,7 +277,7 @@
                       {{
                         openBlocks.has(block.jurisdiction)
                           ? "show fewer"
-                          : `show ${block.texts.length - TEXTS_SHOWN} more indication texts`
+                          : `show ${block.texts.length - TEXTS_SHOWN} more texts`
                       }}
                     </button>
                   </div>
@@ -269,18 +290,29 @@
                   >
                     Summarizing the first
                     {{ assertions.data.value.items.length }} of
-                    {{ assertions.data.value.total }} labels.
+                    {{ assertions.data.value.total }} assertions.
                   </p>
                 </template>
               </div>
             </li>
           </ul>
+          <p
+            v-if="
+              statements.isSuccess.value &&
+              statements.data.value.group_total >
+                statements.data.value.groups.length
+            "
+            class="muted"
+          >
+            Showing the first {{ statements.data.value.groups.length }} of
+            {{ statements.data.value.group_total }} statements.
+          </p>
         </div>
       </li>
     </ul>
 
     <TheTableControls
-      v-if="groupTotal > 0"
+      v-if="groupTotal > 0 && !summary.isError.value"
       v-model:per-page="perPage"
       v-model:start="start"
       class="pager"
@@ -321,17 +353,22 @@ import AppStatus from "@/components/AppStatus.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import {
+  defaultPredicatesFor,
+  predicateFilterState,
+} from "@/util/predicateFilterConfig";
 import { parseRetrievalSources } from "@/util/retrievalSources";
 
 type Props = {
   node: Node;
   /** association-type section key, e.g. drug_indications */
   sectionKey: string;
+  /** the section's heading, e.g. "Treatments"; the tabs reuse it */
+  sectionLabel?: string;
 };
 
 const props = defineProps<Props>();
 
-const APPROVED = ["biolink:treats", "biolink:preventative_for_condition"];
 const PAGE = 10;
 
 const isDiseasePage = computed(() =>
@@ -339,7 +376,8 @@ const isDiseasePage = computed(() =>
     props.node.category ?? "",
   ),
 );
-const isIndications = computed(() => props.sectionKey === "drug_indications");
+/** direct/inferred tabs on disease pages only, as in SectionAssociations */
+const hasTabs = computed(() => props.node.category === "biolink:Disease");
 
 /** on a disease page the rows are drugs (subjects); on a drug page, conditions */
 const side = computed(() => (isDiseasePage.value ? "subject" : "object"));
@@ -357,30 +395,53 @@ const groupNoun = computed(() => (isDiseasePage.value ? "drug" : "condition"));
 const jurisdiction = ref<string | null>(null);
 const includeInvestigational = ref(false);
 /** what the tabs call this section's rows, e.g. "Directly associated treatments" */
-const sectionNoun = computed(
-  () =>
-    ({
-      drug_indications: "treatments",
-      drug_contraindications: "contraindicated drugs",
-      drug_diagnostics: "diagnostic agents",
-    })[props.sectionKey] ?? `${groupNoun.value}s`,
+const sectionNoun = computed(() =>
+  (props.sectionLabel ?? `${groupNoun.value}s`).toLowerCase(),
 );
 /** tab picked by the user; until then, direct when there are direct rows */
 const selectedTab = ref<"direct" | "all" | null>(null);
-/** drug counts for the two tabs under the current filters (kept while reloading) */
-const directCount = ref(0);
-const allCount = ref(0);
+type TabCounts = { direct: number; all: number };
+/**
+ * drug / condition counts per tab under the jurisdiction filter, with and
+ * without the approved-only predicate filter (kept while reloading)
+ */
+const approvedCounts = ref<TabCounts>({ direct: 0, all: 0 });
+const anyCounts = ref<TabCounts>({ direct: 0, all: 0 });
+const shownCounts = computed(() =>
+  predicateState.value.filterIds.length
+    ? approvedCounts.value
+    : anyCounts.value,
+);
+const directCount = computed(() => shownCounts.value.direct);
+const allCount = computed(() => shownCounts.value.all);
 const activeTab = computed(
   () => selectedTab.value ?? (directCount.value > 0 ? "direct" : "all"),
 );
-const direct = computed(
-  () => isDiseasePage.value && activeTab.value === "direct",
-);
+const direct = computed(() => hasTabs.value && activeTab.value === "direct");
 
+/** the predicates present in this section for this node (any tab, no filters) */
+const predicateIds = ref<string[]>([]);
+/**
+ * approved-only by default when the section also has investigational uses; no
+ * filter when only one kind is present, so the section is never empty
+ */
+const predicateState = computed(() =>
+  predicateFilterState(
+    props.sectionKey,
+    predicateIds.value,
+    includeInvestigational.value,
+  ),
+);
+const approvedFilter = computed(() => {
+  const ids = predicateFilterState(
+    props.sectionKey,
+    predicateIds.value,
+    false,
+  ).filterIds;
+  return ids.length ? [`predicate:(${ids.map(solrQuote).join(" OR ")})`] : [];
+});
 const predicateFilter = computed(() =>
-  isIndications.value && !includeInvestigational.value
-    ? [`predicate:(${APPROVED.map(solrQuote).join(" OR ")})`]
-    : [],
+  predicateState.value.filterIds.length ? approvedFilter.value : [],
 );
 const jurisdictionFilter = computed(() =>
   jurisdiction.value
@@ -417,7 +478,7 @@ const summary = useQuery(
   async () =>
     getAssociationSummary(props.node.id, props.sectionKey, {
       groupBy: side.value,
-      uniqueFields: ["grouping_key"],
+      uniqueFields: ["grouping_key", secondaryField.value],
       statFields: ["medic_approval_date"],
       labelFields: [labelField.value, categoryField.value],
       facetFields: ["medic_jurisdiction", secondaryField.value],
@@ -435,6 +496,7 @@ const summary = useQuery(
 );
 
 /** level 0 chips: how many drugs / conditions each jurisdiction covers */
+const jurisdictionChips = ref<AssociationSummaryGroup[]>([]);
 const jurisdictions = useQuery(
   async () =>
     getAssociationSummary(props.node.id, props.sectionKey, {
@@ -444,23 +506,26 @@ const jurisdictions = useQuery(
       filterQueries: predicateFilter.value,
     }),
   emptySummary,
+  (response) => (jurisdictionChips.value = response.groups),
 );
 
-/** level 0: drugs / conditions whose only uses here are investigational */
+/** which predicates this section has here, for the approved-only default */
 const predicates = useQuery(
   async () =>
-    getAssociationSummary(props.node.id, props.sectionKey, {
-      groupBy: "predicate",
-      uniqueFields: [side.value],
-      direct: direct.value,
-    }),
+    defaultPredicatesFor(props.sectionKey)
+      ? getAssociationSummary(props.node.id, props.sectionKey, {
+          groupBy: "predicate",
+          direct: false,
+        })
+      : emptySummary,
   emptySummary,
+  (response) => (predicateIds.value = response.groups.map((g) => g.value)),
 );
-const investigationalCount = computed(() =>
-  predicates.data.value.groups
-    .filter((g) => !APPROVED.includes(g.value))
-    .reduce((n, g) => n + (g.unique[side.value] ?? 0), 0),
-);
+/** drugs / conditions that only "+ investigational" adds, on the current tab */
+const investigationalCount = computed(() => {
+  const tab = direct.value ? "direct" : "all";
+  return anyCounts.value[tab] - approvedCounts.value[tab];
+});
 
 const expanded = ref<string | null>(null);
 const openStatement = ref<string | null>(null);
@@ -509,23 +574,37 @@ const assertions = useQuery(
   emptyTable,
 );
 
-/** the tab counts: one cheap summary per tab, read for its distinct-group total */
+/**
+ * the tab and "+ investigational" counts: cheap summaries read for their
+ * distinct-group totals, per tab, with and without the approved-only filter
+ */
 const tabCounts = useQuery(
   async () => {
-    const count = (directOnly: boolean) =>
+    const count = (directOnly: boolean, filters: string[]) =>
       getAssociationSummary(props.node.id, props.sectionKey, {
         groupBy: side.value,
         direct: directOnly,
-        filterQueries: [...predicateFilter.value, ...jurisdictionFilter.value],
+        filterQueries: [...filters, ...jurisdictionFilter.value],
         offset: 0,
         limit: 1,
       }).then((response) => response.group_total);
-    return Promise.all([count(true), count(false)]);
+    const both = async (filters: string[]): Promise<TabCounts> => {
+      const [directTotal, allTotal] = await Promise.all([
+        hasTabs.value ? count(true, filters) : 0,
+        count(false, filters),
+      ]);
+      return { direct: directTotal, all: allTotal };
+    };
+    const any = await both([]);
+    const approved = approvedFilter.value.length
+      ? await both(approvedFilter.value)
+      : any;
+    return { any, approved };
   },
-  [0, 0] as number[],
-  ([directTotal, allTotal]) => {
-    directCount.value = directTotal;
-    allCount.value = allTotal;
+  { any: { direct: 0, all: 0 }, approved: { direct: 0, all: 0 } },
+  ({ any, approved }) => {
+    anyCounts.value = any;
+    approvedCounts.value = approved;
   },
 );
 
@@ -539,25 +618,33 @@ const firstPage = () => {
   if (start.value === 0) loadPage();
   else start.value = 0;
 };
-/** recount the tabs first (on disease pages) so the default tab is settled */
-const reload = async (next: unknown[] = [], previous: unknown[] = []) => {
-  if (next[0] !== previous[0] || next[1] !== previous[1])
+/**
+ * recount before loading rows, so the default tab and the approved-only filter
+ * are settled first; the chips only change with the node, tab or predicate
+ * filter, not with the jurisdiction picked
+ */
+const reload = async ({
+  newNode = false,
+  chips = true,
+}: { newNode?: boolean; chips?: boolean } = {}) => {
+  if (newNode) {
     selectedTab.value = null;
-  if (isDiseasePage.value) await tabCounts.query();
+    await predicates.query();
+  }
+  await tabCounts.query();
+  // a chosen tab that a filter has emptied goes back to the default
+  if (selectedTab.value === "direct" && directCount.value === 0)
+    selectedTab.value = null;
   firstPage();
-  jurisdictions.query();
-  predicates.query();
+  if (chips) jurisdictions.query();
 };
 watch(
-  () => [
-    props.node.id,
-    props.sectionKey,
-    jurisdiction.value,
-    includeInvestigational.value,
-  ],
-  reload,
+  () => [props.node.id, props.sectionKey],
+  () => reload({ newNode: true }),
   { immediate: true },
 );
+watch(includeInvestigational, () => reload());
+watch(jurisdiction, () => reload({ chips: false }));
 
 watch([start, perPage], loadPage);
 /** a tab click: the list and the chip counts both depend on direct vs. inferred */
@@ -565,8 +652,12 @@ const selectTab = (which: "direct" | "all") => {
   selectedTab.value = which;
   firstPage();
   jurisdictions.query();
-  predicates.query();
 };
+
+/** a row's conditions / contexts beyond the ones its facet lists */
+const moreTargets = (group: AssociationSummaryGroup) =>
+  (group.unique[secondaryField.value] ?? 0) -
+  (group.facets[secondaryField.value]?.length ?? 0);
 
 const toggleJurisdiction = (value: string) =>
   (jurisdiction.value = jurisdiction.value === value ? null : value);
@@ -640,6 +731,9 @@ const assertionBlocks = computed<AssertionBlock[]>(() => {
     })
     .sort((a, b) => b.labelCount - a.labelCount);
 });
+/** non-label sources (CURE ID, PubMed) carry no jurisdiction */
+const recordNoun = (block: AssertionBlock) =>
+  block.jurisdiction ? "label" : "record";
 const distinctTextCount = computed(() =>
   assertionBlocks.value.reduce((n, b) => n + b.texts.length, 0),
 );

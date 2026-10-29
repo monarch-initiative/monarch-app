@@ -18,7 +18,7 @@ export interface ColumnContext {
 }
 
 /** drug → condition sections (association_type_mappings.yaml) */
-const DRUG_SECTIONS = new Set([
+export const DRUG_SECTIONS = new Set([
   "drug_indications",
   "drug_contraindications",
   "drug_diagnostics",

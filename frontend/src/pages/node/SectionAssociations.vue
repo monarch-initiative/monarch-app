@@ -16,7 +16,11 @@
 
       <!-- drug ↔ condition sections: facet summary first, rows on request -->
       <template v-if="isDrugSection(String(category.id))">
-        <SectionDrugUses :node="node" :section-key="String(category.id)" />
+        <SectionDrugUses
+          :node="node"
+          :section-key="String(category.id)"
+          :section-label="sectionTitle(category.id, category.label)"
+        />
         <AppButton
           class="show-rows"
           :text="
@@ -164,6 +168,7 @@ import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import type { Options as MultiSelectOptions } from "@/components/AppSelectMulti.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
+import { DRUG_SECTIONS } from "@/pages/node/associationColumns";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import SectionDrugUses from "@/pages/node/SectionDrugUses.vue";
@@ -225,21 +230,16 @@ const selectedTaxonLabels = (categoryId: string): string[] => {
   return selected.map((opt) => opt.id);
 };
 
+/** drug ↔ condition sections render a facet summary (SectionDrugUses) */
+const isDrugSection = (categoryId: string) => DRUG_SECTIONS.has(categoryId);
+/** whether a drug section's full association table is shown */
+const showRows = ref<Record<string, boolean>>({});
+
 /**
  * predicate filter state per category. Filterable sections (e.g.
  * drug_indications) default to their strong predicate and offer a checkbox to
  * include the weaker, investigational relationship.
  */
-/** drug ↔ condition sections render a facet summary (SectionDrugUses) */
-const DRUG_SECTIONS = new Set([
-  "drug_indications",
-  "drug_contraindications",
-  "drug_diagnostics",
-]);
-const isDrugSection = (categoryId: string) => DRUG_SECTIONS.has(categoryId);
-/** whether a drug section's full association table is shown */
-const showRows = ref<Record<string, boolean>>({});
-
 const predicateOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
 const includeInvestigationalByCategory = ref<Record<string, boolean>>({});
 
