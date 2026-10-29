@@ -1,3 +1,4 @@
+import json
 from urllib.parse import urlencode
 from enum import Enum
 from typing import Any, ClassVar, Dict, List, Optional, Union
@@ -105,6 +106,7 @@ class SolrQuery(BaseModel):
     sort: Optional[str] = None
     hl: bool = False
     hl_method: Optional[str] = None  # e.g. "unified" — reads offsets from postings (storeOffsetsWithPositions)
+    json_facet: Optional[Dict[str, Any]] = None  # JSON Facet API request; results come back in `facets`
 
     def add_field_filter_query(self, field: str, value: Union[list, str, None]):
         if not value or len(value) == 0:
@@ -139,6 +141,7 @@ class SolrQuery(BaseModel):
         "def_type": "defType",
         "q_op": "q.op",
         "hl_method": "hl.method",
+        "json_facet": "json.facet",
     }
 
     def query_string(self):
@@ -159,10 +162,12 @@ class SolrQuery(BaseModel):
     def _solr_value(value):
         """Render a parameter value the way Solr expects it.
 
-        Only booleans need rewriting. Nothing here may depend on what the value *says* --
-        values include the user's query text, so any content-based rewrite corrupts a
-        search for that text.
+        Only booleans and the JSON Facet request (a dict) need rewriting. Nothing here may
+        depend on what the value *says* -- values include the user's query text, so any
+        content-based rewrite corrupts a search for that text.
         """
+        if isinstance(value, dict):
+            return json.dumps(value)
         if value is True:
             return "true"
         if value is False:
@@ -189,5 +194,6 @@ class SolrFacetCounts(BaseModel):
 class SolrQueryResult(BaseModel):
     responseHeader: SolrQueryResponseHeader
     response: SolrQueryResponse
-    facet_counts: Optional[SolrFacetCounts]
+    facet_counts: Optional[SolrFacetCounts] = None  # absent when facet=false, as for a json.facet-only query
+    facets: Optional[Dict[str, Any]] = None  # JSON Facet API results
     highlighting: Optional[Dict[str, Dict[str, Optional[List[str]]]]] = Field(default_factory=dict)

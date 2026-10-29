@@ -1,9 +1,7 @@
-import json
 import logging
 import os
 from dataclasses import dataclass
 from typing import ClassVar, Dict, List, Union, Optional
-from urllib.parse import urlencode
 
 import requests
 from monarch_py.datamodels.model import (
@@ -1038,7 +1036,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         stat_fields = stat_fields or []
         label_fields = label_fields or []
         facet_fields = facet_fields or []
-        json_facet = build_association_summary_facet(
+        query.json_facet = build_association_summary_facet(
             group_by=group_by,
             unique_fields=unique_fields,
             stat_fields=stat_fields,
@@ -1050,13 +1048,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset=offset,
             limit=limit,
         )
-        response = requests.post(
-            f"{self.base_url}/{core.ASSOCIATION.value}/select",
-            data=query.query_string() + "&" + urlencode({"json.facet": json.dumps(json_facet)}),
-            headers={"Content-Type": "application/x-www-form-urlencoded"},
-        )
-        response.raise_for_status()
-        facets = response.json().get("facets", {})
+        solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
+        facets = solr.query(query).facets or {}
 
         def facet_values(bucket: dict, field: str) -> List[SummaryFacetValue]:
             return [
@@ -1069,9 +1062,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             ]
 
         def stat_value(value) -> Optional[str]:
-            # Integral min/max come back as floats (20121111.0) for numeric-looking strings.
-            if isinstance(value, float) and value.is_integer():
-                value = int(value)
             return None if value is None else str(value)
 
         groups = []

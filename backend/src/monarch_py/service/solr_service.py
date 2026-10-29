@@ -11,6 +11,14 @@ from pydantic import BaseModel
 FIELD_TYPE_SUFFIXES = ["_t", "_ac", "_grounding", "_sortable_float"]
 
 
+class SolrQueryError(requests.HTTPError):
+    """Solr rejected the request (a 4xx), e.g. an unknown field or unparseable filter query.
+
+    Carries Solr's error message, so an endpoint can report it as a client error rather
+    than a server error. Still an HTTPError, so existing callers handle it as before.
+    """
+
+
 class SolrService(BaseModel):
     base_url: str
     core: core
@@ -35,9 +43,18 @@ class SolrService(BaseModel):
         # One request fans out to several queries, so the timing is what identifies
         # the slow leg.
         logger.debug(f"SolrService.query: {url} took {(time.perf_counter() - started) * 1000:.0f}ms")
-        data = json.loads(response.text)
+        try:
+            data = json.loads(response.text)
+        except ValueError:
+            # A non-JSON error page (e.g. from a proxy) is a server problem, not bad JSON
+            # from the caller; JSONDecodeError is a ValueError, which endpoints report as 422.
+            response.raise_for_status()
+            raise
         if "error" in data:
-            logger.error("Solr error message: " + data["error"]["msg"])
+            msg = data["error"].get("msg", "")
+            logger.error("Solr error message: " + msg)
+            if 400 <= response.status_code < 500:
+                raise SolrQueryError(msg, response=response)
         response.raise_for_status()
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
         solr_query_result.highlighting = SolrService._consolidate_highlights(

@@ -10,6 +10,7 @@ from monarch_py.api.additional_models import OutputFormat
 from monarch_py.datamodels.association_summary import AssociationSummary
 from monarch_py.datamodels.category_enums import AssociationCategory
 from monarch_py.datamodels.model import AssociationTableResults, Node
+from monarch_py.service.solr_service import SolrQueryError
 from monarch_py.utils.association_type_utils import AssociationTypeMappings
 from monarch_py.utils.format_utils import to_json, to_tsv
 
@@ -152,7 +153,9 @@ def _association_summary(
             offset=pagination.offset,
             limit=pagination.limit,
         )
-    except ValueError as e:
+    # SolrQueryError: Solr rejected the request, e.g. a field that does not exist or is not
+    # indexed, or an unparseable filter query.
+    except (ValueError, SolrQueryError) as e:
         raise HTTPException(status_code=422, detail=str(e))
 
 
