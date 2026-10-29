@@ -48,16 +48,16 @@ def _kg(path, *, with_annotation_ic=True):
         FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject""")
     if with_annotation_ic:
         # the SQL koza's annotation-information-content runs, for the MONDO -> HP-style corpus
-        con.execute("""CREATE TABLE information_content_mondo_hp AS
+        con.execute("""CREATE TABLE annotation_information_content AS
             WITH a AS (SELECT DISTINCT subject AS entity, object AS term FROM edges WHERE subject LIKE 'MONDO:%'),
                  n AS (SELECT count(DISTINCT entity) AS nn FROM a)
-            SELECT c.object_id AS term, log2((SELECT nn FROM n)::DOUBLE / count(DISTINCT a.entity)) AS ic
+            SELECT 'mondo_hp' AS corpus, c.object_id AS term, log2((SELECT nn FROM n)::DOUBLE / count(DISTINCT a.entity)) AS ic
             FROM a JOIN closure c ON c.subject_id = a.term GROUP BY c.object_id""")
-        con.execute("""CREATE TABLE pheno_comparison_corpora (corpus VARCHAR, ic_table VARCHAR,
+        con.execute("""CREATE TABLE pheno_comparison_corpora (corpus VARCHAR,
             subject_prefixes VARCHAR[], object_prefixes VARCHAR[])""")
-        con.execute(
-            "INSERT INTO pheno_comparison_corpora VALUES ('hp', 'information_content_mondo_hp', ['MONDO'], ['HP'])"
-        )
+        con.execute("INSERT INTO pheno_comparison_corpora VALUES ('mondo_hp', ['MONDO'], ['HP'])")
+        # a listed corpus with no IC rows (e.g. a build that skipped it) is not offered
+        con.execute("INSERT INTO pheno_comparison_corpora VALUES ('rgd_mp', ['RGD'], ['MP'])")
     con.close()
     return Ducksim.from_duckdb(str(path))
 
@@ -68,9 +68,11 @@ def engine(tmp_path):
 
 
 def test_annotation_ic_views_are_keyed_by_subject_prefix(engine):
-    assert engine.annotation_ic_views == {"MONDO": "_ic_information_content_mondo_hp"}
+    assert engine.annotation_ic_views == {"MONDO": "_ic_annotation_mondo_hp"}
     assert engine.ic_view("ontology") == "_ic"
-    assert engine.ic_view("annotation", "MONDO") == "_ic_information_content_mondo_hp"
+    assert engine.ic_view("annotation", "MONDO") == "_ic_annotation_mondo_hp"
+    with pytest.raises(AnnotationICUnavailable, match="RGD"):
+        engine.ic_view("annotation", "RGD")
 
 
 def test_compare_uses_the_requested_ic(engine):
@@ -109,7 +111,7 @@ def test_ontology_ic_is_unchanged_by_the_left_join(engine):
     assert dict(engine.full_search(["A1"], prefix="MONDO"))["MONDO:1"] == pytest.approx(math.log2(6))
 
 
-def test_annotation_ic_for_a_group_without_a_table_is_unavailable(engine):
+def test_annotation_ic_for_a_group_without_a_corpus_is_unavailable(engine):
     with pytest.raises(AnnotationICUnavailable, match="HGNC"):
         engine.search(["A1"], prefix="HGNC", information_content="annotation")
     with pytest.raises(AnnotationICUnavailable, match="group"):
@@ -145,7 +147,7 @@ def test_api_search_with_annotation_ic(client):
     assert {r["subject"]["id"]: r["score"] for r in body}["MONDO:1"] == pytest.approx(math.log2(3 / 2))
 
 
-def test_api_search_without_a_table_is_a_bad_request(client):
+def test_api_search_without_a_corpus_is_a_bad_request(client):
     response = client.get("/search/A1/Human Genes?information_content=annotation")
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert "HGNC" in response.json()["detail"]

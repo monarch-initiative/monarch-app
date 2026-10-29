@@ -10,12 +10,12 @@ ducksim is a pure reader of the precompute tables koza's `information-content` o
 the artifact during the KG build (monarch-ingest): `information_content` (term, ic) and
 `closure_size` (entity, size). It does not recompute them — a db missing them fails loud.
 
-Annotation IC (optional): monarch-ingest also bakes one annotation-based IC table per annotation
-corpus (koza's `annotation-information-content`: IC(t) = log2(N / n(t)), n(t) = distinct entities
-annotated to t or a descendant, N = distinct annotated entities), listed in the
-`pheno_comparison_corpora` table. ducksim exposes each as an IC view keyed by the corpus's subject
-prefix. These tables are optional: a KG without them serves ontology IC as before, and a request for
-annotation IC gets `AnnotationICUnavailable`.
+Annotation IC (optional): monarch-ingest also bakes annotation-based IC for each annotation corpus
+(koza's `annotation-information-content`: IC(t) = log2(N / n(t)), n(t) = distinct entities annotated
+to t or a descendant, N = distinct annotated entities) into one table, `annotation_information_content`
+(corpus, term, ic), and lists the corpora in `pheno_comparison_corpora`. ducksim exposes each corpus as
+an IC view keyed by its subject prefix. These tables are optional: a KG without them serves ontology IC
+as before, and a request for annotation IC gets `AnnotationICUnavailable`.
 
 Metric definitions:  IC(t) = -log2(freq/N) (freq = #closure triples with t as object, N = #distinct
 objects); closure is reflexive; Jaccard = |anc(a)∩anc(b)| / |anc(a)∪anc(b)|; Resnik = max IC over
@@ -39,7 +39,9 @@ import duckdb
 
 DEFAULT_PREDICATES = ("rdfs:subClassOf",)
 
-# The KG table listing the annotation-IC tables monarch-ingest bakes (one row per corpus).
+# The annotation IC monarch-ingest bakes: one (corpus, term, ic) table, and the table listing its
+# corpora (one row per corpus, with the subject prefixes of the entities it annotates).
+ANNOTATION_IC_TABLE = "annotation_information_content"
 ANNOTATION_IC_CORPUS_TABLE = "pheno_comparison_corpora"
 ONTOLOGY_IC = "ontology"
 ANNOTATION_IC = "annotation"
@@ -47,7 +49,7 @@ _SQL_IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
 class AnnotationICUnavailable(LookupError):
-    """Annotation IC was requested for a corpus the attached KG has no annotation-IC table for."""
+    """Annotation IC was requested for a corpus the attached KG has no annotation IC for."""
 
 
 # DuckDB spills to `temp_directory` when a query exceeds `memory_limit`, which is expected
@@ -229,20 +231,23 @@ class Ducksim:
         self.has_search = False
 
     def _define_annotation_ic(self) -> dict:
-        """{subject prefix -> IC view} for every annotation-IC table the KG lists. View definitions
-        only: the tables are baked in the KG build, so nothing is computed here. Missing or malformed
+        """{subject prefix -> IC view} for every annotation-IC corpus the KG lists. View definitions
+        only: the IC is baked in the KG build, so nothing is computed here. Missing or malformed
         metadata leaves annotation IC unavailable rather than failing the worker."""
-        if not self._baked(ANNOTATION_IC_CORPUS_TABLE):
+        if not self._baked(ANNOTATION_IC_CORPUS_TABLE) or not self._baked(ANNOTATION_IC_TABLE):
             return {}
         rows = self.con.execute(
-            f"SELECT ic_table, subject_prefixes FROM src.{ANNOTATION_IC_CORPUS_TABLE} ORDER BY ic_table"
+            f"SELECT corpus, subject_prefixes FROM src.{ANNOTATION_IC_CORPUS_TABLE} "
+            f"WHERE corpus IN (SELECT DISTINCT corpus FROM src.{ANNOTATION_IC_TABLE}) ORDER BY corpus"
         ).fetchall()
         views = {}
-        for ic_table, subject_prefixes in rows:
-            if not ic_table or not _SQL_IDENTIFIER.match(ic_table) or not self._baked(ic_table):
+        for corpus, subject_prefixes in rows:
+            if not corpus or not _SQL_IDENTIFIER.match(corpus):
                 continue
-            view = f"_ic_{ic_table}"
-            self.con.execute(f"CREATE VIEW {view} AS SELECT term, ic FROM src.{ic_table}")
+            view = f"_ic_annotation_{corpus}"
+            self.con.execute(
+                f"CREATE VIEW {view} AS SELECT term, ic FROM src.{ANNOTATION_IC_TABLE} WHERE corpus = '{corpus}'"
+            )
             for prefix in subject_prefixes or []:
                 views.setdefault(prefix, view)
         return views
@@ -261,7 +266,7 @@ class Ducksim:
         if view is None:
             available = ", ".join(sorted(self.annotation_ic_views)) or "none"
             raise AnnotationICUnavailable(
-                f"this KG has no annotation information content table for {prefix} entities "
+                f"this KG has no annotation information content for {prefix} entities "
                 f"(available: {available}). It is built by monarch-ingest; see #1475."
             )
         return view
