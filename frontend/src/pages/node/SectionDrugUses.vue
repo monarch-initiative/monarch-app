@@ -221,8 +221,13 @@
                 >
                 <template v-else>
                   <p class="muted assertion-summary">
-                    {{ plural(assertions.data.value.total, "assertion") }} ·
-                    {{ plural(distinctTextCount, "distinct supporting text") }}
+                    {{ plural(assertions.data.value.total, "assertion")
+                    }}<template v-if="distinctTextCount">
+                      ·
+                      {{
+                        plural(distinctTextCount, "distinct supporting text")
+                      }}</template
+                    >
                   </p>
                   <div
                     v-for="block in assertionBlocks"
@@ -245,7 +250,27 @@
                       :key="text.text"
                       class="assertion"
                     >
-                      <p class="supporting">{{ text.text }}</p>
+                      <p v-if="text.text" class="supporting">
+                        {{ text.text }}
+                      </p>
+                      <!-- no text (CURE ID): the publication is the evidence -->
+                      <p v-else class="supporting">
+                        Reported in
+                        <template
+                          v-for="(pub, i) in text.publications"
+                          :key="pub"
+                          ><span v-if="i">, </span
+                          ><a
+                            v-if="publicationUrl(pub)"
+                            :href="publicationUrl(pub)"
+                            target="_blank"
+                            rel="noopener"
+                            >{{ pub }}</a
+                          ><span v-else>{{ pub }}</span></template
+                        ><span v-if="!text.publications.length">{{
+                          block.sources.join(", ")
+                        }}</span>
+                      </p>
                       <div class="assertion-links">
                         <span class="muted">{{
                           plural(text.rows.length, recordNoun(block))
@@ -264,6 +289,18 @@
                         <span v-if="text.links.length > 8" class="muted"
                           >+{{ text.links.length - 8 }} more</span
                         >
+                        <template v-if="text.text">
+                          <a
+                            v-for="pub in text.publications.filter(
+                              publicationUrl,
+                            )"
+                            :key="pub"
+                            :href="publicationUrl(pub)"
+                            target="_blank"
+                            rel="noopener"
+                            >{{ pub }}</a
+                          >
+                        </template>
                         <button class="link" @click="openDetails(text.rows[0])">
                           details
                         </button>
@@ -678,9 +715,12 @@ const toggleStatement = (value: string) => {
 const TEXTS_SHOWN = 2;
 
 type TextGroup = {
+  /** supporting text, else the curator's description; "" when neither */
   text: string;
   rows: DirectionalAssociation[];
   links: string[];
+  /** PMIDs behind the rows (CURE ID and PubMed records) */
+  publications: string[];
   firstApproved: string;
 };
 type AssertionBlock = {
@@ -699,10 +739,12 @@ const assertionBlocks = computed<AssertionBlock[]>(() => {
   const blocks = new Map<string, Map<string, DirectionalAssociation[]>>();
   for (const row of assertions.data.value.items) {
     const jurisdiction = String(rowField(row, "medic_jurisdiction") ?? "");
-    const text = (row.supporting_text ?? []).join(" ").trim() || "(no text)";
+    // rows with no text (CURE ID) group by the publications they cite instead
+    const key =
+      rowText(row) || `publications:${(row.publications ?? []).join(" ")}`;
     if (!blocks.has(jurisdiction)) blocks.set(jurisdiction, new Map());
     const texts = blocks.get(jurisdiction)!;
-    texts.set(text, [...(texts.get(text) ?? []), row]);
+    texts.set(key, [...(texts.get(key) ?? []), row]);
   }
   return [...blocks.entries()]
     .map(([jurisdiction, texts]) => {
@@ -713,12 +755,15 @@ const assertionBlocks = computed<AssertionBlock[]>(() => {
         sources: [
           ...new Set(rows.map((r) => sourceName(r.primary_knowledge_source))),
         ],
-        texts: [...texts.entries()]
-          .map(([text, rows]) => ({
-            text,
+        texts: [...texts.values()]
+          .map((rows) => ({
+            text: rowText(rows[0]),
             rows,
             links: [
               ...new Set(rows.flatMap((r) => labelLinks(r).map((l) => l.url))),
+            ],
+            publications: [
+              ...new Set(rows.flatMap((r) => r.publications ?? [])),
             ],
             firstApproved:
               rows
@@ -731,11 +776,25 @@ const assertionBlocks = computed<AssertionBlock[]>(() => {
     })
     .sort((a, b) => b.labelCount - a.labelCount);
 });
+/** what an assertion says: its supporting text, else its description */
+const rowText = (row: DirectionalAssociation) =>
+  (row.supporting_text ?? []).join(" ").trim() ||
+  String(rowField(row, "description") ?? "").trim();
+
+/** PubMed link for a PMID, else none */
+const publicationUrl = (id: string) =>
+  id.startsWith("PMID:")
+    ? `https://pubmed.ncbi.nlm.nih.gov/${id.slice("PMID:".length)}`
+    : undefined;
+
 /** non-label sources (CURE ID, PubMed) carry no jurisdiction */
 const recordNoun = (block: AssertionBlock) =>
   block.jurisdiction ? "label" : "record";
 const distinctTextCount = computed(() =>
-  assertionBlocks.value.reduce((n, b) => n + b.texts.length, 0),
+  assertionBlocks.value.reduce(
+    (n, b) => n + b.texts.filter((t) => t.text).length,
+    0,
+  ),
 );
 
 const openBlocks = ref(new Set<string>());
