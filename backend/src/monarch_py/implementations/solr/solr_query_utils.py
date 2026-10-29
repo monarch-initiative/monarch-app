@@ -1,4 +1,5 @@
 import json
+import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
@@ -977,3 +978,79 @@ def build_grid_row_query(
         ),
         "json.facet": json.dumps(build_bin_facet(config.row_entity_field, grouping.bin_ids)),
     }
+
+
+# Field names are interpolated into the JSON Facet request, so they are checked against
+# Solr's field-name shape rather than escaped.
+_SUMMARY_FIELD_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+def _summary_field(name: str) -> str:
+    if not _SUMMARY_FIELD_NAME.match(name or ""):
+        raise ValueError(f"Invalid field name for an association summary: {name!r}")
+    return name
+
+
+def build_association_summary_facet(
+    group_by: str,
+    unique_fields: List[str] = None,
+    stat_fields: List[str] = None,
+    label_fields: List[str] = None,
+    facet_fields: List[str] = None,
+    facet_labels: Dict[str, str] = None,
+    group_sort: str = "count",
+    facet_limit: int = 10,
+    offset: int = 0,
+    limit: int = 20,
+) -> dict:
+    """JSON Facet request for an association summary.
+
+    Section-wide: a distinct count per `unique_fields` entry and a terms facet per
+    `facet_fields` entry. Per `group_by` bucket: the same, plus min/max per `stat_fields`
+    entry and the most common value per `label_fields` entry. Buckets sort by row count,
+    by one of the unique fields (most distinct first), or by value (`index`).
+    `facet_labels` maps a facet field to a label field (e.g. `object` → `object_label`)
+    whose most common value is reported with each facet value, so ids can be shown by name.
+    """
+    group_by = _summary_field(group_by)
+    unique_fields = [_summary_field(f) for f in unique_fields or []]
+    stat_fields = [_summary_field(f) for f in stat_fields or []]
+    label_fields = [_summary_field(f) for f in label_fields or []]
+    facet_fields = [_summary_field(f) for f in facet_fields or []]
+    facet_labels = {_summary_field(k): _summary_field(v) for k, v in (facet_labels or {}).items()}
+
+    if group_sort == "count":
+        sort = "count desc"
+    elif group_sort == "index":
+        sort = "index asc"
+    elif group_sort in unique_fields:
+        sort = f"unique_{group_sort} desc"
+    else:
+        raise ValueError(f"group_sort must be 'count', 'index' or one of unique_fields, not {group_sort!r}")
+
+    def terms(field: str, n: int) -> dict:
+        facet = {"type": "terms", "field": field, "limit": n, "mincount": 1}
+        if field in facet_labels:
+            facet["facet"] = {"label": terms(facet_labels[field], 1)}
+        return facet
+
+    group_facet = {f"unique_{f}": f"unique({f})" for f in unique_fields}
+    for f in stat_fields:
+        group_facet[f"min_{f}"] = f"min({f})"
+        group_facet[f"max_{f}"] = f"max({f})"
+    group_facet.update({f"label_{f}": terms(f, 1) for f in label_fields})
+    group_facet.update({f"facet_{f}": terms(f, facet_limit) for f in facet_fields})
+
+    facet = {f"unique_{f}": f"unique({f})" for f in unique_fields}
+    facet.update({f"facet_{f}": terms(f, facet_limit) for f in facet_fields})
+    facet["groups_count"] = f"unique({group_by})"
+    facet["groups"] = {
+        "type": "terms",
+        "field": group_by,
+        "offset": offset,
+        "limit": limit,
+        "sort": sort,
+        "mincount": 1,
+        "facet": group_facet,
+    }
+    return facet

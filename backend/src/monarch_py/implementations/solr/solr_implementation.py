@@ -1,7 +1,9 @@
+import json
 import logging
 import os
 from dataclasses import dataclass
 from typing import ClassVar, Dict, List, Union, Optional
+from urllib.parse import urlencode
 
 import requests
 from monarch_py.datamodels.model import (
@@ -25,6 +27,12 @@ from monarch_py.datamodels.model import (
     SearchScopeResolution,
 )
 from monarch_py.datamodels.search_scopes import resolve_scope
+from monarch_py.datamodels.association_summary import (
+    AssociationSummary,
+    AssociationSummaryGroup,
+    SummaryFacetValue,
+    SummaryStat,
+)
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
@@ -50,6 +58,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     exact_match_filter_query,
     build_association_counts_query,
     build_association_query,
+    build_association_summary_facet,
     build_association_table_query,
     build_autocomplete_query,
     build_case_disease_query,
@@ -904,7 +913,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             ),
         )
 
-    def get_association_table(
+    def _section_table_query(
         self,
         entity: str,
         category: Union[AssociationCategory, str],
@@ -917,7 +926,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         sort: Optional[List[str]] = None,
         offset: int = 0,
         limit: int = 5,
-    ) -> AssociationTableResults:
+    ):
+        """The association-table query for one entity's section, and the entities it covers.
+
+        Shared by the table and the summary so both describe exactly the same rows.
+        """
         # `category` is really a section key: it resolves to an AssociationTypeMapping
         # (whose criteria may combine several categories, a predicate, subject/object
         # categories, etc.). An unknown key is treated as a literal category, which keeps
@@ -960,9 +973,135 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset=offset,
             limit=limit,
         )
+        return query, entities
+
+    def get_association_table(
+        self,
+        entity: str,
+        category: Union[AssociationCategory, str],
+        traverse_orthologs: bool = False,
+        direct: bool = False,
+        q: Optional[str] = None,
+        facet_fields: Optional[List[str]] = None,
+        facet_queries: Optional[List[str]] = None,
+        filter_queries: Optional[List[str]] = None,
+        sort: Optional[List[str]] = None,
+        offset: int = 0,
+        limit: int = 5,
+    ) -> AssociationTableResults:
+        query, entities = self._section_table_query(
+            entity=entity,
+            category=category,
+            traverse_orthologs=traverse_orthologs,
+            direct=direct,
+            q=q,
+            facet_fields=facet_fields,
+            facet_queries=facet_queries,
+            filter_queries=filter_queries,
+            sort=sort,
+            offset=offset,
+            limit=limit,
+        )
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
         return parse_association_table(query_result, entities, offset, limit)
+
+    def get_association_summary(
+        self,
+        entity: str,
+        category: Union[AssociationCategory, str],
+        group_by: str,
+        unique_fields: Optional[List[str]] = None,
+        stat_fields: Optional[List[str]] = None,
+        label_fields: Optional[List[str]] = None,
+        facet_fields: Optional[List[str]] = None,
+        facet_labels: Optional[Dict[str, str]] = None,
+        group_sort: str = "count",
+        facet_limit: int = 10,
+        direct: bool = False,
+        q: Optional[str] = None,
+        filter_queries: Optional[List[str]] = None,
+        offset: int = 0,
+        limit: int = 20,
+    ) -> AssociationSummary:
+        """Facet-only summary of an entity's association section, grouped by `group_by`.
+
+        Covers the same rows as `get_association_table` with the same arguments; see
+        `build_association_summary_facet` for what each field list contributes.
+        """
+        query, _ = self._section_table_query(
+            entity=entity, category=category, direct=direct, q=q, filter_queries=filter_queries, limit=0
+        )
+        query.facet = False
+        query.sort = None
+        unique_fields = unique_fields or []
+        stat_fields = stat_fields or []
+        label_fields = label_fields or []
+        facet_fields = facet_fields or []
+        json_facet = build_association_summary_facet(
+            group_by=group_by,
+            unique_fields=unique_fields,
+            stat_fields=stat_fields,
+            label_fields=label_fields,
+            facet_fields=facet_fields,
+            facet_labels=facet_labels,
+            group_sort=group_sort,
+            facet_limit=facet_limit,
+            offset=offset,
+            limit=limit,
+        )
+        response = requests.post(
+            f"{self.base_url}/{core.ASSOCIATION.value}/select",
+            data=query.query_string() + "&" + urlencode({"json.facet": json.dumps(json_facet)}),
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
+        response.raise_for_status()
+        facets = response.json().get("facets", {})
+
+        def facet_values(bucket: dict, field: str) -> List[SummaryFacetValue]:
+            return [
+                SummaryFacetValue(
+                    value=str(b["val"]),
+                    count=b["count"],
+                    label=next((str(x["val"]) for x in b.get("label", {}).get("buckets", [])), None),
+                )
+                for b in bucket.get(f"facet_{field}", {}).get("buckets", [])
+            ]
+
+        def stat_value(value) -> Optional[str]:
+            # Integral min/max come back as floats (20121111.0) for numeric-looking strings.
+            if isinstance(value, float) and value.is_integer():
+                value = int(value)
+            return None if value is None else str(value)
+
+        groups = []
+        for b in facets.get("groups", {}).get("buckets", []):
+            groups.append(
+                AssociationSummaryGroup(
+                    value=str(b["val"]),
+                    count=b["count"],
+                    unique={f: b.get(f"unique_{f}", 0) for f in unique_fields},
+                    stats={
+                        f: SummaryStat(min=stat_value(b.get(f"min_{f}")), max=stat_value(b.get(f"max_{f}")))
+                        for f in stat_fields
+                    },
+                    fields={
+                        f: next((str(x["val"]) for x in b.get(f"label_{f}", {}).get("buckets", [])), None)
+                        for f in label_fields
+                    },
+                    facets={f: facet_values(b, f) for f in facet_fields},
+                )
+            )
+        return AssociationSummary(
+            total=facets.get("count", 0),
+            group_by=group_by,
+            group_total=facets.get("groups_count", 0),
+            offset=offset,
+            limit=limit,
+            unique={f: facets.get(f"unique_{f}", 0) for f in unique_fields},
+            facets={f: facet_values(facets, f) for f in facet_fields},
+            groups=groups,
+        )
 
     def get_mappings(
         self,
