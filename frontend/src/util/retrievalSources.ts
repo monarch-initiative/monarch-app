@@ -2,6 +2,8 @@ export type RetrievalSource = {
   resource_id?: string;
   resource_role?: string;
   upstream_resource_ids?: string[];
+  /** CURIEs and URLs of the source's records (e.g. a drug label's DailyMed page) */
+  source_record_urls?: string[];
 };
 
 /** normalize one parsed value into a RetrievalSource record */

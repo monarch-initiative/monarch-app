@@ -14,100 +14,126 @@
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
-      <!--tabs omly if its disease node-->
-      <AppAssociationTabs
-        v-if="isDiseaseNode"
-        :has-direct-associations="hasDirectAssociationsForCategory(category.id)"
-        :show-all-tab="showAllTab(category.count ?? 0, category.id)"
-        :direct-active="
-          (selectedTabs[category.id] ?? defaultTab(category.id)) === 'direct'
-        "
-        :all-active="
-          (selectedTabs[category.id] ?? defaultTab(category.id)) === 'all'
-        "
-        :direct-label="tabLabel(category.id, 'direct')"
-        :inferred-label="tabLabel(category.id, 'inferred')"
-        :direct-tooltip="directTooltip(category.id)"
-        :inferred-tooltip="inferredTooltip(category.id)"
-        @select="
-          (which: string) =>
-            setDirect(category.id, which === 'direct' ? 'true' : 'false')
-        "
-      />
-      <div class="actions-row">
+      <!-- drug ↔ condition sections: facet summary first, rows on request -->
+      <template v-if="isDrugSection(String(category.id))">
+        <SectionDrugUses :node="node" :section-key="String(category.id)" />
         <AppButton
-          v-if="
-            (hasTotals(category.id) &&
-              activeTabIsDirect(category.id) &&
-              node.category === 'biolink:Disease' &&
-              category?.id.startsWith('biolink:DiseaseToPheno') &&
-              (node.has_phenotype_count ?? 0) > 0) ||
-            (node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:GeneToPheno') &&
-              (node.has_phenotype_count ?? 0) > 0)
+          class="show-rows"
+          :text="
+            showRows[category.id]
+              ? 'Hide association rows'
+              : `Show all ${(category.count ?? 0).toLocaleString()} association rows`
           "
-          v-tooltip="
-            'Send these phenotypes to Phenotype Explorer for comparison'
-          "
-          to="/search-phenotypes"
-          :state="{ search: node.id }"
-          text="Phenotype Explorer"
-          icon="search"
+          design="small"
+          color="secondary"
+          @click="showRows[category.id] = !showRows[category.id]"
         />
+      </template>
 
-        <AppSelectMulti
-          v-if="
-            isTaxonFilterable(String(category.id)) &&
-            (taxonOptionsByCategory[category.id]?.length ?? 0) > 1
+      <template
+        v-if="!isDrugSection(String(category.id)) || showRows[category.id]"
+      >
+        <!--tabs omly if its disease node-->
+        <AppAssociationTabs
+          v-if="isDiseaseNode"
+          :has-direct-associations="
+            hasDirectAssociationsForCategory(category.id)
           "
-          :name="'Filter by Taxon'"
-          :options="taxonOptionsByCategory[category.id] ?? []"
-          :model-value="
-            selectedTaxonsByCategory[category.id] ??
-            taxonOptionsByCategory[category.id] ??
-            []
+          :show-all-tab="showAllTab(category.count ?? 0, category.id)"
+          :direct-active="
+            (selectedTabs[category.id] ?? defaultTab(category.id)) === 'direct'
           "
-          design="normal"
-          @change="(value) => onTaxonFilterChange(String(category.id), value)"
-        />
-
-        <AppCheckbox
-          v-if="showInvestigationalToggle(String(category.id))"
-          :model-value="includeInvestigationalByCategory[category.id] ?? false"
-          :text="expandLabelFor(String(category.id))"
-          @update:model-value="
-            (value: boolean) =>
-              onIncludeInvestigationalChange(String(category.id), value)
+          :all-active="
+            (selectedTabs[category.id] ?? defaultTab(category.id)) === 'all'
+          "
+          :direct-label="tabLabel(category.id, 'direct')"
+          :inferred-label="tabLabel(category.id, 'inferred')"
+          :direct-tooltip="directTooltip(category.id)"
+          :inferred-tooltip="inferredTooltip(category.id)"
+          @select="
+            (which: string) =>
+              setDirect(category.id, which === 'direct' ? 'true' : 'false')
           "
         />
-
-        <div class="search-wrapper">
-          <AppTextbox
-            v-model="searchValues[category.id]"
-            placeholder="Search table data..."
-            class="search-box"
-            @debounce="(value) => (debouncedSearchValues[category.id] = value)"
-            @change="(value) => (debouncedSearchValues[category.id] = value)"
+        <div class="actions-row">
+          <AppButton
+            v-if="
+              (hasTotals(category.id) &&
+                activeTabIsDirect(category.id) &&
+                node.category === 'biolink:Disease' &&
+                category?.id.startsWith('biolink:DiseaseToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0) ||
+              (node.category === 'biolink:Gene' &&
+                category?.id.startsWith('biolink:GeneToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0)
+            "
+            v-tooltip="
+              'Send these phenotypes to Phenotype Explorer for comparison'
+            "
+            to="/search-phenotypes"
+            :state="{ search: node.id }"
+            text="Phenotype Explorer"
+            icon="search"
           />
-        </div>
-      </div>
 
-      <template v-if="category">
-        <!-- table view of associations -->
-        <AssociationsTable
-          :node="node"
-          :category="category"
-          :direct="getDirectProps(category.id)"
-          :search="debouncedSearchValues[category.id]"
-          :taxon-filters="selectedTaxonLabels(String(category.id))"
-          :predicate-filters="selectedPredicateIds(String(category.id))"
-          @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
-          @inferred-label="onInferredLabel"
-          @taxon-options="(opts) => onTaxonOptions(String(category.id), opts)"
-          @predicate-options="
-            (opts) => onPredicateOptions(String(category.id), opts)
-          "
-        />
+          <AppSelectMulti
+            v-if="
+              isTaxonFilterable(String(category.id)) &&
+              (taxonOptionsByCategory[category.id]?.length ?? 0) > 1
+            "
+            :name="'Filter by Taxon'"
+            :options="taxonOptionsByCategory[category.id] ?? []"
+            :model-value="
+              selectedTaxonsByCategory[category.id] ??
+              taxonOptionsByCategory[category.id] ??
+              []
+            "
+            design="normal"
+            @change="(value) => onTaxonFilterChange(String(category.id), value)"
+          />
+
+          <AppCheckbox
+            v-if="showInvestigationalToggle(String(category.id))"
+            :model-value="
+              includeInvestigationalByCategory[category.id] ?? false
+            "
+            :text="expandLabelFor(String(category.id))"
+            @update:model-value="
+              (value: boolean) =>
+                onIncludeInvestigationalChange(String(category.id), value)
+            "
+          />
+
+          <div class="search-wrapper">
+            <AppTextbox
+              v-model="searchValues[category.id]"
+              placeholder="Search table data..."
+              class="search-box"
+              @debounce="
+                (value) => (debouncedSearchValues[category.id] = value)
+              "
+              @change="(value) => (debouncedSearchValues[category.id] = value)"
+            />
+          </div>
+        </div>
+
+        <template v-if="category">
+          <!-- table view of associations -->
+          <AssociationsTable
+            :node="node"
+            :category="category"
+            :direct="getDirectProps(category.id)"
+            :search="debouncedSearchValues[category.id]"
+            :taxon-filters="selectedTaxonLabels(String(category.id))"
+            :predicate-filters="selectedPredicateIds(String(category.id))"
+            @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
+            @inferred-label="onInferredLabel"
+            @taxon-options="(opts) => onTaxonOptions(String(category.id), opts)"
+            @predicate-options="
+              (opts) => onPredicateOptions(String(category.id), opts)
+            "
+          />
+        </template>
       </template>
     </AppSection>
 
@@ -140,6 +166,7 @@ import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
+import SectionDrugUses from "@/pages/node/SectionDrugUses.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
 import {
   expandLabelFor,
@@ -203,6 +230,16 @@ const selectedTaxonLabels = (categoryId: string): string[] => {
  * drug_indications) default to their strong predicate and offer a checkbox to
  * include the weaker, investigational relationship.
  */
+/** drug ↔ condition sections render a facet summary (SectionDrugUses) */
+const DRUG_SECTIONS = new Set([
+  "drug_indications",
+  "drug_contraindications",
+  "drug_diagnostics",
+]);
+const isDrugSection = (categoryId: string) => DRUG_SECTIONS.has(categoryId);
+/** whether a drug section's full association table is shown */
+const showRows = ref<Record<string, boolean>>({});
+
 const predicateOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
 const includeInvestigationalByCategory = ref<Record<string, boolean>>({});
 
