@@ -1055,8 +1055,16 @@ const plural = (n: number, noun: string) =>
   margin-bottom: 15px;
   padding: 12px 16px;
   gap: 14px;
+  border-left: 4px solid $error;
+  background: rgba($error, 0.08);
+  color: $off-black;
   font-size: 0.9rem;
   text-align: left;
+
+  :deep(.icon) {
+    color: $error;
+    font-size: 1.2rem;
+  }
 
   p {
     margin: 0;
