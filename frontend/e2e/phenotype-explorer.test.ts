@@ -42,3 +42,22 @@ test("Similarity Search: Populating example works", async ({ page }) => {
 //     .click();
 //   await expect(page.getByText(/female sterile/i)).toBeVisible();
 // });
+
+test("Similarity Search: untouched settings send only the metric", async ({
+  page,
+}) => {
+  await page.goto("/search-phenotypes");
+  await page.getByRole("button", { name: /Similarity Search/i }).click();
+  await page
+    .getByText(/example/i)
+    .first()
+    .click();
+
+  const request = page.waitForRequest("**/semsim/search*");
+  await page
+    .getByRole("button", { name: /Analyze/i })
+    .first()
+    .click();
+  const body = (await request).postDataJSON();
+  expect(Object.keys(body).sort()).toEqual(["group", "metric", "termset"]);
+});

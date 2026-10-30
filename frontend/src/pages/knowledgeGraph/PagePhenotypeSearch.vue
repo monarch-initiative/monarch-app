@@ -44,6 +44,41 @@
         :options="metricOptions"
       />
     </AppFlex>
+    <AppAccordion text="Advanced ranking settings" icon="wrench">
+      <div class="settings">
+        <strong>Score by</strong>
+        <AppSelectSingle
+          v-model="directionality"
+          name="Score direction"
+          :options="directionalityOptions"
+        />
+        <strong>Candidates</strong>
+        <AppSelectSingle
+          v-model="searchMode"
+          name="Search mode"
+          :options="searchModeOptions"
+        />
+        <strong>Information content from</strong>
+        <AppSelectSingle
+          v-model="informationContent"
+          name="Information content source"
+          :options="informationContentOptions"
+        />
+        <strong>Break ties</strong>
+        <AppSelectSingle
+          v-model="tieBreak"
+          name="Tie-break"
+          :options="tieBreakOptions"
+        />
+      </div>
+      <p class="settings-help">
+        The defaults reproduce the current ranking. "How much of the query each
+        result covers" doesn't penalize results with many phenotypes, and
+        scoring every entity keeps them from being dropped before scoring.
+        Annotation-based information content makes rarely annotated phenotypes
+        count for more. These settings are experimental.
+      </p>
+    </AppAccordion>
     <AppButton
       text="Analyze"
       icon="bars-progress"
@@ -57,7 +92,9 @@
       >Running analysis</AppStatus
     >
     <AppStatus v-if="searchIsError" code="error"
-      >Error running analysis</AppStatus
+      >Error running analysis<template v-if="searchErrorDetail"
+        >: {{ searchErrorDetail }}</template
+      ></AppStatus
     >
   </AppSection>
   <!-- search results -->
@@ -83,6 +120,25 @@
         >
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
+          <span
+            v-if="match.objectToSubjectScore !== undefined"
+            class="direction-scores"
+          >
+            <span
+              v-tooltip="
+                'Average best-match score of the query phenotypes against this result'
+              "
+              >Query covered: {{ match.objectToSubjectScore?.toFixed(1) }}</span
+            >
+            ·
+            <span
+              v-tooltip="
+                'Average best-match score of the phenotypes of this result against the query'
+              "
+              >Result covered:
+              {{ match.subjectToObjectScore?.toFixed(1) }}</span
+            >
+          </span>
         </AppFlex>
       </div>
     </AppFlex>
@@ -97,13 +153,20 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
+import { ApiError } from "@/api";
 import {
+  cleanSettings,
   compareSetToGroup,
+  directionalityOptions,
   getPhenotypes,
   groups,
+  informationContentOptions,
   metricOptions,
+  searchModeOptions,
+  tieBreakOptions,
   type Group,
 } from "@/api/phenotype-explorer";
+import AppAccordion from "@/components/AppAccordion.vue";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
@@ -143,20 +206,56 @@ const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
 /** selected metric */
 const metric = ref<Option>(metricOptions[0]);
 
+/**
+ * url param for one of a fixed list of options. unknown values fall back to the
+ * first (the default).
+ */
+const choiceParam = (options: Options): Param<Option> => ({
+  parse: (value) => options.find((option) => option.id === value) || options[0],
+  stringify: (value) => String(value.id),
+});
+
+/** ranking settings, kept in the url so a shared link keeps them */
+const directionality = useParam(
+  "directionality",
+  choiceParam(directionalityOptions),
+  directionalityOptions[0],
+);
+const searchMode = useParam(
+  "search-mode",
+  choiceParam(searchModeOptions),
+  searchModeOptions[0],
+);
+const informationContent = useParam(
+  "information-content",
+  choiceParam(informationContentOptions),
+  informationContentOptions[0],
+);
+const tieBreak = useParam(
+  "tie-break",
+  choiceParam(tieBreakOptions),
+  tieBreakOptions[0],
+);
+
 /** element reference */
 const aBox = ref<InstanceType<typeof AppSelectTags>>();
 
-/** get % for showing ring based on the selected metric */
+/**
+ * get % for showing ring based on the selected metric. annotation-based
+ * information content tops out lower (log2 of the corpus size, about 13 bits
+ * for diseases) than ontology-based (about 19 bits), so its range is smaller.
+ */
 function ringPercent(score = 0) {
   const id = metric.value.id;
+  const annotation = informationContent.value.id === "annotation";
   let min = 0;
-  if (id === "ancestor_information_content") min = 4;
+  if (id === "ancestor_information_content") min = annotation ? 0 : 4;
   else if (id === "jaccard_similarity") min = 0;
-  else if (id === "phenodigm_score") min = 0.1;
+  else if (id === "phenodigm_score") min = annotation ? 0 : 0.1;
   let max = 1;
-  if (id === "ancestor_information_content") max = 19;
+  if (id === "ancestor_information_content") max = annotation ? 14 : 19;
   else if (id === "jaccard_similarity") max = 1;
-  else if (id === "phenodigm_score") max = 5;
+  else if (id === "phenodigm_score") max = annotation ? 4 : 5;
   return (score - min) / (max - min);
 }
 
@@ -177,6 +276,7 @@ const {
   data: searchResults,
   isLoading: searchIsLoading,
   isError: searchIsError,
+  error: searchError,
 } = useQuery(
   async function () {
     scrollToResults();
@@ -185,6 +285,12 @@ const {
       aPhenotypes.value.map(({ id }) => id),
       bGroup.value.id as Group,
       metric.value.id,
+      cleanSettings({
+        directionality: directionality.value.id,
+        search_mode: searchMode.value.id,
+        information_content: informationContent.value.id,
+        tie_break: tieBreak.value.id,
+      }),
     );
   },
 
@@ -198,6 +304,11 @@ const {
 async function scrollToResults() {
   scrollTo("#results");
 }
+
+/** reason the api gave for refusing the search, if any */
+const searchErrorDetail = computed(() =>
+  searchError.value instanceof ApiError ? searchError.value.detail : "",
+);
 
 /** is in loading/error state */
 const isPending = computed(() => searchIsLoading.value || searchIsError.value);
@@ -213,9 +324,21 @@ function clearResults() {
   };
 }
 
-watch([aPhenotypes, bGroup, metric], clearResults, {
-  deep: true,
-});
+watch(
+  [
+    aPhenotypes,
+    bGroup,
+    metric,
+    directionality,
+    searchMode,
+    informationContent,
+    tieBreak,
+  ],
+  clearResults,
+  {
+    deep: true,
+  },
+);
 
 /** fill in phenotype ids or search from other pages */
 onMounted(() => {
@@ -303,7 +426,36 @@ $wrap: 1000px;
 .description {
   text-align: left;
 }
+.direction-scores {
+  color: $gray;
+  font-size: 0.9rem;
+}
+/** labels right-aligned against a column of selects, centered as one block */
+.settings {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 10px 15px;
+}
+.settings > strong {
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .settings {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
 p {
   text-align: left;
+}
+.settings-help {
+  max-width: 40em;
+  margin: 20px auto 0;
+  color: $gray;
+  font-size: 0.9rem;
+  text-align: center;
 }
 </style>

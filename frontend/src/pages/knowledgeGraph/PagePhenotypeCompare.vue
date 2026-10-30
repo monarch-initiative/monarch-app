@@ -42,6 +42,22 @@
         :options="metricOptions"
       />
     </AppFlex>
+    <AppFlex gap="small">
+      <strong>... with information content from</strong>
+      <AppSelectSingle
+        v-model="informationContent"
+        name="Information content source"
+        :options="informationContentOptions"
+      />
+      <template v-if="informationContent.id === 'annotation'">
+        <strong>among</strong>
+        <AppSelectSingle
+          v-model="corpus"
+          name="Annotation corpus"
+          :options="corpusOptions"
+        />
+      </template>
+    </AppFlex>
     <!-- Analyze Button -->
     <AppButton
       text="Analyze"
@@ -56,7 +72,9 @@
       >Running analysis</AppStatus
     >
     <AppStatus v-if="compareIsError" code="error"
-      >Error running analysis</AppStatus
+      >Error running analysis<template v-if="compareErrorDetail"
+        >: {{ compareErrorDetail }}</template
+      ></AppStatus
     >
   </AppSection>
 
@@ -76,6 +94,20 @@
       :tabs="compareTabs"
       :url="false"
     />
+    <div
+      v-tooltip="
+        'Average best-match score in this direction. Phenotypes with no match count as 0.'
+      "
+      class="weak"
+    >
+      Average score:
+      {{
+        (compareTab === "a-to-b"
+          ? compareResults.subjectAverage
+          : compareResults.objectAverage
+        ).toFixed(2)
+      }}
+    </div>
     <div class="triptych-scroll">
       <div class="triptych">
         <div>
@@ -114,10 +146,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { ApiError } from "@/api";
 import {
+  cleanSettings,
   compareSetToSet,
   getPhenotypes,
+  groups,
+  informationContentOptions,
   metricOptions,
 } from "@/api/phenotype-explorer";
 import AppButton from "@/components/AppButton.vue";
@@ -150,6 +186,11 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
 
 /** Metric for comparison */
 const metric = ref<Option>(metricOptions[0]);
+
+/** Where information content comes from, and the annotation corpus for it */
+const informationContent = ref<Option>(informationContentOptions[0]);
+const corpusOptions = groups.map((group) => ({ id: group, label: group }));
+const corpus = ref<Option>(corpusOptions[0]);
 
 /** compare tab options */
 const compareTabs = [
@@ -199,12 +240,17 @@ const {
   data: compareResults,
   isLoading: compareIsLoading,
   isError: compareIsError,
+  error: compareError,
 } = useQuery(
   async () => {
     return await compareSetToSet(
       aPhenotypes.value.map(({ id }) => id),
       bPhenotypes.value.map(({ id }) => id),
       metric.value.id,
+      cleanSettings({
+        information_content: informationContent.value.id,
+        group: corpus.value.id,
+      }),
     );
   },
   {
@@ -212,8 +258,27 @@ const {
     objectMatches: [],
     subjectUnmatched: [],
     objectUnmatched: [],
+    subjectAverage: 0,
+    objectAverage: 0,
   },
 );
+
+/** reason the api gave for refusing the comparison, if any */
+const compareErrorDetail = computed(() =>
+  compareError.value instanceof ApiError ? compareError.value.detail : "",
+);
+
+/** clear results when a setting they depend on changes, so rings aren't rescaled */
+watch([metric, informationContent, corpus], () => {
+  compareResults.value = {
+    subjectMatches: [],
+    objectMatches: [],
+    subjectUnmatched: [],
+    objectUnmatched: [],
+    subjectAverage: 0,
+    objectAverage: 0,
+  };
+});
 
 /** Whether analysis is pending */
 const isPending = computed(
@@ -224,17 +289,22 @@ const isBlank = computed(
   () => !aPhenotypes.value.length || !bPhenotypes.value.length,
 );
 
-/** get % for showing ring based on the selected metric */
+/**
+ * get % for showing ring based on the selected metric. annotation-based
+ * information content tops out lower than ontology-based, so its range is
+ * smaller.
+ */
 function ringPercent(score = 0) {
   const id = metric.value.id;
+  const annotation = informationContent.value.id === "annotation";
   let min = 0;
-  if (id === "ancestor_information_content") min = 4;
+  if (id === "ancestor_information_content") min = annotation ? 0 : 4;
   else if (id === "jaccard_similarity") min = 0;
-  else if (id === "phenodigm_score") min = 0.1;
+  else if (id === "phenodigm_score") min = annotation ? 0 : 0.1;
   let max = 1;
-  if (id === "ancestor_information_content") max = 19;
+  if (id === "ancestor_information_content") max = annotation ? 14 : 19;
   else if (id === "jaccard_similarity") max = 1;
-  else if (id === "phenodigm_score") max = 5;
+  else if (id === "phenodigm_score") max = annotation ? 4 : 5;
   return (score - min) / (max - min);
 }
 </script>

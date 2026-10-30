@@ -29,6 +29,8 @@ export const useQuery = <Data, Args extends unknown[]>(
   const isLoading = ref(false);
   const isError = ref(false);
   const isSuccess = ref(false);
+  /** error from the latest failed run */
+  const error = ref<unknown>();
 
   /** query results */
   const data = ref<Data>(defaultValue) as Ref<Data>;
@@ -48,6 +50,7 @@ export const useQuery = <Data, Args extends unknown[]>(
       isLoading.value = true;
       isError.value = false;
       isSuccess.value = false;
+      error.value = undefined;
       data.value = defaultValue;
 
       /** run provided function */
@@ -68,15 +71,16 @@ export const useQuery = <Data, Args extends unknown[]>(
         /** otherwise, log special "stale" error */
         console.error("Stale query");
       }
-    } catch (error) {
+    } catch (caught) {
       /** log error */
-      console.error(error);
+      console.error(caught);
 
       /** update state */
+      error.value = caught;
       isError.value = true;
       isLoading.value = false;
     }
   }
 
-  return { query, data, isLoading, isError, isSuccess };
+  return { query, data, isLoading, isError, isSuccess, error };
 };

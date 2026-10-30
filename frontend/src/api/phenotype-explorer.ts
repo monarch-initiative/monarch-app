@@ -1,4 +1,4 @@
-import { pick, sortBy, uniqBy } from "lodash";
+import { orderBy, pick, sortBy, uniqBy } from "lodash";
 import type {
   AssociationResults,
   SemsimSearchResult,
@@ -27,6 +27,90 @@ export const metricOptions = [
   { id: "jaccard_similarity", label: "Jaccard Similarity" },
   { id: "phenodigm_score", label: "Phenodigm Score" },
 ];
+
+/**
+ * How per-phenotype best matches are averaged into a score. In a search the
+ * subject is each result and the object is the query.
+ */
+export const directionalityOptions = [
+  { id: "bidirectional", label: "Both directions (default)" },
+  {
+    id: "object_to_subject",
+    label: "How much of the query each result covers",
+  },
+  {
+    id: "subject_to_object",
+    label: "How much of each result the query covers",
+  },
+];
+
+/** which entities a search scores */
+export const searchModeOptions = [
+  { id: "hybrid", label: "Prefilter by overlap (default)" },
+  { id: "full", label: "Score every entity" },
+];
+
+/** where phenotype information content comes from */
+export const informationContentOptions = [
+  { id: "ontology", label: "Ontology structure (default)" },
+  { id: "annotation", label: "How often phenotypes are annotated" },
+];
+
+/** how a search orders results with equal scores */
+export const tieBreakOptions = [
+  { id: "none", label: "By ID (default)" },
+  { id: "frequency", label: "By phenotype frequency" },
+];
+
+/** search settings beyond the metric. omitted ones take the API defaults. */
+export type SearchSettings = {
+  directionality?: string;
+  search_mode?: string;
+  information_content?: string;
+  tie_break?: string;
+};
+
+/** compare settings beyond the metric. omitted ones take the API defaults. */
+export type CompareSettings = {
+  directionality?: string;
+  information_content?: string;
+  /** annotation corpus, required when information_content is "annotation" */
+  group?: string;
+};
+
+/** allowed values of each setting, the first being the API default */
+const settingValues: Record<string, string[]> = {
+  directionality: directionalityOptions.map(({ id }) => id),
+  search_mode: searchModeOptions.map(({ id }) => id),
+  information_content: informationContentOptions.map(({ id }) => id),
+  tie_break: tieBreakOptions.map(({ id }) => id),
+};
+
+/**
+ * keep only the settings that differ from the API defaults, so a request with
+ * nothing changed is the same as one from before these settings existed.
+ * unknown values are dropped too, the way an unknown metric falls back to the
+ * default. the annotation corpus is kept only with annotation information
+ * content, and only if it's a known group.
+ */
+export const cleanSettings = (
+  settings: Record<string, unknown>,
+): SearchSettings & CompareSettings => {
+  const cleaned: Record<string, string> = {};
+  for (const [field, values] of Object.entries(settingValues)) {
+    const value = settings[field];
+    if (typeof value === "string" && values.indexOf(value) > 0)
+      cleaned[field] = value;
+  }
+  const group = settings.group;
+  if (
+    cleaned.information_content === "annotation" &&
+    typeof group === "string" &&
+    (groups as readonly string[]).includes(group)
+  )
+    cleaned.group = group;
+  return cleaned;
+};
 
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
@@ -93,12 +177,18 @@ export const compareSetToSet = async (
   aPhenotypes: string[],
   bPhenotypes: string[],
   metric: string = "ancestor_information_content",
+  settings: CompareSettings = {},
 ) => {
   /** make request options */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { subjects: aPhenotypes, objects: bPhenotypes, metric: metric };
+  const body = {
+    subjects: aPhenotypes,
+    objects: bPhenotypes,
+    metric: metric,
+    ...settings,
+  };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -144,7 +234,23 @@ export const compareSetToSet = async (
     (term) => !(term.id in (response.object_best_matches || {})),
   );
 
-  return { subjectMatches, objectMatches, subjectUnmatched, objectUnmatched };
+  /** average best-match score per direction, unmatched phenotypes counting as 0 */
+  const average = (matches: { score: number }[], unmatched: unknown[]) =>
+    matches.length + unmatched.length
+      ? matches.reduce((sum, match) => sum + match.score, 0) /
+        (matches.length + unmatched.length)
+      : 0;
+  const subjectAverage = average(subjectMatches, subjectUnmatched);
+  const objectAverage = average(objectMatches, objectUnmatched);
+
+  return {
+    subjectMatches,
+    objectMatches,
+    subjectUnmatched,
+    objectUnmatched,
+    subjectAverage,
+    objectAverage,
+  };
 };
 
 export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;
@@ -253,6 +359,7 @@ export const compareSetToSets = async (
   subjects: string[],
   objectSets: ObjectSet[],
   metric?: string,
+  settings: CompareSettings = {},
 ) => {
   /** fill in missing object set fields */
   objectSets.forEach((set, index) => {
@@ -264,7 +371,7 @@ export const compareSetToSets = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { subjects, object_sets: objectSets, metric };
+  const body = { subjects, object_sets: objectSets, metric, ...settings };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -282,12 +389,13 @@ export const compareSetToGroup = async (
   phenotypes: string[],
   group: (typeof groups)[number],
   metric: string = "ancestor_information_content",
+  settings: SearchSettings = {},
 ) => {
   /** make request options */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { termset: phenotypes, group: group, metric };
+  const body = { termset: phenotypes, group: group, metric, ...settings };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -299,11 +407,22 @@ export const compareSetToGroup = async (
   );
 
   /** get high level data */
-  let summary = response.map((match) => ({
+  const matches = response.map((match) => ({
     subject: match.subject,
     score: match.score || 0,
+    subjectToObjectScore: match.subject_to_object_score,
+    objectToSubjectScore: match.object_to_subject_score,
   }));
-  summary = sortBy(summary, "score").reverse();
+
+  /**
+   * highest score first. with a tie-break, ties keep the API's order, which
+   * applies it. without one, ties keep the order this page always showed them
+   * in (the API's, reversed).
+   */
+  const summary =
+    settings.tie_break && settings.tie_break !== "none"
+      ? orderBy(matches, "score", "desc")
+      : sortBy(matches, "score").reverse();
 
   /** make flat lists of rows/cols from subjects/objects */
   let cols: Phenogrid["cols"] = response.map((match) => ({
@@ -344,6 +463,7 @@ export const compareSetToGroup = async (
         strength: 0,
         phenotype: match?.match_target || "",
         phenotypeLabel: match?.match_target_label || "",
+        frequency: match?.frequency,
         ...pick(match?.similarity, [
           "ancestor_id",
           "ancestor_label",

@@ -24,7 +24,12 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
-import { compareSetToSets, metricOptions } from "@/api/phenotype-explorer";
+import {
+  cleanSettings,
+  compareSetToSets,
+  metricOptions,
+  type CompareSettings,
+} from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
@@ -36,6 +41,19 @@ const route = useRoute();
 const aPhenotypes = ref<Parameters<typeof compareSetToSets>[0]>([]);
 const bPhenotypes = ref<Parameters<typeof compareSetToSets>[1]>([]);
 const similarityMetric = ref(metricOptions[0]);
+/**
+ * compare settings from url or message params; omitted ones take the API
+ * defaults
+ */
+const settings = ref<CompareSettings>({});
+
+/** read compare settings from url or message params */
+const readSettings = (params: Record<string, unknown>) =>
+  cleanSettings({
+    directionality: params.directionality,
+    information_content: params["information-content"],
+    group: params.group,
+  });
 const stylesheetHref = ref("");
 
 /** comparison analysis */
@@ -50,6 +68,7 @@ const {
       aPhenotypes.value,
       bPhenotypes.value,
       similarityMetric.value.id,
+      settings.value,
     );
   },
 
@@ -58,7 +77,9 @@ const {
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bPhenotypes, similarityMetric], runAnalysis);
+watch([aPhenotypes, bPhenotypes, similarityMetric, settings], runAnalysis, {
+  deep: true,
+});
 
 /** get input url params */
 watch(
@@ -70,6 +91,7 @@ watch(
       metric = "",
       stylesheet = "",
     } = route.query;
+    settings.value = readSettings(route.query);
 
     if (stylesheet && typeof stylesheet === "string")
       stylesheetHref.value = window.decodeURIComponent(stylesheet);
@@ -99,6 +121,12 @@ useEventListener("message", (event: MessageEvent) => {
     similarityMetric.value =
       metricOptions.find((option) => option.id === event.data.metric) ||
       metricOptions[0];
+  if (
+    ["directionality", "information-content", "group"].some(
+      (param) => param in event.data,
+    )
+  )
+    settings.value = readSettings(event.data);
   if ("stylesheet" in event.data) stylesheetHref.value = event.data.stylesheet;
 });
 </script>
