@@ -9,6 +9,7 @@ of failure the engine-only tests can miss.
 import duckdb
 import pytest
 from fastapi import status
+from fastapi.exceptions import RequestValidationError
 from fastapi.testclient import TestClient
 
 from monarch_py.api import semsim as semsim_module
@@ -71,6 +72,7 @@ def ducksim_client(tmp_path, monkeypatch):
     service = DucksimService(engine=_baked_kg(tmp_path / "kg.duckdb", ASSOC))
     # route every semsim_service() call in the router to our in-memory ducksim service
     monkeypatch.setattr(semsim_module, "semsim_service", lambda engine=None: service)
+    monkeypatch.setattr(semsim_module, "resolve_engine", lambda engine=None: "ducksim")
     return TestClient(router)
 
 
@@ -97,3 +99,40 @@ def test_get_search_serializes_all_metrics(ducksim_client, metric):
     response = ducksim_client.get(f"/search/A1/Human Diseases?metric={metric}&limit=5")
     assert response.status_code == status.HTTP_200_OK, response.text
     assert isinstance(response.json(), list)
+
+
+@pytest.mark.parametrize("search_mode", ["hybrid", "full"])
+@pytest.mark.parametrize("directionality", DIRECTIONS)
+def test_search_returns_direction_scores_and_settings(ducksim_client, search_mode, directionality):
+    """Every result carries both direction averages and the settings the search ran with. The ranked
+    score is the selected direction, or the mean of the two for bidirectional."""
+    response = ducksim_client.get(
+        f"/search/A1,B1/Human Diseases?limit=5&search_mode={search_mode}&directionality={directionality}"
+    )
+    assert response.status_code == status.HTTP_200_OK, response.text
+    body = response.json()
+    assert body
+    for result in body:
+        s2o, o2s = result["subject_to_object_score"], result["object_to_subject_score"]
+        expected = {"subject_to_object": s2o, "object_to_subject": o2s, "bidirectional": (s2o + o2s) / 2}
+        assert result["score"] == pytest.approx(expected[directionality])
+        assert result["search_settings"] == {
+            "engine": "ducksim",
+            "metric": "ancestor_information_content",
+            "directionality": directionality,
+            "search_mode": search_mode,
+        }
+
+
+def test_post_search_accepts_search_mode(ducksim_client):
+    response = ducksim_client.post(
+        "/search/", json={"termset": ["A1"], "group": "Human Diseases", "search_mode": "full", "limit": 5}
+    )
+    assert response.status_code == status.HTTP_200_OK, response.text
+    assert all(r["search_settings"]["search_mode"] == "full" for r in response.json())
+
+
+def test_unknown_search_mode_is_rejected(ducksim_client):
+    # A bare router (no app exception handlers) raises the validation error the app turns into a 422.
+    with pytest.raises(RequestValidationError, match="search_mode"):
+        ducksim_client.get("/search/A1/Human Diseases?search_mode=exhaustive")

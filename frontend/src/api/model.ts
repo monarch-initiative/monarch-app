@@ -149,7 +149,27 @@ export interface BestMatch {
 export interface SemsimSearchResult {
     subject: Entity,
     score?: number,
+    /** The mean of the subject's best-match scores against the object termset. In a search the subject is the result entity, so this is how much of the entity's profile the query covers. */
+    subject_to_object_score?: number,
+    /** The mean of the object's best-match scores against the subject termset. In a search the object is the query, so this is how much of the query the entity covers. */
+    object_to_subject_score?: number,
     similarity?: TermSetPairwiseSimilarity,
+    search_settings?: SemsimSearchSettings,
+}
+
+
+/**
+ * The settings a phenotype search actually ran with, after defaults and backend routing. Every result of one search carries the same settings, so a saved response or a shared link can be reproduced.
+ */
+export interface SemsimSearchSettings {
+    /** The similarity backend that served the request, ducksim or semsimian. */
+    engine?: string,
+    /** The pairwise similarity metric. */
+    metric?: string,
+    /** How the per-term best matches were averaged into `score`: subject_to_object, object_to_subject or bidirectional. */
+    directionality?: string,
+    /** hybrid prefilters candidates by set Jaccard before scoring; full scores every entity in the group. */
+    search_mode?: string,
 }
 
 

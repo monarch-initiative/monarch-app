@@ -78,6 +78,22 @@ class SemsimDirectionality(str, Enum):
     OBJECT_TO_SUBJECT = "object_to_subject"
 
 
+class SemsimSearchMode(str, Enum):
+    """How a search picks the entities it scores.
+
+    `hybrid` ranks the group by a cheap set Jaccard first and scores only the top of that list.
+    The Jaccard penalises entities with many annotations, so a richly annotated entity can be
+    dropped before it is scored. `full` scores every entity in the group. Only ducksim
+    supports `full`.
+    """
+
+    HYBRID = "hybrid"
+    FULL = "full"
+
+    def __str__(self):
+        return self.value
+
+
 class SemsimCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     objects: List[str] = Field(..., title="List of objects for comparison")
@@ -102,6 +118,9 @@ class SemsimSearchRequest(BaseModel):
     metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
     directionality: SemsimDirectionality = Field(
         SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"
+    )
+    search_mode: SemsimSearchMode = Field(
+        SemsimSearchMode.HYBRID, title="Score a Jaccard-prefiltered candidate set (hybrid) or every entity (full)"
     )
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 
