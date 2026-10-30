@@ -37,7 +37,6 @@ app = FastAPI(
 async def lifespan(app: FastAPI):
     semsimian()
     spacyner()
-    # oak()
     yield
 
 

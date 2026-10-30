@@ -6,5 +6,4 @@
 
 - #### [Solr](./Solr.md)  
 - #### [SQLite](./SQLite.md)
-<!-- - #### [OAK](./OAK.md) - an **experimental** implementation for semantic similarity, and does not implement the standard interfaces. -->
 
