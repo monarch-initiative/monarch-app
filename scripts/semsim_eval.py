@@ -3,21 +3,24 @@
 Runs against a local monarch-kg.duckdb (download it from
 https://data.monarchinitiative.org/monarch-kg/latest/monarch-kg.duckdb). See
 `monarch_py.utils.semsim_eval` for the query kinds, noise models and what is reported.
+Gene-target results (`--target HGNC`) are an upper bound: see that module's docstring.
 
 Each full search over all diseases takes a few seconds, so a run costs roughly
-sample x query kinds x noise models x settings x 3 s. The defaults (50 diseases, 3 kinds,
-no noise, 6 settings) take about 45 minutes.
+sample x query kinds x noise models x settings x 3 s. The defaults (50 diseases, 4 kinds,
+no noise, 6 settings) take about an hour. results.csv is written as each disease finishes, so an
+interrupted run keeps what it has; summary.md is written at the end.
 
 Examples:
     cd backend
     uv run python ../scripts/semsim_eval.py --kg /data/monarch-kg.duckdb --out eval/
-    uv run python ../scripts/semsim_eval.py --kg /data/monarch-kg.duckdb --noise none parent unrelated \\
+    uv run python ../scripts/semsim_eval.py --kg /data/monarch-kg.duckdb --noise none parent other_disease \\
         --configs production query_to_entity_frequency --sample 100 --out eval/
     uv run python ../scripts/semsim_eval.py --kg /data/monarch-kg.duckdb --target HGNC --out eval-genes/
 """
 
 import argparse
 import csv
+import dataclasses
 import sys
 import time
 from pathlib import Path
@@ -29,8 +32,8 @@ from monarch_py.utils.semsim_eval import (
     QUERY_KINDS,
     EvalOptions,
     SemsimEvaluation,
+    EvalRow,
     format_summary,
-    rows_as_dicts,
     summarize,
 )
 
@@ -46,6 +49,13 @@ def main(argv=None):
     parser.add_argument("--kinds", nargs="+", default=list(QUERY_KINDS), choices=QUERY_KINDS)
     parser.add_argument("--noise", nargs="+", default=["none"], choices=NOISE_MODELS)
     parser.add_argument("--configs", nargs="+", default=list(CONFIGS), choices=list(CONFIGS))
+    parser.add_argument("--query-size", type=int, default=5, help="terms in a random or random_weighted query")
+    parser.add_argument("--common-count", type=int, default=4, help="common terms in a common_rare query")
+    parser.add_argument("--parent-rate", type=float, default=0.5, help="chance each term is replaced by a parent")
+    parser.add_argument("--other-disease-count", type=int, default=2, help="terms added by other_disease noise")
+    parser.add_argument(
+        "--hybrid-limit", type=int, default=10, help="results hybrid search returns; also the MRR and median depth"
+    )
     parser.add_argument("--memory-limit", default="8GB")
     parser.add_argument("--threads", type=int, default=4)
     args = parser.parse_args(argv)
@@ -62,20 +72,32 @@ def main(argv=None):
         kinds=args.kinds,
         noise=args.noise,
         configs=args.configs,
+        query_size=args.query_size,
+        common_count=args.common_count,
+        parent_rate=args.parent_rate,
+        other_disease_count=args.other_disease_count,
+        hybrid_limit=args.hybrid_limit,
     )
     started = time.time()
 
     def progress(done, total):
         print(f"{done}/{total} diseases, {time.time() - started:.0f}s", file=sys.stderr, flush=True)
 
-    rows = SemsimEvaluation(engine, options).run(progress=progress)
     args.out.mkdir(parents=True, exist_ok=True)
-    records = rows_as_dicts(rows)
+    rows = []
     with open(args.out / "results.csv", "w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(records[0]) if records else [])
+        writer = csv.DictWriter(handle, fieldnames=[f.name for f in dataclasses.fields(EvalRow)])
         writer.writeheader()
-        writer.writerows(records)
-    table = format_summary(summarize(rows))
+        for disease_rows in SemsimEvaluation(engine, options).iter_rows(progress=progress):
+            writer.writerows(dataclasses.asdict(row) for row in disease_rows)
+            handle.flush()
+            rows.extend(disease_rows)
+    table = format_summary(summarize(rows, depth=args.hybrid_limit))
+    if args.target != "MONDO":
+        table = (
+            f"Gene target {args.target}: these results are an upper bound. The genes' phenotype edges are "
+            "derived from the disease annotations the queries are drawn from.\n\n" + table
+        )
     (args.out / "summary.md").write_text(table + "\n")
     print(table)
 

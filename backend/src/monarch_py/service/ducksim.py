@@ -316,7 +316,8 @@ class Ducksim:
             return
         cases = " ".join(f"WHEN '{k}' THEN {v}" for k, v in FREQUENCY_CATEGORY_MIDPOINTS.items())
         negated = "AND NOT coalesce(try_cast(negated AS BOOLEAN), false)" if "negated" in cols else ""
-        self.con.execute(f"""
+        self.con.execute(
+            f"""
             CREATE VIEW _freq AS
             SELECT entity, phenotype, greatest({MIN_FREQUENCY}, max(f)) AS f
             FROM (SELECT subject AS entity, object AS phenotype,
@@ -326,7 +327,8 @@ class Ducksim:
                                      'biolink:DiseaseToPhenotypicFeatureAssociation')
                     AND predicate = 'biolink:has_phenotype' {negated})
             WHERE f IS NOT NULL
-            GROUP BY entity, phenotype""")
+            GROUP BY entity, phenotype"""
+        )
 
     def frequencies_batch(self, entity_ids) -> dict:
         """{(entity, phenotype) -> recorded frequency} for many entities in one query. Pairs with no
@@ -368,6 +370,50 @@ class Ducksim:
             out.setdefault(e, []).append(p)
         return out
 
+    def annotations_by_prefix(self, entity_prefix, phenotype_prefix=None) -> dict:
+        """{entity -> sorted [phenotype, ...]} for every entity whose id has `entity_prefix`, optionally
+        keeping only phenotypes with `phenotype_prefix`. Reads the whole corpus, so it is for offline
+        use (the evaluation harness), not for request handling."""
+        where = "entity LIKE ? || ':%'"
+        params = [entity_prefix]
+        if phenotype_prefix:
+            where += " AND phenotype LIKE ? || ':%'"
+            params.append(phenotype_prefix)
+        rows = self._read(
+            f"SELECT DISTINCT entity, phenotype FROM _assoc WHERE {where} ORDER BY entity, phenotype", params
+        ).fetchall()
+        out = {}
+        for e, p in rows:
+            out.setdefault(e, []).append(p)
+        return out
+
+    def direct_parents(self, prefix) -> dict:
+        """{term -> sorted [parent, ...]} from the KG's asserted `biolink:subclass_of` edges, for terms
+        and parents that both have `prefix`. Direct parents only, unlike the closure."""
+        rows = self._read(
+            "SELECT DISTINCT subject, object FROM src.edges WHERE predicate = 'biolink:subclass_of' "
+            "AND subject LIKE ? || ':%' AND object LIKE ? || ':%' ORDER BY subject, object",
+            [prefix, prefix],
+        ).fetchall()
+        out = {}
+        for child, parent in rows:
+            out.setdefault(child, []).append(parent)
+        return out
+
+    def causal_genes_by_disease(self, gene_prefix) -> dict:
+        """{disease -> sorted [gene, ...]} from `biolink:causes` gene-to-disease edges, for genes with
+        `gene_prefix`."""
+        rows = self._read(
+            "SELECT DISTINCT object, subject FROM src.edges "
+            "WHERE category = 'biolink:CausalGeneToDiseaseAssociation' AND predicate = 'biolink:causes' "
+            "AND subject LIKE ? || ':%' ORDER BY object, subject",
+            [gene_prefix],
+        ).fetchall()
+        out = {}
+        for disease, gene in rows:
+            out.setdefault(disease, []).append(gene)
+        return out
+
     def entities(self, entity_ids) -> dict:
         """{id -> column->value row dict} from the KG `nodes` table — all-DuckDB entity hydration of
         search results, so the similarity backend needs no external entity store. One query."""
@@ -389,7 +435,8 @@ class Ducksim:
         (possible with annotation IC, which has no rows for terms no annotation reaches) still
         counts toward Jaccard, with IC 0."""
         subj_q, obj_q = _quote_list(subjects), _quote_list(objects)
-        rows = self._read(f"""
+        rows = self._read(
+            f"""
             WITH s_terms(t) AS (SELECT unnest([{subj_q}]::VARCHAR[])),
                  o_terms(t) AS (SELECT unnest([{obj_q}]::VARCHAR[])),
                  allterms AS (SELECT t FROM s_terms UNION SELECT t FROM o_terms),
@@ -410,7 +457,8 @@ class Ducksim:
                    zs.sz AS sz_s, zo.sz AS sz_o
             FROM common c JOIN sizes zs ON zs.t = c.s JOIN sizes zo ON zo.t = c.o
             GROUP BY c.s, c.o, zs.sz, zo.sz
-        """).fetchall()
+        """
+        ).fetchall()
         out = {}
         for s, o, inter, resnik, mica, sz_s, sz_o in rows:
             jaccard = inter / (sz_s + sz_o - inter)
@@ -658,7 +706,8 @@ class Ducksim:
         """Cheap set-Jaccard ranking of all (prefix) entities vs the query — Hybrid's candidate gen."""
         Q = _quote_list(set(query_terms))
         pfilter = f"AND split_part(i.entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
-        return self._read(f"""
+        return self._read(
+            f"""
             WITH qt(t) AS (SELECT unnest([{Q}]::VARCHAR[])),
                  q_anc AS (SELECT DISTINCT c.o AS a FROM _clo c JOIN qt ON c.s = qt.t),
                  qn AS (SELECT count(*) AS n FROM q_anc),
@@ -668,7 +717,8 @@ class Ducksim:
             SELECT i.entity, i.inter::DOUBLE / ((SELECT n FROM qn) + e.pn - i.inter) AS jaccard
             FROM inter i JOIN _esize e ON e.entity = i.entity
             WHERE true {pfilter} ORDER BY jaccard DESC, i.entity
-        """).fetchall()
+        """
+        ).fetchall()
 
     # ---- search with full per-result detail -----------------------------
 
