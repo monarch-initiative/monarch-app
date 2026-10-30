@@ -13,6 +13,7 @@ from monarch_py.utils.utils import (
     dict_factory,
     dict_diff,
     escape,
+    get_link_for_curie,
     get_links_for_field,
     get_provided_by_link,
     strip_json,
@@ -79,6 +80,17 @@ def test_get_links_for_field():
         ExpandedCurie(id="PMID:123", url="http://identifiers.org/pubmed/123"),
         ExpandedCurie(id="PMID:456", url="http://identifiers.org/pubmed/456"),
     ]
+
+
+@pytest.mark.parametrize(
+    "curie, expected",
+    [
+        ("GARD:0021052", "https://rarediseases.info.nih.gov/?gard_id=0021052"),
+        ("GARD:21052", "https://rarediseases.info.nih.gov/?gard_id=0021052"),
+    ],
+)
+def test_get_link_for_gard_curie(curie, expected):
+    assert get_link_for_curie(curie) == expected
 
 
 def test_get_provided_by_link():
