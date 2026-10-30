@@ -1976,6 +1976,8 @@
 
       SemsimSearchSettings : engine
 
+      SemsimSearchSettings : information_content
+
       SemsimSearchSettings : metric
 
       SemsimSearchSettings : search_mode
@@ -2016,6 +2018,12 @@
 <td><a href="../search_mode/">search_mode</a></td>
 <td>0..1 <br/> <a href="../String/">String</a></td>
 <td>hybrid prefilters candidates by set Jaccard before scoring; full scores every...</td>
+<td>direct</td>
+</tr>
+<tr>
+<td><a href="../information_content/">information_content</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>ontology (IC from the ontology's structure) or annotation (IC from how many e...</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -2104,6 +2112,13 @@
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchSettings</span>
+<span class="w">  </span><span class="nt">information_content</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">information_content</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ontology (IC from the ontology&#39;s structure) or annotation (IC from</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">how many entities in the searched group are annotated to the term).</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py-similarity</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchSettings</span>
 </code></pre></div>
 </details>
 
@@ -2153,6 +2168,16 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py-similarity</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search_mode</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchSettings</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchSettings</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">information_content</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">information_content</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ontology (IC from the ontology&#39;s structure) or annotation (IC from</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">how many entities in the searched group are annotated to the term).</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py-similarity</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">information_content</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchSettings</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchSettings</span>
