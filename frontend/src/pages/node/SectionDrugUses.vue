@@ -7,6 +7,22 @@
 
 <template>
   <div class="drug-uses">
+    <!-- these sections summarize regulator labels: not clinical guidance -->
+    <AppAlert icon="circle-exclamation" class="notice">
+      <div>
+        <p>
+          For research purposes only. This information is not intended to
+          diagnose, treat, cure, or prevent any disease, and does not replace
+          approved prescribing information or the advice of a healthcare
+          professional.
+        </p>
+        <p v-if="sectionKey === 'drug_contraindications'">
+          A drug not listed here is not known to be safe for this condition;
+          this list is not a complete record of contraindications.
+        </p>
+      </div>
+    </AppAlert>
+
     <!-- direct vs. inferred (subtypes), as in the other association sections -->
     <AppAssociationTabs
       v-if="hasTabs && allCount > 0"
@@ -29,6 +45,14 @@
         {{ plural(summary.data.value.unique.grouping_key ?? 0, "statement") }}
         from {{ plural(summary.data.value.total, "assertion") }}
       </span>
+      <AppProvenanceIcons
+        class="overview-provenance"
+        show-labels
+        :agent-types="facetValues(summary.data.value.facets.agent_type)"
+        :knowledge-levels="
+          facetValues(summary.data.value.facets.knowledge_level)
+        "
+      />
     </p>
     <AppStatus v-else-if="summary.isLoading.value" code="loading"
       >Loading summary</AppStatus
@@ -127,6 +151,11 @@
               <span class="pill-count">{{ j.count }}</span></span
             >
           </span>
+          <AppProvenanceIcons
+            class="provenance-cell"
+            :agent-types="facetValues(group.facets.agent_type)"
+            :knowledge-levels="facetValues(group.facets.knowledge_level)"
+          />
           <span class="since muted">{{
             year(group.stats.medic_approval_date?.min)
           }}</span>
@@ -195,6 +224,10 @@
                     <span class="pill-count">{{ j.count }}</span></span
                   >
                 </span>
+                <AppProvenanceIcons
+                  :agent-types="facetValues(st.facets.agent_type)"
+                  :knowledge-levels="facetValues(st.facets.knowledge_level)"
+                />
                 <span class="since muted">{{
                   year(st.stats.medic_approval_date?.min)
                 }}</span>
@@ -301,6 +334,18 @@
                             >{{ pub }}</a
                           >
                         </template>
+                        <AppProvenanceIcons
+                          :agent-types="
+                            text.rows
+                              .map((r) => r.agent_type ?? '')
+                              .filter(Boolean)
+                          "
+                          :knowledge-levels="
+                            text.rows
+                              .map((r) => r.knowledge_level ?? '')
+                              .filter(Boolean)
+                          "
+                        />
                         <button class="link" @click="openDetails(text.rows[0])">
                           details
                         </button>
@@ -381,11 +426,13 @@ import type {
   DirectionalAssociation,
   Node,
 } from "@/api/model";
+import AppAlert from "@/components/AppAlert.vue";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import AppIcon from "@/components/AppIcon.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppProvenanceIcons from "@/components/AppProvenanceIcons.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
@@ -518,7 +565,12 @@ const summary = useQuery(
       uniqueFields: ["grouping_key", secondaryField.value],
       statFields: ["medic_approval_date"],
       labelFields: [labelField.value, categoryField.value],
-      facetFields: ["medic_jurisdiction", secondaryField.value],
+      facetFields: [
+        "medic_jurisdiction",
+        secondaryField.value,
+        "agent_type",
+        "knowledge_level",
+      ],
       facetLabels: { [secondaryField.value]: `${secondaryField.value}_label` },
       direct: direct.value,
       filterQueries: [...predicateFilter.value, ...jurisdictionFilter.value],
@@ -578,6 +630,8 @@ const statements = useQuery(
         "medic_jurisdiction",
         "disease_context_qualifier",
         "population_context_qualifier",
+        "agent_type",
+        "knowledge_level",
       ],
       facetLabels: {
         disease_context_qualifier: "disease_context_qualifier_label",
@@ -690,6 +744,10 @@ const selectTab = (which: "direct" | "all") => {
   firstPage();
   jurisdictions.query();
 };
+
+/** the values of a summary facet, e.g. the agent types behind a row */
+const facetValues = (values?: { value: string }[]) =>
+  (values ?? []).map((v) => v.value);
 
 /** a row's conditions / contexts beyond the ones its facet lists */
 const moreTargets = (group: AssociationSummaryGroup) =>
@@ -982,7 +1040,7 @@ const plural = (n: number, noun: string) =>
 
 .group-row {
   display: grid;
-  grid-template-columns: 24px 220px 1fr 200px 90px;
+  grid-template-columns: 24px 220px 1fr 200px 64px 90px;
   align-items: center;
   padding: 8px 0;
   gap: 12px;
@@ -990,6 +1048,28 @@ const plural = (n: number, noun: string) =>
 
 .group-node {
   justify-self: start;
+}
+
+.notice {
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  padding: 12px 16px;
+  gap: 14px;
+  font-size: 0.9rem;
+  text-align: left;
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 6px;
+    font-weight: 600;
+  }
+}
+
+.overview-provenance {
+  margin-left: 12px;
 }
 
 .targets {
@@ -1134,6 +1214,7 @@ const plural = (n: number, noun: string) =>
 
     .targets,
     .where,
+    .provenance-cell,
     .since {
       grid-column: 2;
       text-align: left;
