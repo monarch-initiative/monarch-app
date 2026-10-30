@@ -207,6 +207,7 @@ class SemsimSearchSettings(ConfiguredBaseModel):
     metric: Optional[str] = Field(default=None, description="""The pairwise similarity metric.""")
     directionality: Optional[str] = Field(default=None, description="""How the per-term best matches were averaged into `score`: subject_to_object, object_to_subject or bidirectional.""")
     search_mode: Optional[str] = Field(default=None, description="""hybrid prefilters candidates by set Jaccard before scoring; full scores every entity in the group.""")
+    information_content: Optional[str] = Field(default=None, description="""ontology (IC from the ontology's structure) or annotation (IC from how many entities in the searched group are annotated to the term).""")
 
 
 class Entity(ConfiguredBaseModel):
