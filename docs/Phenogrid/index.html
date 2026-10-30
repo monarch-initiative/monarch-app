@@ -2215,11 +2215,22 @@ This is allows convenient use in cases where the parameters are simple and short
 <li><code>subjects</code> - Comma-separated list of phenotype IDs, e.g. <code>HP:123,HP:abc,HP:456</code>.</li>
 <li><code>object-group</code> - Group name, e.g. "Human Diseases".
   See <code>src/api/phenotype-explorer.ts</code> for enumerated options.</li>
+<li><code>directionality</code> - Optional. How each result's best matches are averaged into its score:
+  <code>bidirectional</code> (default), <code>object_to_subject</code> (how much of the query each result covers) or <code>subject_to_object</code> (how much of each result the query covers).</li>
+<li><code>search-mode</code> - Optional. <code>hybrid</code> (default) scores only results that share phenotypes with the query; <code>full</code> scores every entity in the group.</li>
+<li><code>information-content</code> - Optional. <code>ontology</code> (default) or <code>annotation</code>, which weights phenotypes by how rarely the group's entities are annotated with them.</li>
+<li><code>tie-break</code> - Optional. <code>none</code> (default) or <code>frequency</code>, which orders tied results by how frequent the matched phenotypes are in each result.</li>
 </ul>
+<p>Unknown values of these settings are ignored and the default is used.</p>
 <p>As message params:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nx">subjects</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[],</span>
-<span class="w">  </span><span class="s2">&quot;object-group&quot;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">  </span><span class="s2">&quot;object-group&quot;</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// optional, same values as the url params</span>
+<span class="w">  </span><span class="nx">directionality?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;search-mode&quot;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;information-content&quot;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;tie-break&quot;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 </code></pre></div>
 <h2 id="multi-compare-mode-parameters">"Multi-Compare" Mode Parameters</h2>
@@ -2227,6 +2238,9 @@ This is allows convenient use in cases where the parameters are simple and short
 <ul>
 <li><code>subjects</code> - Comma-separated list of phenotype IDs, e.g. <code>HP:123,HP:abc,HP:456</code>.</li>
 <li><code>object-sets</code> - Comma-separated lists of phenotype IDs, e.g. <code>?object-sets=HP:123,HP:456&amp;object-sets=HP:abc,HP:def</code></li>
+<li><code>directionality</code> - Optional. Same values as in "Search" mode, with each object set as a result.</li>
+<li><code>information-content</code> - Optional. <code>ontology</code> (default) or <code>annotation</code>.</li>
+<li><code>group</code> - Group whose annotations give the information content, e.g. "Human Diseases". Required with <code>information-content=annotation</code>, ignored otherwise.</li>
 </ul>
 <p>Pass as message params to control additional details like set labels.</p>
 <p>As message params:</p>
@@ -2239,7 +2253,11 @@ This is allows convenient use in cases where the parameters are simple and short
 <span class="w">    </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
 <span class="w">    </span><span class="c1">// list of phenotype ids</span>
 <span class="w">    </span><span class="nx">phenotypes</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span>
-<span class="w">  </span><span class="p">}[]</span>
+<span class="w">  </span><span class="p">}[],</span>
+<span class="w">  </span><span class="c1">// optional, same values as the url params</span>
+<span class="w">  </span><span class="nx">directionality?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;information-content&quot;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">group?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>If there are no other appropriate values for them, <code>id</code> can be a simple incrementing integer and <code>label</code> can something simple like "Set A".</p>
@@ -2248,6 +2266,7 @@ This is allows convenient use in cases where the parameters are simple and short
 <h2 id="general-parameters">General Parameters</h2>
 <p>General parameters available regardless of the mode of operation.</p>
 <ul>
+<li><code>metric</code> - Optional. Similarity metric: <code>ancestor_information_content</code> (default), <code>jaccard_similarity</code> or <code>phenodigm_score</code>.</li>
 <li><code>stylesheet</code> - URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.</li>
 <li>If passed as a URL param, make sure it is URI encoded.</li>
 </ul>
