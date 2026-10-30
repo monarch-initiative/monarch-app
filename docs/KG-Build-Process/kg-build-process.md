@@ -122,7 +122,7 @@ Neo4j dumps are produced in two steps. First, `ingest neo4j-csv` exports nodes a
 
 ## SQLite
 
-A SQLite database is produced by the `ingest sqlite` command, which uses DuckDB's SQLite extension to copy tables directly from the DuckDB database. The following tables are included: `nodes`, `edges`, `denormalized_nodes`, `denormalized_edges`, `dangling_edges`, and `closure`. A separate `phenio.db` is also populated with gene/disease-to-phenotype associations. Both databases are compressed with pigz.
+A SQLite database is produced by the `ingest sqlite` command, which uses DuckDB's SQLite extension to copy tables directly from the DuckDB database. The following tables are included: `nodes`, `edges`, `denormalized_nodes`, `denormalized_edges`, `dangling_edges`, and `closure`. It is compressed with pigz. The release no longer includes a PHENIO SQLite (`phenio.db.gz`): the ontology closure is in `monarch-kg.duckdb`, and a SemanticSQL build of PHENIO is available from the [SemanticSQL](https://github.com/INCATools/semantic-sql) project.
 
 ## Solr
 

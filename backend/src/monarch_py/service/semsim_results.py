@@ -30,11 +30,18 @@ def direction_scores(similarity: Optional[TermSetPairwiseSimilarity]) -> tuple:
     )
 
 
-def annotate_search_results(results, settings: SemsimSearchSettings) -> List[SemsimSearchResult]:
-    """Attach both direction scores and the settings the search ran with to every result."""
+def annotate_search_results(
+    results, settings: SemsimSearchSettings, entity_is_subject: bool = True
+) -> List[SemsimSearchResult]:
+    """Attach both direction scores and the settings the search ran with to every result.
+
+    The direction scores use search's convention, where the result entity's phenotypes are the
+    comparison's subjects. Multicompare compares the query (subjects) with each entity (objects),
+    so it passes `entity_is_subject=False` and the two halves are swapped."""
     annotated = []
     for result in results or []:
-        result.subject_to_object_score, result.object_to_subject_score = direction_scores(result.similarity)
+        scores = direction_scores(result.similarity)
+        result.subject_to_object_score, result.object_to_subject_score = scores if entity_is_subject else scores[::-1]
         result.search_settings = settings
         annotated.append(result)
     return annotated
