@@ -31,7 +31,9 @@ def histopheno_query():
             'object_closure:"UPHENO:0049874"',
             'object_closure:"UPHENO:0003013"',
         ],
-        "filter_queries": ['subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121"'],
+        "filter_queries": [
+            '_query_:"{!terms f=subject}MONDO:0020121" OR _query_:"{!terms f=subject_closure}MONDO:0020121"'
+        ],
         "facet_mincount": 1,
         "facet_limit": None,
         "facet_method": None,

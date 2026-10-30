@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.datamodels.grid_groupings import bin_facet_key
@@ -14,6 +14,55 @@ from monarch_py.utils.utils import escape
 # largest grid currently needs well under this, so it is a backstop, not a working
 # limit.
 MAX_ROW_ASSOCIATIONS = 50000
+
+# `{!terms}` splits its value list on this. `separator` can change it, but no character
+# is safe for every possible value, so values carrying it are handled separately below.
+_TERMS_SEPARATOR = ","
+
+
+def _terms_parser_can_carry(value: str) -> bool:
+    """Whether `value` survives being packed into a `{!terms}` list.
+
+    A separator would split one ID into two terms. A quote or backslash would end the
+    `_query_` string early and hand the remainder of the value to the query parser.
+    """
+    return _TERMS_SEPARATOR not in value and '"' not in value and "\\" not in value
+
+
+def build_terms_filter(fields: List[str], values: Union[str, List[str]]) -> str:
+    """Match any of `values` in any of `fields`, in a clause count that does not grow.
+
+    A `field:"value"` OR chain costs one boolean clause per field per value, so an
+    entity whose closure or ortholog expansion runs past ~170 IDs exceeds Solr's
+    maxBooleanClauses (1024, unraised in our config) and the query fails to parse. That
+    makes the failure deterministic rather than intermittent: an affected entity breaks
+    on every request (#1458). The terms query parser takes a whole value set as one
+    clause, so this is `len(fields)` clauses however many IDs arrive.
+
+    `_query_` nesting is what allows one terms query per field: `{!terms}` is a local
+    param and applies to an entire query string, so several cannot sit side by side in
+    a single `fq`.
+
+    This is a like-for-like swap only on unanalyzed fields. The terms parser does not
+    run values through the field's analysis chain, so it matches what the quoted phrase
+    matched only where there is no analysis to speak of -- true of every field passed
+    here, all of which are `string` in the association schema.
+    """
+    if isinstance(values, str):
+        values = [values]
+    packable = [v for v in values if _terms_parser_can_carry(v)]
+    rest = [v for v in values if not _terms_parser_can_carry(v)]
+
+    clauses = []
+    if packable:
+        joined = _TERMS_SEPARATOR.join(packable)
+        clauses.extend(f'_query_:"{{!terms f={field}}}{joined}"' for field in fields)
+    # Whatever the terms parser cannot carry stays an ordinary clause. No ID in the
+    # index contains a separator or a quote, so this is empty in practice, but `entity`
+    # is caller-supplied, and a value like `A,B` has to go on matching `A,B` rather than
+    # quietly becoming a match on either half.
+    clauses.extend(f'{field}:"{escape_phrase(v)}"' for v in rest for field in fields)
+    return " OR ".join(clauses)
 
 
 @dataclass
@@ -61,10 +110,12 @@ def build_association_count_suffixes(entities: List[str]) -> AssociationCountSuf
     ortho_subject = None
     ortho_object = None
     if len(entities) > 1:
-        all_subjects = " OR ".join(f'subject:"{e}" OR subject_closure:"{e}"' for e in entities)
-        all_objects = " OR ".join(
-            f'object:"{e}" OR object_closure:"{e}" OR disease_context_qualifier:"{e}" OR disease_context_qualifier_closure:"{e}"'
-            for e in entities
+        # Ortholog traversal fetches up to 500 orthologs, so these are the widest
+        # clause counts in the codebase: four fields x 501 entities as an OR chain.
+        all_subjects = build_terms_filter(["subject", "subject_closure"], entities)
+        all_objects = build_terms_filter(
+            ["object", "object_closure", "disease_context_qualifier", "disease_context_qualifier_closure"],
+            entities,
         )
         ortho_subject = f"AND ({all_subjects})"
         ortho_object = f"AND ({all_objects})"
@@ -118,23 +169,25 @@ def build_association_query(
     query.add_field_filter_query("object_namespace", object_namespace)
     query.add_field_filter_query("object_taxon", object_taxon)
     query.add_field_filter_query("primary_knowledge_source", primary_knowledge_source)
+    # `entity` in particular arrives already expanded -- closure and ortholog traversal
+    # both hand this a few hundred IDs -- so these go through the terms parser rather
+    # than an OR chain whose clause count is a multiple of the ID count.
     if subject:
         if direct:
-            query.add_field_filter_query("subject", subject)
+            query.add_filter_query(build_terms_filter(["subject"], subject))
         else:
-            query.add_filter_query(" OR ".join([f'subject:"{s}" OR subject_closure:"{s}"' for s in subject]))
+            query.add_filter_query(build_terms_filter(["subject", "subject_closure"], subject))
     if object:
         if direct:
-            query.add_field_filter_query("object", object)
+            query.add_filter_query(build_terms_filter(["object"], object))
         else:
-            query.add_filter_query(" OR ".join([f'object:"{o}" OR object_closure:"{o}"' for o in object]))
+            query.add_filter_query(build_terms_filter(["object", "object_closure"], object))
     if entity:
         if direct:
-            query.add_filter_query(" OR ".join([f'{field}:"{e}"' for e in entity for field in entity_fields]))
+            query.add_filter_query(build_terms_filter(entity_fields, entity))
         else:
-            query.add_filter_query(
-                " OR ".join([f'{field}:"{e}" OR {field}_closure:"{e}"' for e in entity for field in entity_fields])
-            )
+            with_closures = [f for field in entity_fields for f in (field, f"{field}_closure")]
+            query.add_filter_query(build_terms_filter(with_closures, entity))
     if q:
         # We don't yet have tokenization strategies for the association index, initially we'll limit searching to
         # the visible fields in an association table plus their ID equivalents and use a wildcard query for substring matching
