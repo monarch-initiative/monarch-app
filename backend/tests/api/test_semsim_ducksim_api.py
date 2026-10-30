@@ -8,7 +8,7 @@ of failure the engine-only tests can miss.
 
 import duckdb
 import pytest
-from fastapi import status
+from fastapi import FastAPI, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.testclient import TestClient
 
@@ -56,13 +56,17 @@ def _baked_kg(path, assoc_rows):
         "INSERT INTO nodes VALUES (?, ?, 'biolink:Disease')",
         [(e, e) for e in entities] + [("A1", "a1"), ("B1", "b1")],
     )
-    con.execute("""CREATE TABLE information_content AS
+    con.execute(
+        """CREATE TABLE information_content AS
         WITH clo AS (SELECT subject_id AS s, object_id AS o FROM closure WHERE predicate_id='rdfs:subClassOf'),
              n AS (SELECT count(DISTINCT o) AS nn FROM clo)
-        SELECT o AS term, -log2(count(DISTINCT s)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o""")
-    con.execute("""CREATE TABLE closure_size AS
+        SELECT o AS term, -log2(count(DISTINCT s)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o"""
+    )
+    con.execute(
+        """CREATE TABLE closure_size AS
         SELECT e.subject AS entity, count(DISTINCT c.object_id) AS size
-        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject""")
+        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject"""
+    )
     con.close()
     return Ducksim.from_duckdb(str(path))
 
@@ -139,3 +143,58 @@ def test_unknown_search_mode_is_rejected(ducksim_client):
     # A bare router (no app exception handlers) raises the validation error the app turns into a 422.
     with pytest.raises(RequestValidationError, match="search_mode"):
         ducksim_client.get("/search/A1/Human Diseases?search_mode=exhaustive")
+
+
+@pytest.fixture
+def ducksim_app_client(ducksim_client):
+    app = FastAPI()  # an app, not a bare router, so HTTPExceptions become responses
+    app.include_router(router)
+    return TestClient(app)
+
+
+@pytest.mark.parametrize("directionality", DIRECTIONS)
+def test_compare_average_follows_directionality(ducksim_app_client, directionality):
+    """A1 vs {A1, B1}: A1's best match is itself, B1 shares only the root (IC 0). So
+    subject_to_object = IC(A1), object_to_subject = IC(A1) / 2, bidirectional = their mean."""
+    get = ducksim_app_client.get(f"/compare/A1/A1,B1?directionality={directionality}").json()
+    post = ducksim_app_client.post(
+        "/compare/", json={"subjects": ["A1"], "objects": ["A1", "B1"], "directionality": directionality}
+    ).json()
+    ic_a1 = get["subject_best_matches"]["A1"]["score"]
+    expected = {"subject_to_object": ic_a1, "object_to_subject": ic_a1 / 2, "bidirectional": 0.75 * ic_a1}
+    assert get["average_score"] == pytest.approx(expected[directionality])
+    assert post["average_score"] == pytest.approx(expected[directionality])
+
+
+def test_multicompare_scores_follow_directionality(ducksim_app_client):
+    """Query A1 vs entity {A1, B1}. With search's convention, subject_to_object averages the
+    entity's phenotypes (A1 -> IC(A1), B1 -> 0), so it is half of object_to_subject (the query's A1)."""
+    body = {"subjects": ["A1"], "object_sets": [{"id": "X", "label": "x", "phenotypes": ["A1", "B1"]}]}
+    bidirectional = ducksim_app_client.post("/multicompare/", json=body).json()[0]["score"]
+    s2o = ducksim_app_client.post("/multicompare/", json={**body, "directionality": "subject_to_object"}).json()[0]
+    o2s = ducksim_app_client.post("/multicompare/", json={**body, "directionality": "object_to_subject"}).json()[0]
+    assert s2o["score"] == pytest.approx(bidirectional / 1.5)
+    assert o2s["score"] == pytest.approx(bidirectional / 0.75)
+
+
+@pytest.mark.parametrize("directionality", DIRECTIONS)
+def test_multicompare_direction_means_what_it_does_in_search(ducksim_app_client, directionality):
+    """The phenogrid pages send one direction to both search and multicompare, so an entity must get
+    the same score, direction scores and settings from each."""
+    search = ducksim_app_client.get(
+        f"/search/A1,B1/Human Diseases?search_mode=full&directionality={directionality}&limit=10"
+    ).json()
+    from_search = {r["subject"]["id"]: r for r in search}["MONDO:1"]
+    multi = ducksim_app_client.post(
+        "/multicompare/",
+        json={
+            "subjects": ["A1", "B1"],
+            "object_sets": [{"id": "MONDO:1", "label": "one", "phenotypes": ["A1"]}],
+            "directionality": directionality,
+        },
+    ).json()[0]
+    assert multi["score"] == pytest.approx(from_search["score"])
+    assert multi["subject_to_object_score"] == pytest.approx(from_search["subject_to_object_score"])
+    assert multi["object_to_subject_score"] == pytest.approx(from_search["object_to_subject_score"])
+    assert multi["search_settings"]["engine"] == "ducksim"
+    assert multi["search_settings"]["directionality"] == directionality

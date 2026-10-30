@@ -28,6 +28,16 @@ from monarch_py.service.curie_service import converter
 from monarch_py.service.ducksim import Ducksim
 
 
+# Multicompare scores each object set as the entity, like a search result, but the entity's
+# phenotypes are the comparison's objects there and its subjects in search. So a multicompare
+# direction, which uses search's convention, is the opposite comparison direction.
+_SEARCH_TO_COMPARE_DIRECTION = {
+    SemsimDirectionality.BIDIRECTIONAL: SemsimDirectionality.BIDIRECTIONAL,
+    SemsimDirectionality.SUBJECT_TO_OBJECT: SemsimDirectionality.OBJECT_TO_SUBJECT,
+    SemsimDirectionality.OBJECT_TO_SUBJECT: SemsimDirectionality.SUBJECT_TO_OBJECT,
+}
+
+
 class DucksimService:
     """Semantic-similarity service computed in DuckDB (semsimian-equivalent)."""
 
@@ -46,13 +56,16 @@ class DucksimService:
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
         information_content: SemsimInformationContent = SemsimInformationContent.ONTOLOGY,
         group_prefix: Optional[str] = None,
+        directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
     ) -> TermSetPairwiseSimilarity:
         """`group_prefix` (e.g. "MONDO") picks the annotation corpus when information_content is
-        annotation; ontology IC ignores it."""
+        annotation; ontology IC ignores it. `directionality` picks which best matches
+        `average_score` averages."""
         result = self.engine.termset_pairwise_similarity(
             subjects,
             objects,
             str(metric),
+            direction=SemsimDirectionality(directionality).value,
             information_content=str(information_content),
             corpus_prefix=group_prefix,
         )
@@ -62,6 +75,10 @@ class DucksimService:
     def multi_compare(
         self, request: SemsimMultiCompareRequest, group_prefix: Optional[str] = None
     ) -> List[SemsimSearchResult]:
+        """Compare `request.subjects` (the query) with each object set (an entity). `directionality`
+        means what it does in search: subject_to_object averages the entity's phenotypes' best
+        matches, object_to_subject the query terms'."""
+        direction = _SEARCH_TO_COMPARE_DIRECTION[SemsimDirectionality(request.directionality)]
         results = []
         for object_set in request.object_sets:
             comparison = self.compare(
@@ -70,6 +87,7 @@ class DucksimService:
                 request.metric,
                 information_content=request.information_content,
                 group_prefix=group_prefix,
+                directionality=direction,
             )
             results.append(
                 SemsimSearchResult(

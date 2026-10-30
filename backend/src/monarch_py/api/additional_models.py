@@ -134,6 +134,7 @@ INFORMATION_CONTENT_TITLE = (
     "Information content from ontology structure (ontology) or annotation frequency (annotation)"
 )
 COMPARE_GROUP_TITLE = "Annotation corpus for information_content=annotation (e.g. Human Diseases)"
+COMPARE_DIRECTIONALITY_TITLE = "Which best matches average_score averages: subject_to_object, object_to_subject or both"
 
 
 class SemsimCompareRequest(BaseModel):
@@ -144,6 +145,7 @@ class SemsimCompareRequest(BaseModel):
         SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
     )
     group: Optional[SemsimSearchGroup] = Field(None, title=COMPARE_GROUP_TITLE)
+    directionality: SemsimDirectionality = Field(SemsimDirectionality.BIDIRECTIONAL, title=COMPARE_DIRECTIONALITY_TITLE)
 
 
 class SemsimMultiCompareObject(BaseModel):
@@ -160,6 +162,7 @@ class SemsimMultiCompareRequest(BaseModel):
         SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
     )
     group: Optional[SemsimSearchGroup] = Field(None, title=COMPARE_GROUP_TITLE)
+    directionality: SemsimDirectionality = Field(SemsimDirectionality.BIDIRECTIONAL, title=COMPARE_DIRECTIONALITY_TITLE)
 
 
 class SemsimSearchRequest(BaseModel):

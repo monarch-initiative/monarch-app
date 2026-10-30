@@ -40,21 +40,29 @@ def _kg(path, *, with_annotation_ic=True):
     con.executemany(
         "INSERT INTO nodes VALUES (?, ?, 'biolink:Disease')", [(e, e) for e in sorted({e for e, _, _ in EDGES})]
     )
-    con.execute("""CREATE TABLE information_content AS
+    con.execute(
+        """CREATE TABLE information_content AS
         WITH clo AS (SELECT object_id AS o FROM closure), n AS (SELECT count(DISTINCT o) AS nn FROM clo)
-        SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o""")
-    con.execute("""CREATE TABLE closure_size AS
+        SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o"""
+    )
+    con.execute(
+        """CREATE TABLE closure_size AS
         SELECT e.subject AS entity, count(DISTINCT c.object_id) AS size
-        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject""")
+        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject"""
+    )
     if with_annotation_ic:
         # the SQL koza's annotation-information-content runs, for the MONDO -> HP-style corpus
-        con.execute("""CREATE TABLE annotation_information_content AS
+        con.execute(
+            """CREATE TABLE annotation_information_content AS
             WITH a AS (SELECT DISTINCT subject AS entity, object AS term FROM edges WHERE subject LIKE 'MONDO:%'),
                  n AS (SELECT count(DISTINCT entity) AS nn FROM a)
             SELECT 'mondo_hp' AS corpus, c.object_id AS term, log2((SELECT nn FROM n)::DOUBLE / count(DISTINCT a.entity)) AS ic
-            FROM a JOIN closure c ON c.subject_id = a.term GROUP BY c.object_id""")
-        con.execute("""CREATE TABLE pheno_comparison_corpora (corpus VARCHAR,
-            subject_prefixes VARCHAR[], object_prefixes VARCHAR[])""")
+            FROM a JOIN closure c ON c.subject_id = a.term GROUP BY c.object_id"""
+        )
+        con.execute(
+            """CREATE TABLE pheno_comparison_corpora (corpus VARCHAR,
+            subject_prefixes VARCHAR[], object_prefixes VARCHAR[])"""
+        )
         con.execute("INSERT INTO pheno_comparison_corpora VALUES ('mondo_hp', ['MONDO'], ['HP'])")
         # a listed corpus with no IC rows (e.g. a build that skipped it) is not offered
         con.execute("INSERT INTO pheno_comparison_corpora VALUES ('rgd_mp', ['RGD'], ['MP'])")
@@ -182,3 +190,24 @@ def test_api_multicompare_with_annotation_ic(client):
     )
     assert response.status_code == status.HTTP_200_OK, response.text
     assert response.json()[0]["score"] == pytest.approx(math.log2(3 / 2))
+
+
+def test_api_directionality_with_annotation_ic(client):
+    """A1 vs {A1, B1} with annotation IC: A1 matches itself (log2(3/2)); B1 shares only the root (0)."""
+    ic = math.log2(3 / 2)
+    settings = "information_content=annotation&group=Human Diseases"
+    s2o = client.get(f"/compare/A1/A1,B1?{settings}&directionality=subject_to_object").json()
+    o2s = client.get(f"/compare/A1/A1,B1?{settings}&directionality=object_to_subject").json()
+    assert (s2o["average_score"], o2s["average_score"]) == (pytest.approx(ic), pytest.approx(ic / 2))
+    multi = client.post(
+        "/multicompare/",
+        json={
+            "subjects": ["A1"],
+            "object_sets": [{"id": "X", "label": "x", "phenotypes": ["A1", "B1"]}],
+            "information_content": "annotation",
+            "group": "Human Diseases",
+            "directionality": "subject_to_object",
+        },
+    ).json()[0]
+    assert multi["score"] == pytest.approx(ic / 2)  # the entity's phenotypes, as in search
+    assert multi["search_settings"]["information_content"] == "annotation"
