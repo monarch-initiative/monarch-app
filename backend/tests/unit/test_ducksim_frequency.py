@@ -1,9 +1,9 @@
 """The frequency tie-break and per-match frequencies in ducksim search, on a tiny synthetic KG.
 
-Ontology: A1 < A < R. Four diseases annotated to A1 alone, with different recorded frequencies:
+Ontology: A1 < A < R, A2 < A. Four diseases annotated to A1 alone, with different recorded frequencies:
 MONDO:1 9 of 10 patients (0.9), MONDO:2 "Occasional" (HPO category, 0.17), MONDO:3 none recorded,
-MONDO:4 0 of 5 patients (floored to 0.01). A query for A1 scores all four the same, so only the
-tie-break separates them.
+MONDO:4 0 of 5 patients (0, floored to 0.01 by the tie-break). A query for A1 scores all four the
+same, so only the tie-break separates them.
 """
 
 import duckdb
@@ -27,27 +27,47 @@ EDGES = [
 
 @pytest.fixture
 def engine(tmp_path):
+    return _engine(tmp_path, EDGES)
+
+
+def _engine(tmp_path, edges):
     path = str(tmp_path / "kg.duckdb")
     con = duckdb.connect(path)
     con.execute("CREATE TABLE closure(subject_id VARCHAR, predicate_id VARCHAR, object_id VARCHAR)")
     con.executemany(
         "INSERT INTO closure VALUES (?, 'rdfs:subClassOf', ?)",
-        [("R", "R"), ("A", "A"), ("A", "R"), ("A1", "A1"), ("A1", "A"), ("A1", "R")],
+        [
+            ("R", "R"),
+            ("A", "A"),
+            ("A", "R"),
+            ("A1", "A1"),
+            ("A1", "A"),
+            ("A1", "R"),
+            ("A2", "A2"),
+            ("A2", "A"),
+            ("A2", "R"),
+        ],
     )
-    con.execute("""CREATE TABLE edges(subject VARCHAR, object VARCHAR, category VARCHAR, predicate VARCHAR,
-        negated VARCHAR, has_quotient VARCHAR, frequency_qualifier VARCHAR)""")
+    con.execute(
+        """CREATE TABLE edges(subject VARCHAR, object VARCHAR, category VARCHAR, predicate VARCHAR,
+        negated VARCHAR, has_quotient VARCHAR, frequency_qualifier VARCHAR)"""
+    )
     con.executemany(
         f"INSERT INTO edges VALUES (?, ?, '{D2P}', 'biolink:has_phenotype', NULL, ?, ?)",
-        EDGES,
+        edges,
     )
     con.execute("CREATE TABLE nodes(id VARCHAR, name VARCHAR, category VARCHAR)")
-    con.executemany("INSERT INTO nodes VALUES (?, ?, 'biolink:Disease')", [(e, e) for e, *_ in EDGES])
-    con.execute("""CREATE TABLE information_content AS
+    con.executemany("INSERT INTO nodes VALUES (?, ?, 'biolink:Disease')", sorted({(e, e) for e, *_ in edges}))
+    con.execute(
+        """CREATE TABLE information_content AS
         WITH clo AS (SELECT object_id AS o FROM closure), n AS (SELECT count(DISTINCT o) AS nn FROM clo)
-        SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o""")
-    con.execute("""CREATE TABLE closure_size AS
+        SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o"""
+    )
+    con.execute(
+        """CREATE TABLE closure_size AS
         SELECT e.subject AS entity, count(DISTINCT c.object_id) AS size
-        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject""")
+        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject"""
+    )
     con.close()
     return Ducksim.from_duckdb(path)
 
@@ -61,7 +81,7 @@ def test_recorded_frequencies(engine):
     assert freq == {
         ("MONDO:1", "A1"): pytest.approx(0.9),
         ("MONDO:2", "A1"): pytest.approx(0.17),
-        ("MONDO:4", "A1"): pytest.approx(0.01),  # 0 of 5 patients, floored
+        ("MONDO:4", "A1"): 0.0,  # 0 of 5 patients, reported as recorded
     }
 
 
@@ -95,6 +115,40 @@ def test_best_matches_carry_the_recorded_frequency(engine):
     assert by_entity["MONDO:3"]["object_best_matches"]["A1"]["frequency"] is None
 
 
+def test_an_exact_annotation_uses_its_own_frequency(tmp_path):
+    """Under Resnik, A1 matches a query for A as well as A itself does. MONDO:10 records A as
+    occasional and A1 in 9 of 10 patients; the tie-break must use A's 0.17, not A1's 0.9, so MONDO:11
+    (A, no frequency recorded, so the default 0.5) ranks first."""
+    eng = _engine(
+        tmp_path,
+        [("MONDO:10", "A", None, "HP:0040283"), ("MONDO:10", "A1", "0.9", None), ("MONDO:11", "A", None, None)],
+    )
+    for direction in ("object_to_subject", "bidirectional"):
+        results = eng.search(["A"], prefix="MONDO", mode="full", direction=direction, tie_break="frequency")
+        assert _order(results) == ["MONDO:11", "MONDO:10"], direction
+        match = dict((e, c) for e, _, c in results)["MONDO:10"]["object_best_matches"]["A"]
+        assert match["match_target"] == "A"
+        assert match["frequency"] == pytest.approx(0.17)
+
+
+def test_the_reported_match_is_the_one_the_tie_break_used(tmp_path):
+    """MONDO:20 has no annotation of the query term A, only its children A1 and A2, which match it
+    equally. The tie-break and the reported match both take A1, the lower id."""
+    eng = _engine(
+        tmp_path,
+        [
+            ("MONDO:20", "A1", "0.1", None),
+            ("MONDO:20", "A2", "0.9", None),
+            ("MONDO:21", "A1", None, None),
+            ("MONDO:21", "A2", None, None),
+        ],
+    )
+    results = eng.search(["A"], prefix="MONDO", mode="full", direction="object_to_subject", tie_break="frequency")
+    assert _order(results) == ["MONDO:21", "MONDO:20"]  # 0.5 (default) beats A1's 0.1
+    match = dict((e, c) for e, _, c in results)["MONDO:20"]["object_best_matches"]["A"]
+    assert (match["match_target"], match["frequency"]) == ("A1", pytest.approx(0.1))
+
+
 def test_kg_without_frequency_columns_ties_fall_back_to_id_order(tmp_path):
     from tests.unit.test_ducksim import _bake, _mini_kg  # edges there have no frequency columns
 
@@ -123,3 +177,25 @@ def test_api_frequency_tie_break(engine, monkeypatch):
     assert body[0]["search_settings"]["default_frequency"] == pytest.approx(0.1)
     assert body[0]["similarity"]["object_best_matches"]["A1"]["frequency"] == pytest.approx(0.9)
     assert client.get("/search/A1/Human Diseases?default_frequency=2").status_code == 422
+
+
+def test_api_default_frequency_alone_keeps_the_engine(engine, monkeypatch):
+    """default_frequency does nothing without the frequency tie-break, so it must not switch a
+    request to ducksim."""
+    service = DucksimService(engine=engine)
+    calls = []
+
+    def fake_service(name=None):
+        calls.append(name)
+        return service
+
+    monkeypatch.setattr(semsim_module, "semsim_service", fake_service)
+    monkeypatch.setattr(semsim_module, "resolve_engine", lambda engine=None: "semsimian")
+    app = FastAPI()
+    app.include_router(router)
+    response = TestClient(app).get("/search/A1/Human Diseases?default_frequency=0.3")
+    assert response.status_code == status.HTTP_200_OK, response.text
+    assert calls == ["semsimian"]
+    settings = response.json()[0]["search_settings"]
+    assert settings["engine"] == "semsimian"
+    assert settings["default_frequency"] == pytest.approx(0.5)

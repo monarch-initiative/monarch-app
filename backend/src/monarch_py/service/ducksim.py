@@ -305,9 +305,10 @@ class Ducksim:
         computed at startup.
 
         f is `has_quotient` (OMIM's "9 of 12 patients") when present, else the midpoint of the HPO
-        frequency category (Orphanet), floored at MIN_FREQUENCY. An entity with the same phenotype
-        from several sources takes the highest. A KG whose edges lack the frequency columns gets an
-        empty view, so the tie-break falls back to the default frequency everywhere."""
+        frequency category (Orphanet). It is the recorded value: 0 of 12 patients stays 0, and only
+        the tie-break floors it at MIN_FREQUENCY. An entity with the same phenotype from several
+        sources takes the highest. A KG whose edges lack the frequency columns gets an empty view,
+        so the tie-break falls back to the default frequency everywhere."""
         cols = {r[0] for r in self.con.execute("DESCRIBE src.edges").fetchall()}
         if not {"has_quotient", "frequency_qualifier", "category", "predicate"} <= cols:
             self.con.execute(
@@ -316,9 +317,10 @@ class Ducksim:
             return
         cases = " ".join(f"WHEN '{k}' THEN {v}" for k, v in FREQUENCY_CATEGORY_MIDPOINTS.items())
         negated = "AND NOT coalesce(try_cast(negated AS BOOLEAN), false)" if "negated" in cols else ""
-        self.con.execute(f"""
+        self.con.execute(
+            f"""
             CREATE VIEW _freq AS
-            SELECT entity, phenotype, greatest({MIN_FREQUENCY}, max(f)) AS f
+            SELECT entity, phenotype, max(f) AS f
             FROM (SELECT subject AS entity, object AS phenotype,
                          coalesce(try_cast(has_quotient AS DOUBLE), CASE frequency_qualifier {cases} END) AS f
                   FROM src.edges
@@ -326,7 +328,8 @@ class Ducksim:
                                      'biolink:DiseaseToPhenotypicFeatureAssociation')
                     AND predicate = 'biolink:has_phenotype' {negated})
             WHERE f IS NOT NULL
-            GROUP BY entity, phenotype""")
+            GROUP BY entity, phenotype"""
+        )
 
     def frequencies_batch(self, entity_ids) -> dict:
         """{(entity, phenotype) -> recorded frequency} for many entities in one query. Pairs with no
@@ -389,7 +392,8 @@ class Ducksim:
         (possible with annotation IC, which has no rows for terms no annotation reaches) still
         counts toward Jaccard, with IC 0."""
         subj_q, obj_q = _quote_list(subjects), _quote_list(objects)
-        rows = self._read(f"""
+        rows = self._read(
+            f"""
             WITH s_terms(t) AS (SELECT unnest([{subj_q}]::VARCHAR[])),
                  o_terms(t) AS (SELECT unnest([{obj_q}]::VARCHAR[])),
                  allterms AS (SELECT t FROM s_terms UNION SELECT t FROM o_terms),
@@ -410,7 +414,8 @@ class Ducksim:
                    zs.sz AS sz_s, zo.sz AS sz_o
             FROM common c JOIN sizes zs ON zs.t = c.s JOIN sizes zo ON zo.t = c.o
             GROUP BY c.s, c.o, zs.sz, zo.sz
-        """).fetchall()
+        """
+        ).fetchall()
         out = {}
         for s, o, inter, resnik, mica, sz_s, sz_o in rows:
             jaccard = inter / (sz_s + sz_o - inter)
@@ -439,16 +444,19 @@ class Ducksim:
 
     def _best_matches(self, sources, targets, pairs, metric_key, *, swapped):
         """For each source term, its best-matching target term (by metric_key) + similarity detail.
-        `swapped` reverses the (s,o) key lookup when sources are the object terms."""
+        `swapped` reverses the (s,o) key lookup when sources are the object terms. Among equally
+        scored targets the closest (highest Jaccard, so an exact match) wins, then the first listed:
+        the same rule the frequency tie-break uses to pick an entity's match for a query term."""
         result = {}
         for src in sources:
-            best_t, best_d, best_score = None, None, -1.0
+            best_t, best_d, best_key = None, None, (-1.0, -1.0)
             for tgt in targets:
                 key = (tgt, src) if swapped else (src, tgt)
                 d = pairs.get(key)
-                score = d[metric_key] if d else 0.0
-                if score > best_score:
-                    best_score, best_t, best_d = score, tgt, d
+                rank_key = (d[metric_key], d["jaccard"]) if d else (0.0, 0.0)
+                if rank_key > best_key:
+                    best_key, best_t, best_d = rank_key, tgt, d
+            best_score = best_key[0]
             if best_score < 0.0:  # no targets at all — no match, score floors at 0
                 best_score = 0.0
             s_id, o_id = (best_t, src) if swapped else (src, best_t)
@@ -552,16 +560,20 @@ class Ducksim:
         score_expr = spec.sql_rank
         lim = "" if limit is None else f"LIMIT {int(limit)}"
         if tie_break == FREQUENCY_TIE_BREAK:
-            # For each query term, the frequency of the entity annotation that best matches it (the
-            # most frequent one among equally good matches), summed in log space: the entity whose
-            # matched phenotypes are most typical of it ranks first among equal scores.
+            # For each query term, the frequency of the one entity annotation that best matches it,
+            # summed in log space: the entity whose matched phenotypes are most typical of it ranks
+            # first among equal scores. Among equally scored matches the closest one (highest
+            # Jaccard, so an exact annotation of the query term itself) is used, then the lowest id:
+            # the same match `_best_matches` reports. Under Resnik a term's descendants score the
+            # same as the term, and taking the most frequent of them would use a frequency the
+            # entity doesn't record for the term.
             dflt = max(MIN_FREQUENCY, min(1.0, float(default_frequency)))
             tie_ctes = f""",
-             qbest AS (SELECT e, q, max(score) AS best FROM ranked GROUP BY e, q),
-             qfreq AS (SELECT r.e, r.q, max(coalesce(fq.f, {dflt})) AS f
-                       FROM ranked r JOIN qbest b ON b.e = r.e AND b.q = r.q AND r.score = b.best
-                       LEFT JOIN _freq fq ON fq.entity = r.e AND fq.phenotype = r.p
-                       GROUP BY r.e, r.q),
+             qmatch AS (SELECT e, q, p, row_number() OVER (PARTITION BY e, q ORDER BY score DESC, jaccard DESC, p) AS rn
+                        FROM ranked),
+             qfreq AS (SELECT m.e, m.q, greatest({MIN_FREQUENCY}, coalesce(fq.f, {dflt})) AS f
+                       FROM qmatch m LEFT JOIN _freq fq ON fq.entity = m.e AND fq.phenotype = m.p
+                       WHERE m.rn = 1),
              tie AS (SELECT e, sum(ln(f)) AS tb FROM qfreq GROUP BY e)"""
             tie_join = "LEFT JOIN tie ON tie.e = coalesce(d1.e, d2.e)"
             order = f"round(score, {_TIE_DECIMALS}) DESC, coalesce(tie.tb, -1e308) DESC, entity"
@@ -592,7 +604,7 @@ class Ducksim:
                FROM pair pr JOIN psize ps ON ps.e = pr.e AND ps.p = pr.p
                             JOIN qsize qs ON qs.q = pr.q
              ),
-             ranked AS (SELECT e, p, q, {score_expr} AS score FROM scored),
+             ranked AS (SELECT e, p, q, {score_expr} AS score, jaccard FROM scored),
              dir1 AS (SELECT bm.e, sum(bm.best) / np.n AS avg1
                       FROM (SELECT e, p, max(score) AS best FROM ranked GROUP BY e, p) bm
                       JOIN np ON np.e = bm.e GROUP BY bm.e, np.n),
@@ -658,7 +670,8 @@ class Ducksim:
         """Cheap set-Jaccard ranking of all (prefix) entities vs the query — Hybrid's candidate gen."""
         Q = _quote_list(set(query_terms))
         pfilter = f"AND split_part(i.entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
-        return self._read(f"""
+        return self._read(
+            f"""
             WITH qt(t) AS (SELECT unnest([{Q}]::VARCHAR[])),
                  q_anc AS (SELECT DISTINCT c.o AS a FROM _clo c JOIN qt ON c.s = qt.t),
                  qn AS (SELECT count(*) AS n FROM q_anc),
@@ -668,7 +681,8 @@ class Ducksim:
             SELECT i.entity, i.inter::DOUBLE / ((SELECT n FROM qn) + e.pn - i.inter) AS jaccard
             FROM inter i JOIN _esize e ON e.entity = i.entity
             WHERE true {pfilter} ORDER BY jaccard DESC, i.entity
-        """).fetchall()
+        """
+        ).fetchall()
 
     # ---- search with full per-result detail -----------------------------
 
