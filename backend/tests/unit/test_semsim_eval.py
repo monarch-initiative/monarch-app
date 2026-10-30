@@ -150,6 +150,12 @@ def test_random_weighted_prefers_frequent_terms(engine):
     assert sorted(both) == [B1, C1]
 
 
+def test_random_weighted_samples_terms_recorded_in_no_patients(engine, monkeypatch):
+    monkeypatch.setattr(engine, "frequencies_batch", lambda ids: {("MONDO:3", B1): 0.0, ("MONDO:3", C1): 0.0})
+    query = SemsimEvaluation(engine, _options(query_size=5)).build_query("MONDO:3", "random_weighted", "none")
+    assert sorted(query) == [B1, C1]
+
+
 def test_frequency_tie_break_reorders_tied_diseases(engine):
     evaluation = SemsimEvaluation(engine, _options())
     # MONDO:1 and MONDO:2 both match A1 exactly. By id MONDO:1 comes first; by frequency MONDO:2

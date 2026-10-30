@@ -51,7 +51,7 @@ import statistics
 from dataclasses import asdict, dataclass, field
 from typing import Dict, Iterable, Iterator, List, Optional
 
-from monarch_py.service.ducksim import DEFAULT_FREQUENCY, Ducksim
+from monarch_py.service.ducksim import DEFAULT_FREQUENCY, MIN_FREQUENCY, Ducksim
 
 # Ranking settings to compare. "production" is today's default.
 CONFIGS: Dict[str, dict] = {
@@ -187,12 +187,14 @@ class SemsimEvaluation:
         return list(dict.fromkeys(terms))
 
     def _frequency_weighted_sample(self, disease: str, profile: List[str], rng: random.Random) -> List[str]:
-        """Sample without replacement, each term weighted by its recorded frequency in the disease."""
+        """Sample without replacement, each term weighted by its recorded frequency in the disease,
+        floored at MIN_FREQUENCY as the tie-break does, so a term recorded in 0 patients is unlikely
+        but possible."""
         freq = self.engine.frequencies_batch([disease])
         remaining = list(profile)
         chosen: List[str] = []
         while remaining and len(chosen) < self.options.query_size:
-            weights = [freq.get((disease, term), DEFAULT_FREQUENCY) for term in remaining]
+            weights = [max(MIN_FREQUENCY, freq.get((disease, term), DEFAULT_FREQUENCY)) for term in remaining]
             pick = rng.choices(remaining, weights=weights, k=1)[0]
             chosen.append(pick)
             remaining.remove(pick)
