@@ -13,6 +13,8 @@ from monarch_py.api.additional_models import (
     SemsimInformationContent,
     SemsimMultiCompareRequest,
     SemsimSearchMode,
+    SemsimTieBreak,
+    DEFAULT_FREQUENCY,
 )
 from monarch_py.datamodels.model import (
     BestMatch,
@@ -89,6 +91,8 @@ class DucksimService:
         limit: int = 10,
         search_mode: SemsimSearchMode = SemsimSearchMode.HYBRID,
         information_content: SemsimInformationContent = SemsimInformationContent.ONTOLOGY,
+        tie_break: SemsimTieBreak = SemsimTieBreak.NONE,
+        default_frequency: float = DEFAULT_FREQUENCY,
     ) -> List[SemsimSearchResult]:
         # Hybrid (the default) matches the semsimian server. Full scores every entity in the group,
         # so a richly annotated entity can't be dropped by hybrid's Jaccard prefilter (see engine).
@@ -103,6 +107,8 @@ class DucksimService:
             direction=direction,
             mode=str(search_mode),
             information_content=str(information_content),
+            tie_break=str(tie_break),
+            default_frequency=default_frequency,
         )
         if not page:
             return []
@@ -160,6 +166,7 @@ class DucksimService:
                 match_target=bm["match_target"],
                 match_target_label=lab.get(bm["match_target"]),
                 score=bm["score"],
+                frequency=bm.get("frequency"),
                 match_subsumer=bm["match_subsumer"],
                 match_subsumer_label=lab.get(bm["match_subsumer"]),
                 similarity=TermPairwiseSimilarity(

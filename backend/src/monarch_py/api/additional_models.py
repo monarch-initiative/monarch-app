@@ -111,6 +111,25 @@ class SemsimInformationContent(str, Enum):
         return self.value
 
 
+class SemsimTieBreak(str, Enum):
+    """How a search orders entities with equal scores.
+
+    `none` orders them by id. `frequency` orders them by how frequent the matched phenotypes are
+    in each entity, using OMIM patient counts and HPO frequency categories where the annotation
+    records one and `default_frequency` where it doesn't. Only ducksim supports `frequency`.
+    """
+
+    NONE = "none"
+    FREQUENCY = "frequency"
+
+    def __str__(self):
+        return self.value
+
+
+DEFAULT_FREQUENCY = 0.5
+TIE_BREAK_TITLE = "Order equal scores by id (none) or by matched phenotype frequency (frequency)"
+DEFAULT_FREQUENCY_TITLE = "Frequency assumed where an annotation records none (frequency tie-break only)"
+
 INFORMATION_CONTENT_TITLE = (
     "Information content from ontology structure (ontology) or annotation frequency (annotation)"
 )
@@ -156,6 +175,8 @@ class SemsimSearchRequest(BaseModel):
     information_content: SemsimInformationContent = Field(
         SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
     )
+    tie_break: SemsimTieBreak = Field(SemsimTieBreak.NONE, title=TIE_BREAK_TITLE)
+    default_frequency: float = Field(DEFAULT_FREQUENCY, title=DEFAULT_FREQUENCY_TITLE, ge=0.01, le=1.0)
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 
 
