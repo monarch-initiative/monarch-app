@@ -109,8 +109,8 @@ export const associations: DownloadItem[] = [
 
 export const derivedArtifacts: DownloadItem[] = [
   {
-    label: "Phenio SQLite (semsql)",
-    url: "https://data.monarchinitiative.org/monarch-kg/latest/phenio.db.gz",
+    label: "PHENIO ontology (OWL)",
+    url: "https://github.com/monarch-initiative/phenio/releases/latest/download/phenio.owl.gz",
   },
   {
     label: "Solr Data",
