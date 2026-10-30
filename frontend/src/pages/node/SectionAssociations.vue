@@ -22,6 +22,7 @@
           :section-label="sectionTitle(category.id, category.label)"
         />
         <AppButton
+          v-if="acknowledged"
           class="show-rows"
           :text="
             showRows[category.id]
@@ -168,6 +169,7 @@ import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import type { Options as MultiSelectOptions } from "@/components/AppSelectMulti.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
+import { useResearchUseAcknowledgement } from "@/composables/use-research-use-acknowledgement";
 import { DRUG_SECTIONS } from "@/pages/node/associationColumns";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
@@ -230,6 +232,8 @@ const selectedTaxonLabels = (categoryId: string): string[] => {
   return selected.map((opt) => opt.id);
 };
 
+/** drug sections, and their rows button, wait for the research-use notice */
+const { acknowledged } = useResearchUseAcknowledgement();
 /** drug ↔ condition sections render a facet summary (SectionDrugUses) */
 const isDrugSection = (categoryId: string) => DRUG_SECTIONS.has(categoryId);
 /** whether a drug section's full association table is shown */

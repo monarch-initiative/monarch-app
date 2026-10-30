@@ -20,395 +20,406 @@
           A drug not listed here is not known to be safe for this condition;
           this list is not a complete record of contraindications.
         </p>
+        <AppButton
+          v-if="!acknowledged"
+          class="acknowledge"
+          :text="`I understand, show ${sectionNoun}`"
+          @click="acknowledge"
+        />
       </div>
     </AppAlert>
 
-    <!-- direct vs. inferred (subtypes), as in the other association sections -->
-    <AppAssociationTabs
-      v-if="hasTabs && allCount > 0"
-      :has-direct-associations="directCount > 0"
-      :show-all-tab="allCount > directCount"
-      :direct-active="activeTab === 'direct'"
-      :all-active="activeTab === 'all'"
-      :direct-label="`Directly associated ${sectionNoun}`"
-      :inferred-label="`Inferred associated ${sectionNoun}`"
-      :direct-tooltip="`${plural(directCount, groupNoun)} for ${node.name} itself`"
-      :inferred-tooltip="`${plural(allCount, groupNoun)} for ${node.name} or its subtypes (${allCount - directCount} only through a subtype)`"
-      @select="selectTab"
-    />
-
-    <!-- level 0: section overview -->
-    <p v-if="summary.isSuccess.value" class="overview">
-      <strong>{{ plural(summary.data.value.group_total, groupNoun) }}</strong>
-      <span class="muted">
-        ·
-        {{ plural(summary.data.value.unique.grouping_key ?? 0, "statement") }}
-        from {{ plural(summary.data.value.total, "assertion") }}
-      </span>
-      <AppProvenanceIcons
-        class="overview-provenance"
-        show-labels
-        :agent-types="facetValues(summary.data.value.facets.agent_type)"
-        :knowledge-levels="
-          facetValues(summary.data.value.facets.knowledge_level)
-        "
+    <template v-if="acknowledged">
+      <!-- direct vs. inferred (subtypes), as in the other association sections -->
+      <AppAssociationTabs
+        v-if="hasTabs && allCount > 0"
+        :has-direct-associations="directCount > 0"
+        :show-all-tab="allCount > directCount"
+        :direct-active="activeTab === 'direct'"
+        :all-active="activeTab === 'all'"
+        :direct-label="`Directly associated ${sectionNoun}`"
+        :inferred-label="`Inferred associated ${sectionNoun}`"
+        :direct-tooltip="`${plural(directCount, groupNoun)} for ${node.name} itself`"
+        :inferred-tooltip="`${plural(allCount, groupNoun)} for ${node.name} or its subtypes (${allCount - directCount} only through a subtype)`"
+        @select="selectTab"
       />
-    </p>
-    <AppStatus v-else-if="summary.isLoading.value" code="loading"
-      >Loading summary</AppStatus
-    >
-    <AppStatus v-else-if="summary.isError.value" code="error"
-      >Error loading {{ sectionNoun }}</AppStatus
-    >
 
-    <div class="chips">
-      <button
-        v-for="j in jurisdictionChips"
-        :key="j.value"
-        :class="['chip', { active: jurisdiction === j.value }]"
-        :title="`Only show ${groupNoun}s with a ${jurisdictionName(j.value)} label`"
-        @click="toggleJurisdiction(j.value)"
+      <!-- level 0: section overview -->
+      <p v-if="summary.isSuccess.value" class="overview">
+        <strong>{{ plural(summary.data.value.group_total, groupNoun) }}</strong>
+        <span class="muted">
+          ·
+          {{ plural(summary.data.value.unique.grouping_key ?? 0, "statement") }}
+          from {{ plural(summary.data.value.total, "assertion") }}
+        </span>
+        <AppProvenanceIcons
+          class="overview-provenance"
+          show-labels
+          :agent-types="facetValues(summary.data.value.facets.agent_type)"
+          :knowledge-levels="
+            facetValues(summary.data.value.facets.knowledge_level)
+          "
+        />
+      </p>
+      <AppStatus v-else-if="summary.isLoading.value" code="loading"
+        >Loading summary</AppStatus
       >
-        {{ jurisdictionName(j.value) }}
-        <span class="chip-count">{{ j.unique[side] }}</span>
-      </button>
-      <template
-        v-if="
-          predicateState.showToggle &&
-          (investigationalCount > 0 || includeInvestigational)
-        "
+      <AppStatus v-else-if="summary.isError.value" code="error"
+        >Error loading {{ sectionNoun }}</AppStatus
       >
-        <span class="chip-sep" />
+
+      <div class="chips">
         <button
-          :class="['chip', { active: includeInvestigational }]"
-          :title="`${plural(investigationalCount, groupNoun)} with only clinical-trial, studied or off-label (applied) uses`"
-          @click="includeInvestigational = !includeInvestigational"
+          v-for="j in jurisdictionChips"
+          :key="j.value"
+          :class="['chip', { active: jurisdiction === j.value }]"
+          :title="`Only show ${groupNoun}s with a ${jurisdictionName(j.value)} label`"
+          @click="toggleJurisdiction(j.value)"
         >
-          + investigational
-          <span class="chip-count">{{ investigationalCount }}</span>
+          {{ jurisdictionName(j.value) }}
+          <span class="chip-count">{{ j.unique[side] }}</span>
         </button>
-      </template>
-    </div>
-
-    <!-- level 1: one row per drug / condition -->
-    <ul v-if="!summary.isError.value" class="groups">
-      <li v-for="group in groups" :key="group.value" class="group">
-        <!-- the whole row toggles; names inside it are links -->
-        <div
-          class="group-row"
-          role="button"
-          tabindex="0"
-          :aria-expanded="expanded === group.value"
-          :aria-label="`Show statements for ${group.fields[labelField]}`"
-          @click="toggleGroup(group.value)"
-          @keydown.enter.space.self.prevent="toggleGroup(group.value)"
+        <template
+          v-if="
+            predicateState.showToggle &&
+            (investigationalCount > 0 || includeInvestigational)
+          "
         >
-          <AppIcon
-            class="expand"
-            :icon="expanded === group.value ? 'angle-down' : 'angle-right'"
-          />
-          <span class="group-node" @click.stop>
-            <AppNodeBadge
-              :node="{
-                id: group.value,
-                name: group.fields[labelField] ?? group.value,
-                category: group.fields[categoryField] ?? undefined,
-              }"
+          <span class="chip-sep" />
+          <button
+            :class="['chip', { active: includeInvestigational }]"
+            :title="`${plural(investigationalCount, groupNoun)} with only clinical-trial, studied or off-label (applied) uses`"
+            @click="includeInvestigational = !includeInvestigational"
+          >
+            + investigational
+            <span class="chip-count">{{ investigationalCount }}</span>
+          </button>
+        </template>
+      </div>
+
+      <!-- level 1: one row per drug / condition -->
+      <ul v-if="!summary.isError.value" class="groups">
+        <li v-for="group in groups" :key="group.value" class="group">
+          <!-- the whole row toggles; names inside it are links -->
+          <div
+            class="group-row"
+            role="button"
+            tabindex="0"
+            :aria-expanded="expanded === group.value"
+            :aria-label="`Show statements for ${group.fields[labelField]}`"
+            @click="toggleGroup(group.value)"
+            @keydown.enter.space.self.prevent="toggleGroup(group.value)"
+          >
+            <AppIcon
+              class="expand"
+              :icon="expanded === group.value ? 'angle-down' : 'angle-right'"
             />
-          </span>
-          <span class="targets">
-            <template
-              v-for="(target, i) in group.facets[secondaryField] ?? []"
-              :key="target.value"
-            >
-              <span v-if="i" class="muted">, </span>
-              <span v-else-if="!isDiseasePage" class="muted">in </span>
-              <span
-                v-if="target.value === node.id"
-                class="muted"
-                :title="plural(target.count, 'label assertion')"
-                >{{ target.label ?? target.value }}</span
+            <span class="group-node" @click.stop>
+              <AppNodeBadge
+                :node="{
+                  id: group.value,
+                  name: group.fields[labelField] ?? group.value,
+                  category: group.fields[categoryField] ?? undefined,
+                }"
+              />
+            </span>
+            <span class="targets">
+              <template
+                v-for="(target, i) in group.facets[secondaryField] ?? []"
+                :key="target.value"
               >
-              <AppLink
-                v-else
-                :to="`/${target.value}`"
-                :title="plural(target.count, 'label assertion')"
-                @click.stop
-                >{{ target.label ?? target.value }}</AppLink
-              >
-            </template>
-            <span v-if="moreTargets(group) > 0" class="muted">
-              +{{ moreTargets(group) }} more</span
-            >
-          </span>
-          <span class="where">
-            <span
-              v-for="j in group.facets.medic_jurisdiction ?? []"
-              :key="j.value"
-              class="pill"
-              :title="`${plural(j.count, 'label assertion')} from ${jurisdictionName(j.value)}`"
-              >{{ jurisdictionAbbrev(j.value) }}
-              <span class="pill-count">{{ j.count }}</span></span
-            >
-          </span>
-          <AppProvenanceIcons
-            class="provenance-cell"
-            :agent-types="facetValues(group.facets.agent_type)"
-            :knowledge-levels="facetValues(group.facets.knowledge_level)"
-          />
-          <span class="since muted">{{
-            year(group.stats.medic_approval_date?.min)
-          }}</span>
-        </div>
-
-        <!-- level 2: distinct statements for this drug / condition -->
-        <div v-if="expanded === group.value" class="statements">
-          <AppStatus v-if="statements.isLoading.value" code="loading"
-            >Loading statements</AppStatus
-          >
-          <AppStatus v-else-if="statements.isError.value" code="error"
-            >Error loading statements</AppStatus
-          >
-          <ul v-else>
-            <li
-              v-for="st in statements.data.value.groups"
-              :key="st.value"
-              class="statement"
-            >
-              <div
-                class="statement-row"
-                role="button"
-                tabindex="0"
-                :aria-expanded="openStatement === st.value"
-                @click="toggleStatement(st.value)"
-                @keydown.enter.space.self.prevent="toggleStatement(st.value)"
-              >
-                <AppIcon
-                  :icon="
-                    openStatement === st.value ? 'angle-down' : 'angle-right'
-                  "
-                />
-                <span class="predicate">{{
-                  predicateLabel(st.fields.predicate)
-                }}</span>
-                <span v-if="st.fields.object === node.id" class="target">{{
-                  st.fields.object_label
-                }}</span>
-                <span v-else class="target" @click.stop>
-                  <AppNodeBadge
-                    :node="{
-                      id: st.fields.object ?? '',
-                      name: st.fields.object_label ?? st.fields.object ?? '',
-                      category: st.fields.object_category ?? undefined,
-                    }"
-                  />
-                </span>
+                <span v-if="i" class="muted">, </span>
+                <span v-else-if="!isDiseasePage" class="muted">in </span>
                 <span
-                  v-for="ctx in st.facets.disease_context_qualifier ?? []"
-                  :key="ctx.value"
-                  class="context"
-                  >in
-                  <span v-if="ctx.value === node.id">{{
-                    ctx.label ?? ctx.value
-                  }}</span>
-                  <AppLink v-else :to="`/${ctx.value}`" @click.stop>{{
-                    ctx.label ?? ctx.value
-                  }}</AppLink></span
+                  v-if="target.value === node.id"
+                  class="muted"
+                  :title="plural(target.count, 'label assertion')"
+                  >{{ target.label ?? target.value }}</span
                 >
-                <span class="where">
-                  <span
-                    v-for="j in st.facets.medic_jurisdiction ?? []"
-                    :key="j.value"
-                    class="pill"
-                    >{{ jurisdictionAbbrev(j.value) }}
-                    <span class="pill-count">{{ j.count }}</span></span
-                  >
-                </span>
-                <AppProvenanceIcons
-                  :agent-types="facetValues(st.facets.agent_type)"
-                  :knowledge-levels="facetValues(st.facets.knowledge_level)"
-                />
-                <span class="since muted">{{
-                  year(st.stats.medic_approval_date?.min)
-                }}</span>
-              </div>
-              <ul
-                v-if="(st.facets.population_context_qualifier ?? []).length"
-                class="populations"
+                <AppLink
+                  v-else
+                  :to="`/${target.value}`"
+                  :title="plural(target.count, 'label assertion')"
+                  @click.stop
+                  >{{ target.label ?? target.value }}</AppLink
+                >
+              </template>
+              <span v-if="moreTargets(group) > 0" class="muted">
+                +{{ moreTargets(group) }} more</span
               >
-                <li
-                  v-for="pop in st.facets.population_context_qualifier"
-                  :key="pop.value"
-                >
-                  {{ pop.value }}
-                </li>
-              </ul>
+            </span>
+            <span class="where">
+              <span
+                v-for="j in group.facets.medic_jurisdiction ?? []"
+                :key="j.value"
+                class="pill"
+                :title="`${plural(j.count, 'label assertion')} from ${jurisdictionName(j.value)}`"
+                >{{ jurisdictionAbbrev(j.value) }}
+                <span class="pill-count">{{ j.count }}</span></span
+              >
+            </span>
+            <AppProvenanceIcons
+              class="provenance-cell"
+              :agent-types="facetValues(group.facets.agent_type)"
+              :knowledge-levels="facetValues(group.facets.knowledge_level)"
+            />
+            <span class="since muted">{{
+              year(group.stats.medic_approval_date?.min)
+            }}</span>
+          </div>
 
-              <!-- level 3: the label assertions behind one statement -->
-              <div v-if="openStatement === st.value" class="assertions">
-                <AppStatus v-if="assertions.isLoading.value" code="loading"
-                  >Loading assertions</AppStatus
+          <!-- level 2: distinct statements for this drug / condition -->
+          <div v-if="expanded === group.value" class="statements">
+            <AppStatus v-if="statements.isLoading.value" code="loading"
+              >Loading statements</AppStatus
+            >
+            <AppStatus v-else-if="statements.isError.value" code="error"
+              >Error loading statements</AppStatus
+            >
+            <ul v-else>
+              <li
+                v-for="st in statements.data.value.groups"
+                :key="st.value"
+                class="statement"
+              >
+                <div
+                  class="statement-row"
+                  role="button"
+                  tabindex="0"
+                  :aria-expanded="openStatement === st.value"
+                  @click="toggleStatement(st.value)"
+                  @keydown.enter.space.self.prevent="toggleStatement(st.value)"
                 >
-                <AppStatus v-else-if="assertions.isError.value" code="error"
-                  >Error loading assertions</AppStatus
-                >
-                <template v-else>
-                  <p class="muted assertion-summary">
-                    {{ plural(assertions.data.value.total, "assertion")
-                    }}<template v-if="distinctTextCount">
-                      ·
-                      {{
-                        plural(distinctTextCount, "distinct supporting text")
-                      }}</template
-                    >
-                  </p>
-                  <div
-                    v-for="block in assertionBlocks"
-                    :key="block.jurisdiction"
-                    class="jurisdiction-block"
-                  >
-                    <h4 class="jurisdiction-head">
-                      {{
-                        block.jurisdiction
-                          ? jurisdictionName(block.jurisdiction)
-                          : "Other sources"
-                      }}
-                      <span class="muted"
-                        >{{ plural(block.labelCount, recordNoun(block)) }} ·
-                        {{ block.sources.join(", ") }}</span
-                      >
-                    </h4>
-                    <div
-                      v-for="text in visibleTexts(block)"
-                      :key="text.text"
-                      class="assertion"
-                    >
-                      <p v-if="text.text" class="supporting">
-                        {{ text.text }}
-                      </p>
-                      <!-- no text (CURE ID): the publication is the evidence -->
-                      <p v-else class="supporting">
-                        Reported in
-                        <template
-                          v-for="(pub, i) in text.publications"
-                          :key="pub"
-                          ><span v-if="i">, </span
-                          ><a
-                            v-if="publicationUrl(pub)"
-                            :href="publicationUrl(pub)"
-                            target="_blank"
-                            rel="noopener"
-                            >{{ pub }}</a
-                          ><span v-else>{{ pub }}</span></template
-                        ><span v-if="!text.publications.length">{{
-                          block.sources.join(", ")
-                        }}</span>
-                      </p>
-                      <div class="assertion-links">
-                        <span class="muted">{{
-                          plural(text.rows.length, recordNoun(block))
-                        }}</span>
-                        <span v-if="text.firstApproved" class="muted"
-                          >first approved {{ text.firstApproved }}</span
-                        >
-                        <a
-                          v-for="(link, i) in text.links.slice(0, 8)"
-                          :key="link"
-                          :href="link"
-                          target="_blank"
-                          rel="noopener"
-                          >{{ recordNoun(block) }} {{ i + 1 }}</a
-                        >
-                        <span v-if="text.links.length > 8" class="muted"
-                          >+{{ text.links.length - 8 }} more</span
-                        >
-                        <template v-if="text.text">
-                          <a
-                            v-for="pub in text.publications.filter(
-                              publicationUrl,
-                            )"
-                            :key="pub"
-                            :href="publicationUrl(pub)"
-                            target="_blank"
-                            rel="noopener"
-                            >{{ pub }}</a
-                          >
-                        </template>
-                        <AppProvenanceIcons
-                          :agent-types="
-                            text.rows
-                              .map((r) => r.agent_type ?? '')
-                              .filter(Boolean)
-                          "
-                          :knowledge-levels="
-                            text.rows
-                              .map((r) => r.knowledge_level ?? '')
-                              .filter(Boolean)
-                          "
-                        />
-                        <button class="link" @click="openDetails(text.rows[0])">
-                          details
-                        </button>
-                      </div>
-                    </div>
-                    <button
-                      v-if="block.texts.length > TEXTS_SHOWN"
-                      class="link"
-                      @click="toggleBlock(block.jurisdiction)"
-                    >
-                      {{
-                        openBlocks.has(block.jurisdiction)
-                          ? "show fewer"
-                          : `show ${block.texts.length - TEXTS_SHOWN} more texts`
-                      }}
-                    </button>
-                  </div>
-                  <p
-                    v-if="
-                      assertions.data.value.total >
-                      assertions.data.value.items.length
+                  <AppIcon
+                    :icon="
+                      openStatement === st.value ? 'angle-down' : 'angle-right'
                     "
-                    class="muted"
+                  />
+                  <span class="predicate">{{
+                    predicateLabel(st.fields.predicate)
+                  }}</span>
+                  <span v-if="st.fields.object === node.id" class="target">{{
+                    st.fields.object_label
+                  }}</span>
+                  <span v-else class="target" @click.stop>
+                    <AppNodeBadge
+                      :node="{
+                        id: st.fields.object ?? '',
+                        name: st.fields.object_label ?? st.fields.object ?? '',
+                        category: st.fields.object_category ?? undefined,
+                      }"
+                    />
+                  </span>
+                  <span
+                    v-for="ctx in st.facets.disease_context_qualifier ?? []"
+                    :key="ctx.value"
+                    class="context"
+                    >in
+                    <span v-if="ctx.value === node.id">{{
+                      ctx.label ?? ctx.value
+                    }}</span>
+                    <AppLink v-else :to="`/${ctx.value}`" @click.stop>{{
+                      ctx.label ?? ctx.value
+                    }}</AppLink></span
                   >
-                    Summarizing the first
-                    {{ assertions.data.value.items.length }} of
-                    {{ assertions.data.value.total }} assertions.
-                  </p>
-                </template>
-              </div>
-            </li>
-          </ul>
-          <p
-            v-if="
-              statements.isSuccess.value &&
-              statements.data.value.group_total >
-                statements.data.value.groups.length
-            "
-            class="muted"
-          >
-            Showing the first {{ statements.data.value.groups.length }} of
-            {{ statements.data.value.group_total }} statements.
-          </p>
-        </div>
-      </li>
-    </ul>
+                  <span class="where">
+                    <span
+                      v-for="j in st.facets.medic_jurisdiction ?? []"
+                      :key="j.value"
+                      class="pill"
+                      >{{ jurisdictionAbbrev(j.value) }}
+                      <span class="pill-count">{{ j.count }}</span></span
+                    >
+                  </span>
+                  <AppProvenanceIcons
+                    :agent-types="facetValues(st.facets.agent_type)"
+                    :knowledge-levels="facetValues(st.facets.knowledge_level)"
+                  />
+                  <span class="since muted">{{
+                    year(st.stats.medic_approval_date?.min)
+                  }}</span>
+                </div>
+                <ul
+                  v-if="(st.facets.population_context_qualifier ?? []).length"
+                  class="populations"
+                >
+                  <li
+                    v-for="pop in st.facets.population_context_qualifier"
+                    :key="pop.value"
+                  >
+                    {{ pop.value }}
+                  </li>
+                </ul>
 
-    <TheTableControls
-      v-if="groupTotal > 0 && !summary.isError.value"
-      v-model:per-page="perPage"
-      v-model:start="start"
-      class="pager"
-      :rows="groups"
-      :total="groupTotal"
-      :show-download="false"
-    />
+                <!-- level 3: the label assertions behind one statement -->
+                <div v-if="openStatement === st.value" class="assertions">
+                  <AppStatus v-if="assertions.isLoading.value" code="loading"
+                    >Loading assertions</AppStatus
+                  >
+                  <AppStatus v-else-if="assertions.isError.value" code="error"
+                    >Error loading assertions</AppStatus
+                  >
+                  <template v-else>
+                    <p class="muted assertion-summary">
+                      {{ plural(assertions.data.value.total, "assertion")
+                      }}<template v-if="distinctTextCount">
+                        ·
+                        {{
+                          plural(distinctTextCount, "distinct supporting text")
+                        }}</template
+                      >
+                    </p>
+                    <div
+                      v-for="block in assertionBlocks"
+                      :key="block.jurisdiction"
+                      class="jurisdiction-block"
+                    >
+                      <h4 class="jurisdiction-head">
+                        {{
+                          block.jurisdiction
+                            ? jurisdictionName(block.jurisdiction)
+                            : "Other sources"
+                        }}
+                        <span class="muted"
+                          >{{ plural(block.labelCount, recordNoun(block)) }} ·
+                          {{ block.sources.join(", ") }}</span
+                        >
+                      </h4>
+                      <div
+                        v-for="text in visibleTexts(block)"
+                        :key="text.text"
+                        class="assertion"
+                      >
+                        <p v-if="text.text" class="supporting">
+                          {{ text.text }}
+                        </p>
+                        <!-- no text (CURE ID): the publication is the evidence -->
+                        <p v-else class="supporting">
+                          Reported in
+                          <template
+                            v-for="(pub, i) in text.publications"
+                            :key="pub"
+                            ><span v-if="i">, </span
+                            ><a
+                              v-if="publicationUrl(pub)"
+                              :href="publicationUrl(pub)"
+                              target="_blank"
+                              rel="noopener"
+                              >{{ pub }}</a
+                            ><span v-else>{{ pub }}</span></template
+                          ><span v-if="!text.publications.length">{{
+                            block.sources.join(", ")
+                          }}</span>
+                        </p>
+                        <div class="assertion-links">
+                          <span class="muted">{{
+                            plural(text.rows.length, recordNoun(block))
+                          }}</span>
+                          <span v-if="text.firstApproved" class="muted"
+                            >first approved {{ text.firstApproved }}</span
+                          >
+                          <a
+                            v-for="(link, i) in text.links.slice(0, 8)"
+                            :key="link"
+                            :href="link"
+                            target="_blank"
+                            rel="noopener"
+                            >{{ recordNoun(block) }} {{ i + 1 }}</a
+                          >
+                          <span v-if="text.links.length > 8" class="muted"
+                            >+{{ text.links.length - 8 }} more</span
+                          >
+                          <template v-if="text.text">
+                            <a
+                              v-for="pub in text.publications.filter(
+                                publicationUrl,
+                              )"
+                              :key="pub"
+                              :href="publicationUrl(pub)"
+                              target="_blank"
+                              rel="noopener"
+                              >{{ pub }}</a
+                            >
+                          </template>
+                          <AppProvenanceIcons
+                            :agent-types="
+                              text.rows
+                                .map((r) => r.agent_type ?? '')
+                                .filter(Boolean)
+                            "
+                            :knowledge-levels="
+                              text.rows
+                                .map((r) => r.knowledge_level ?? '')
+                                .filter(Boolean)
+                            "
+                          />
+                          <button
+                            class="link"
+                            @click="openDetails(text.rows[0])"
+                          >
+                            details
+                          </button>
+                        </div>
+                      </div>
+                      <button
+                        v-if="block.texts.length > TEXTS_SHOWN"
+                        class="link"
+                        @click="toggleBlock(block.jurisdiction)"
+                      >
+                        {{
+                          openBlocks.has(block.jurisdiction)
+                            ? "show fewer"
+                            : `show ${block.texts.length - TEXTS_SHOWN} more texts`
+                        }}
+                      </button>
+                    </div>
+                    <p
+                      v-if="
+                        assertions.data.value.total >
+                        assertions.data.value.items.length
+                      "
+                      class="muted"
+                    >
+                      Summarizing the first
+                      {{ assertions.data.value.items.length }} of
+                      {{ assertions.data.value.total }} assertions.
+                    </p>
+                  </template>
+                </div>
+              </li>
+            </ul>
+            <p
+              v-if="
+                statements.isSuccess.value &&
+                statements.data.value.group_total >
+                  statements.data.value.groups.length
+              "
+              class="muted"
+            >
+              Showing the first {{ statements.data.value.groups.length }} of
+              {{ statements.data.value.group_total }} statements.
+            </p>
+          </div>
+        </li>
+      </ul>
 
-    <AppModal v-model="showModal" label="Association Details">
-      <SectionAssociationDetails
-        :node="node"
-        :association="selectedAssociation"
+      <TheTableControls
+        v-if="groupTotal > 0 && !summary.isError.value"
+        v-model:per-page="perPage"
+        v-model:start="start"
+        class="pager"
+        :rows="groups"
+        :total="groupTotal"
+        :show-download="false"
       />
-    </AppModal>
+
+      <AppModal v-model="showModal" label="Association Details">
+        <SectionAssociationDetails
+          :node="node"
+          :association="selectedAssociation"
+        />
+      </AppModal>
+    </template>
   </div>
 </template>
 
@@ -428,6 +439,7 @@ import type {
 } from "@/api/model";
 import AppAlert from "@/components/AppAlert.vue";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
+import AppButton from "@/components/AppButton.vue";
 import AppIcon from "@/components/AppIcon.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppModal from "@/components/AppModal.vue";
@@ -436,6 +448,7 @@ import AppProvenanceIcons from "@/components/AppProvenanceIcons.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
+import { useResearchUseAcknowledgement } from "@/composables/use-research-use-acknowledgement";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import {
   defaultPredicatesFor,
@@ -454,6 +467,12 @@ type Props = {
 const props = defineProps<Props>();
 
 const PAGE = 10;
+
+/**
+ * the section's content stays hidden until the research-use notice is
+ * acknowledged
+ */
+const { acknowledged, acknowledge } = useResearchUseAcknowledgement();
 
 const isDiseasePage = computed(() =>
   ["biolink:Disease", "biolink:PhenotypicFeature"].includes(
@@ -1073,6 +1092,10 @@ const plural = (n: number, noun: string) =>
   p + p {
     margin-top: 6px;
     font-weight: 600;
+  }
+
+  .acknowledge {
+    margin-top: 10px;
   }
 }
 
