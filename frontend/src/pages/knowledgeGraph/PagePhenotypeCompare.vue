@@ -72,7 +72,9 @@
       >Running analysis</AppStatus
     >
     <AppStatus v-if="compareIsError" code="error"
-      >Error running analysis</AppStatus
+      >Error running analysis<template v-if="compareErrorDetail"
+        >: {{ compareErrorDetail }}</template
+      ></AppStatus
     >
   </AppSection>
 
@@ -144,8 +146,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { ApiError } from "@/api";
 import {
+  cleanSettings,
   compareSetToSet,
   getPhenotypes,
   groups,
@@ -236,15 +240,17 @@ const {
   data: compareResults,
   isLoading: compareIsLoading,
   isError: compareIsError,
+  error: compareError,
 } = useQuery(
   async () => {
     return await compareSetToSet(
       aPhenotypes.value.map(({ id }) => id),
       bPhenotypes.value.map(({ id }) => id),
       metric.value.id,
-      informationContent.value.id === "annotation"
-        ? { information_content: "annotation", group: String(corpus.value.id) }
-        : {},
+      cleanSettings({
+        information_content: informationContent.value.id,
+        group: corpus.value.id,
+      }),
     );
   },
   {
@@ -256,6 +262,23 @@ const {
     objectAverage: 0,
   },
 );
+
+/** reason the api gave for refusing the comparison, if any */
+const compareErrorDetail = computed(() =>
+  compareError.value instanceof ApiError ? compareError.value.detail : "",
+);
+
+/** clear results when a setting they depend on changes, so rings aren't rescaled */
+watch([metric, informationContent, corpus], () => {
+  compareResults.value = {
+    subjectMatches: [],
+    objectMatches: [],
+    subjectUnmatched: [],
+    objectUnmatched: [],
+    subjectAverage: 0,
+    objectAverage: 0,
+  };
+});
 
 /** Whether analysis is pending */
 const isPending = computed(

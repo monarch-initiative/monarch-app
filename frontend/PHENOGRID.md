@@ -69,13 +69,25 @@ As URL params:
 - `subjects` - Comma-separated list of phenotype IDs, e.g. `HP:123,HP:abc,HP:456`.
 - `object-group` - Group name, e.g. "Human Diseases".
   See `src/api/phenotype-explorer.ts` for enumerated options.
+- `directionality` - Optional. How each result's best matches are averaged into its score:
+  `bidirectional` (default), `object_to_subject` (how much of the query each result covers) or `subject_to_object` (how much of each result the query covers).
+- `search-mode` - Optional. `hybrid` (default) scores only results that share phenotypes with the query; `full` scores every entity in the group.
+- `information-content` - Optional. `ontology` (default) or `annotation`, which weights phenotypes by how rarely the group's entities are annotated with them.
+- `tie-break` - Optional. `none` (default) or `frequency`, which orders tied results by how frequent the matched phenotypes are in each result.
+
+Unknown values of these settings are ignored and the default is used.
 
 As message params:
 
 ```ts
 {
   subjects: string[],
-  "object-group": string
+  "object-group": string,
+  // optional, same values as the url params
+  directionality?: string,
+  "search-mode"?: string,
+  "information-content"?: string,
+  "tie-break"?: string
 }
 ```
 
@@ -85,6 +97,9 @@ As URL params:
 
 - `subjects` - Comma-separated list of phenotype IDs, e.g. `HP:123,HP:abc,HP:456`.
 - `object-sets` - Comma-separated lists of phenotype IDs, e.g. `?object-sets=HP:123,HP:456&object-sets=HP:abc,HP:def`
+- `directionality` - Optional. Same values as in "Search" mode, with each object set as a result.
+- `information-content` - Optional. `ontology` (default) or `annotation`.
+- `group` - Group whose annotations give the information content, e.g. "Human Diseases". Required with `information-content=annotation`, ignored otherwise.
 
 Pass as message params to control additional details like set labels.
 
@@ -100,7 +115,11 @@ As message params:
     label: string;
     // list of phenotype ids
     phenotypes: string[];
-  }[]
+  }[],
+  // optional, same values as the url params
+  directionality?: string,
+  "information-content"?: string,
+  group?: string
 }
 ```
 
@@ -114,6 +133,7 @@ You can use the same event listener as the standard Phenogrid widget to set the 
 
 General parameters available regardless of the mode of operation.
 
+- `metric` - Optional. Similarity metric: `ancestor_information_content` (default), `jaccard_similarity` or `phenodigm_score`.
 - `stylesheet` - URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
   - If passed as a URL param, make sure it is URI encoded.
 

@@ -59,6 +59,16 @@ export type Params = { [key: string]: Param | Param[] };
 /** session response cache */
 const cache = new Map<string, Response>();
 
+/** error from a request, with the reason the api gave when it refused one */
+export class ApiError extends Error {
+  /** api's explanation of a bad request, empty if it gave none */
+  detail: string;
+  constructor(message: string, detail = "") {
+    super(message);
+    this.detail = detail;
+  }
+}
+
 /** generic fetch request wrapper */
 export const request = async <Response>(
   /** request url */
@@ -153,7 +163,18 @@ export const request = async <Response>(
     });
 
   /** throw error after details have been logged */
-  if (error || parsed === undefined) throw Error(error);
+  if (error || parsed === undefined) {
+    /** pass on the reason the api gave for refusing the request, if any */
+    const detail = (parsed as { detail?: unknown } | undefined)?.detail;
+    throw new ApiError(
+      error,
+      response.status >= 400 &&
+        response.status < 500 &&
+        typeof detail === "string"
+        ? detail
+        : "",
+    );
+  }
 
   /** add response to cache */
   if (request.method === "GET") cache.set(id, response);

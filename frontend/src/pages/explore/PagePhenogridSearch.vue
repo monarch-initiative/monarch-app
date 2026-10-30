@@ -25,6 +25,7 @@ import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
 import {
+  cleanSettings,
   compareSetToGroup,
   metricOptions,
   type Group,
@@ -41,8 +42,20 @@ const route = useRoute();
 const aPhenotypes = ref<Parameters<typeof compareSetToGroup>[0]>([]);
 const bGroup = ref<Parameters<typeof compareSetToGroup>[1]>("Human Diseases");
 const similarityMetric = ref(metricOptions[0]);
-/** ranking settings from url params; omitted ones take the API defaults */
+/**
+ * ranking settings from url or message params; omitted ones take the API
+ * defaults
+ */
 const settings = ref<SearchSettings>({});
+
+/** read ranking settings from url or message params */
+const readSettings = (params: Record<string, unknown>) =>
+  cleanSettings({
+    directionality: params.directionality,
+    search_mode: params["search-mode"],
+    information_content: params["information-content"],
+    tie_break: params["tie-break"],
+  });
 const stylesheetHref = ref("");
 
 /** comparison analysis */
@@ -79,21 +92,8 @@ watch(
       "object-group": objectGroup = "",
       metric = "",
       stylesheet = "",
-      directionality = "",
-      "search-mode": searchMode = "",
-      "information-content": informationContent = "",
-      "tie-break": tieBreak = "",
     } = route.query;
-    const text = (value: unknown) =>
-      value && typeof value === "string" ? value : undefined;
-    settings.value = Object.fromEntries(
-      Object.entries({
-        directionality: text(directionality),
-        search_mode: text(searchMode),
-        information_content: text(informationContent),
-        tie_break: text(tieBreak),
-      }).filter(([, value]) => value),
-    );
+    settings.value = readSettings(route.query);
 
     if (stylesheet && typeof stylesheet === "string")
       stylesheetHref.value = window.decodeURIComponent(stylesheet);
@@ -125,6 +125,12 @@ useEventListener("message", (event: MessageEvent) => {
     similarityMetric.value =
       metricOptions.find((option) => option.id === event.data.metric) ||
       metricOptions[0];
+  if (
+    ["directionality", "search-mode", "information-content", "tie-break"].some(
+      (param) => param in event.data,
+    )
+  )
+    settings.value = readSettings(event.data);
   if ("stylesheet" in event.data) stylesheetHref.value = event.data.stylesheet;
 });
 </script>

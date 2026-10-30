@@ -100,7 +100,9 @@
       >Running analysis</AppStatus
     >
     <AppStatus v-if="searchIsError" code="error"
-      >Error running analysis</AppStatus
+      >Error running analysis<template v-if="searchErrorDetail"
+        >: {{ searchErrorDetail }}</template
+      ></AppStatus
     >
   </AppSection>
   <!-- search results -->
@@ -159,7 +161,9 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
+import { ApiError } from "@/api";
 import {
+  cleanSettings,
   compareSetToGroup,
   directionalityOptions,
   getPhenotypes,
@@ -219,9 +223,9 @@ const choiceParam = (options: Options): Param<Option> => ({
   stringify: (value) => String(value.id),
 });
 
-/** ranking settings, synced to the url so a shared link reproduces the ranking */
+/** ranking settings, kept in the url so a shared link keeps them */
 const directionality = useParam(
-  "direction",
+  "directionality",
   choiceParam(directionalityOptions),
   directionalityOptions[0],
 );
@@ -280,6 +284,7 @@ const {
   data: searchResults,
   isLoading: searchIsLoading,
   isError: searchIsError,
+  error: searchError,
 } = useQuery(
   async function () {
     scrollToResults();
@@ -288,12 +293,12 @@ const {
       aPhenotypes.value.map(({ id }) => id),
       bGroup.value.id as Group,
       metric.value.id,
-      {
-        directionality: String(directionality.value.id),
-        search_mode: String(searchMode.value.id),
-        information_content: String(informationContent.value.id),
-        tie_break: String(tieBreak.value.id),
-      },
+      cleanSettings({
+        directionality: directionality.value.id,
+        search_mode: searchMode.value.id,
+        information_content: informationContent.value.id,
+        tie_break: tieBreak.value.id,
+      }),
     );
   },
 
@@ -307,6 +312,11 @@ const {
 async function scrollToResults() {
   scrollTo("#results");
 }
+
+/** reason the api gave for refusing the search, if any */
+const searchErrorDetail = computed(() =>
+  searchError.value instanceof ApiError ? searchError.value.detail : "",
+);
 
 /** is in loading/error state */
 const isPending = computed(() => searchIsLoading.value || searchIsError.value);

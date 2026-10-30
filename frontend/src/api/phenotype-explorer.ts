@@ -1,4 +1,4 @@
-import { pick, sortBy, uniqBy } from "lodash";
+import { orderBy, pick, sortBy, uniqBy } from "lodash";
 import type {
   AssociationResults,
   SemsimSearchResult,
@@ -76,6 +76,40 @@ export type CompareSettings = {
   information_content?: string;
   /** annotation corpus, required when information_content is "annotation" */
   group?: string;
+};
+
+/** allowed values of each setting, the first being the API default */
+const settingValues: Record<string, string[]> = {
+  directionality: directionalityOptions.map(({ id }) => id),
+  search_mode: searchModeOptions.map(({ id }) => id),
+  information_content: informationContentOptions.map(({ id }) => id),
+  tie_break: tieBreakOptions.map(({ id }) => id),
+};
+
+/**
+ * keep only the settings that differ from the API defaults, so a request with
+ * nothing changed is the same as one from before these settings existed.
+ * unknown values are dropped too, the way an unknown metric falls back to the
+ * default. the annotation corpus is kept only with annotation information
+ * content, and only if it's a known group.
+ */
+export const cleanSettings = (
+  settings: Record<string, unknown>,
+): SearchSettings & CompareSettings => {
+  const cleaned: Record<string, string> = {};
+  for (const [field, values] of Object.entries(settingValues)) {
+    const value = settings[field];
+    if (typeof value === "string" && values.indexOf(value) > 0)
+      cleaned[field] = value;
+  }
+  const group = settings.group;
+  if (
+    cleaned.information_content === "annotation" &&
+    typeof group === "string" &&
+    (groups as readonly string[]).includes(group)
+  )
+    cleaned.group = group;
+  return cleaned;
 };
 
 /** search individual phenotypes or gene/disease phenotypes */
@@ -279,7 +313,6 @@ export function processMulticompareResponse(
         strength: 0,
         phenotype: match?.match_target || "",
         phenotypeLabel: match?.match_target_label || "",
-        frequency: match?.frequency,
         ...pick(match?.similarity, [
           "ancestor_id",
           "ancestor_label",
@@ -374,17 +407,22 @@ export const compareSetToGroup = async (
   );
 
   /** get high level data */
-  /**
-   * keep the API's order: it applies the tie-break, which a re-sort by score
-   * would undo
-   */
-  const summary = response.map((match) => ({
+  const matches = response.map((match) => ({
     subject: match.subject,
     score: match.score || 0,
     subjectToObjectScore: match.subject_to_object_score,
     objectToSubjectScore: match.object_to_subject_score,
-    settings: match.search_settings,
   }));
+
+  /**
+   * highest score first. with a tie-break, ties keep the API's order, which
+   * applies it. without one, ties keep the order this page always showed them
+   * in (the API's, reversed).
+   */
+  const summary =
+    settings.tie_break && settings.tie_break !== "none"
+      ? orderBy(matches, "score", "desc")
+      : sortBy(matches, "score").reverse();
 
   /** make flat lists of rows/cols from subjects/objects */
   let cols: Phenogrid["cols"] = response.map((match) => ({
