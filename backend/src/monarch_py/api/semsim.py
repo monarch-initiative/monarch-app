@@ -79,6 +79,9 @@ def _run_search(
     a request that sets none of them calls either backend exactly as before.
     """
     requested = {name: ducksim_settings.get(name, default) for name, default in DUCKSIM_SEARCH_SETTINGS.items()}
+    if requested["tie_break"] != SemsimTieBreak.FREQUENCY:
+        # default_frequency only matters to the frequency tie-break; alone it must not change the engine
+        requested["default_frequency"] = DUCKSIM_SEARCH_SETTINGS["default_frequency"]
     non_default = {name: value for name, value in requested.items() if value != DUCKSIM_SEARCH_SETTINGS[name]}
     engine_name = "ducksim" if non_default else resolve_engine(engine)
     results = _bad_request_if_unavailable(
