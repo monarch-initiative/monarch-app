@@ -45,47 +45,39 @@
       />
     </AppFlex>
     <AppAccordion text="Advanced ranking settings" icon="wrench">
-      <AppFlex gap="small" direction="col" align-h="left">
-        <AppFlex gap="small" class="select-single">
-          <strong>Score by</strong>
-          <AppSelectSingle
-            v-model="directionality"
-            name="Score direction"
-            :options="directionalityOptions"
-          />
-        </AppFlex>
-        <AppFlex gap="small" class="select-single">
-          <strong>Candidates</strong>
-          <AppSelectSingle
-            v-model="searchMode"
-            name="Search mode"
-            :options="searchModeOptions"
-          />
-        </AppFlex>
-        <AppFlex gap="small" class="select-single">
-          <strong>Information content from</strong>
-          <AppSelectSingle
-            v-model="informationContent"
-            name="Information content source"
-            :options="informationContentOptions"
-          />
-        </AppFlex>
-        <AppFlex gap="small" class="select-single">
-          <strong>Break ties</strong>
-          <AppSelectSingle
-            v-model="tieBreak"
-            name="Tie-break"
-            :options="tieBreakOptions"
-          />
-        </AppFlex>
-        <p class="settings-help">
-          The defaults reproduce the current ranking. "How much of the query
-          each result covers" doesn't penalize results with many phenotypes, and
-          scoring every entity keeps them from being dropped before scoring.
-          Annotation-based information content makes rarely annotated phenotypes
-          count for more. These settings are experimental.
-        </p>
-      </AppFlex>
+      <div class="settings">
+        <strong>Score by</strong>
+        <AppSelectSingle
+          v-model="directionality"
+          name="Score direction"
+          :options="directionalityOptions"
+        />
+        <strong>Candidates</strong>
+        <AppSelectSingle
+          v-model="searchMode"
+          name="Search mode"
+          :options="searchModeOptions"
+        />
+        <strong>Information content from</strong>
+        <AppSelectSingle
+          v-model="informationContent"
+          name="Information content source"
+          :options="informationContentOptions"
+        />
+        <strong>Break ties</strong>
+        <AppSelectSingle
+          v-model="tieBreak"
+          name="Tie-break"
+          :options="tieBreakOptions"
+        />
+      </div>
+      <p class="settings-help">
+        The defaults reproduce the current ranking. "How much of the query each
+        result covers" doesn't penalize results with many phenotypes, and
+        scoring every entity keeps them from being dropped before scoring.
+        Annotation-based information content makes rarely annotated phenotypes
+        count for more. These settings are experimental.
+      </p>
     </AppAccordion>
     <AppButton
       text="Analyze"
@@ -438,12 +430,32 @@ $wrap: 1000px;
   color: $gray;
   font-size: 0.9rem;
 }
-.settings-help {
-  max-width: 40em;
-  color: $gray;
-  font-size: 0.9rem;
+/** labels right-aligned against a column of selects, centered as one block */
+.settings {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 10px 15px;
+}
+.settings > strong {
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .settings {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 }
 p {
   text-align: left;
+}
+.settings-help {
+  max-width: 40em;
+  margin: 20px auto 0;
+  color: $gray;
+  font-size: 0.9rem;
+  text-align: center;
 }
 </style>
