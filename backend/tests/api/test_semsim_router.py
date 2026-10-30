@@ -12,6 +12,7 @@ from monarch_py.api.additional_models import (
 )
 from monarch_py.api.semsim import router
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
+from monarch_py.datamodels.model import Entity, SemsimSearchResult
 
 client = TestClient(router)
 
@@ -188,3 +189,59 @@ def test_bidirectional_compare_keeps_the_configured_backend(mock_semsim_service)
     client.get("/compare/HP:1/HP:2?directionality=bidirectional&engine=semsimian")
     mock_semsim_service.assert_called_once_with("semsimian")
     assert "directionality" not in mock_semsim_service.return_value.compare.call_args.kwargs
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_post_compare_directionality_routes_to_ducksim(mock_semsim_service):
+    client.post(
+        "/compare/",
+        json={"subjects": ["HP:1"], "objects": ["HP:2"], "directionality": "subject_to_object"},
+        params={"engine": "semsimian"},
+    )
+    mock_semsim_service.assert_called_once_with("ducksim")
+    assert mock_semsim_service.return_value.compare.call_args.kwargs["directionality"] == (
+        SemsimDirectionality.SUBJECT_TO_OBJECT
+    )
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_bidirectional_post_compare_keeps_the_configured_backend(mock_semsim_service):
+    client.post("/compare/", json={"subjects": ["HP:1"], "objects": ["HP:2"]}, params={"engine": "semsimian"})
+    mock_semsim_service.assert_called_once_with("semsimian")
+    assert "directionality" not in mock_semsim_service.return_value.compare.call_args.kwargs
+
+
+MULTICOMPARE_BODY = {"subjects": ["HP:1"], "object_sets": [{"id": "X", "label": "x", "phenotypes": ["HP:2"]}]}
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_multicompare_directionality_routes_to_ducksim(mock_semsim_service):
+    """multi_compare reads directionality from the request, so it must not also get it as a kwarg
+    (SemsimianService.multi_compare takes none). The response says which engine served it."""
+    mock_semsim_service.return_value.multi_compare.return_value = [
+        SemsimSearchResult(subject=Entity(id="X", name="x"), score=1.0)
+    ]
+    response = client.post(
+        "/multicompare/",
+        json={**MULTICOMPARE_BODY, "directionality": "object_to_subject"},
+        params={"engine": "semsimian"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    mock_semsim_service.assert_called_once_with("ducksim")
+    call = mock_semsim_service.return_value.multi_compare.call_args
+    assert call.kwargs == {}
+    assert call.args[0].directionality == SemsimDirectionality.OBJECT_TO_SUBJECT
+    assert response.json()[0]["search_settings"]["engine"] == "ducksim"
+    assert response.json()[0]["search_settings"]["directionality"] == "object_to_subject"
+
+
+@patch("monarch_py.api.semsim.resolve_engine", return_value="semsimian")
+@patch("monarch_py.api.semsim.semsim_service")
+def test_bidirectional_multicompare_keeps_the_configured_backend(mock_semsim_service, _):
+    mock_semsim_service.return_value.multi_compare.return_value = [
+        SemsimSearchResult(subject=Entity(id="X", name="x"), score=1.0)
+    ]
+    response = client.post("/multicompare/", json=MULTICOMPARE_BODY, params={"engine": "semsimian"})
+    mock_semsim_service.assert_called_once_with("semsimian")
+    assert mock_semsim_service.return_value.multi_compare.call_args.kwargs == {}
+    assert response.json()[0]["search_settings"]["engine"] == "semsimian"

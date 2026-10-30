@@ -49,9 +49,9 @@ def _bad_request_if_unavailable(call):
 
 
 def _compare_backend(engine, information_content, group, directionality=SemsimDirectionality.BIDIRECTIONAL):
-    """(service, extra compare kwargs). With default settings this is the configured backend and
-    today's call. Annotation IC and a non-bidirectional average are ducksim-only; annotation IC
-    also needs a group to pick its annotation corpus."""
+    """(engine name, service, extra compare kwargs). With default settings this is the configured
+    backend and today's call. Annotation IC and a non-bidirectional average are ducksim-only;
+    annotation IC also needs a group to pick its annotation corpus."""
     extra = {}
     if SemsimDirectionality(directionality) != SemsimDirectionality.BIDIRECTIONAL:
         extra["directionality"] = SemsimDirectionality(directionality)
@@ -63,7 +63,8 @@ def _compare_backend(engine, information_content, group, directionality=SemsimDi
         group_value = group.value if hasattr(group, "value") else group
         extra["information_content"] = SemsimInformationContent.ANNOTATION
         extra["group_prefix"] = parse_similarity_prefix(group_value)
-    return (semsim_service("ducksim") if extra else semsim_service(engine)), extra
+    engine_name = "ducksim" if extra else resolve_engine(engine)
+    return engine_name, (semsim_service("ducksim") if extra else semsim_service(engine)), extra
 
 
 def _run_search(
@@ -171,7 +172,7 @@ def _compare(
         metric: {metric}
     """
     )
-    service, extra = _compare_backend(engine, information_content, group, directionality)
+    _, service, extra = _compare_backend(engine, information_content, group, directionality)
     return _bad_request_if_unavailable(
         lambda: service.compare(subjects=subjects.split(","), objects=objects.split(","), metric=metric, **extra)
     )
@@ -182,6 +183,10 @@ def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineP
     """
         Pairwise similarity between two sets of terms <br>
         <br>
+        `directionality` picks which best matches `average_score` averages: "subject_to_object"
+        (each subject's), "object_to_subject" (each object's) or "bidirectional" (the mean, the
+        default). `information_content` and `group` work as on GET /compare. <br>
+        <br>
         Example: <br>
     <pre>
     {
@@ -191,7 +196,7 @@ def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineP
     }
     </pre>
     """
-    service, extra = _compare_backend(engine, request.information_content, request.group, request.directionality)
+    _, service, extra = _compare_backend(engine, request.information_content, request.group, request.directionality)
     return _bad_request_if_unavailable(
         lambda: service.compare(subjects=request.subjects, objects=request.objects, metric=request.metric, **extra)
     )
@@ -201,7 +206,13 @@ def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineP
 @router.post("/multicompare")
 def _post_multicompare(request: SemsimMultiCompareRequest, engine: Optional[str] = EngineParam):
     """
-        Pairwise similarity between two sets of terms <br>
+        Similarity between one set of terms (the query) and each of several object sets (entities),
+        returned like search results. <br>
+        <br>
+        `directionality` means what it does in search, with each object set as the entity:
+        "subject_to_object" averages the entity's phenotypes' best matches, "object_to_subject" the
+        query terms', and "bidirectional" (the default) their mean. Each result carries both
+        direction scores and `search_settings`, including the engine that served it. <br>
         <br>
         Example: <br>
     <pre>
@@ -223,11 +234,20 @@ def _post_multicompare(request: SemsimMultiCompareRequest, engine: Optional[str]
     }
     </pre>
     """
-    service, extra = _compare_backend(engine, request.information_content, request.group, request.directionality)
+    engine_name, service, extra = _compare_backend(
+        engine, request.information_content, request.group, request.directionality
+    )
     # multi_compare reads these from the request
     extra.pop("information_content", None)
     extra.pop("directionality", None)
-    return _bad_request_if_unavailable(lambda: service.multi_compare(request, **extra))
+    results = _bad_request_if_unavailable(lambda: service.multi_compare(request, **extra))
+    settings = SemsimSearchSettings(
+        engine=engine_name,
+        metric=str(request.metric),
+        directionality=str(SemsimDirectionality(request.directionality).value),
+        information_content=str(SemsimInformationContent(request.information_content).value),
+    )
+    return annotate_search_results(results, settings, entity_is_subject=False)
 
 
 @router.get("/search/{termset}/{group}")
