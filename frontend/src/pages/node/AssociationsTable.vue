@@ -243,8 +243,8 @@ import {
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { getAgentTypeMeta } from "@/util/agentType";
-import { isPredicateFilterable } from "@/util/predicateFilterConfig";
 import { getKnowledgeLevelMeta } from "@/util/knowledgeLevel";
+import { isPredicateFilterable } from "@/util/predicateFilterConfig";
 import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
