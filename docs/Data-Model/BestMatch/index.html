@@ -1971,6 +1971,8 @@
 <pre class="mermaid"><code> classDiagram
     class BestMatch
     click BestMatch href "../BestMatch/"
+      BestMatch : frequency
+
       BestMatch : match_source
 
       BestMatch : match_source_label
@@ -2056,6 +2058,12 @@
 <td><a href="../similarity/">similarity</a></td>
 <td>1 <br/> <a href="../TermPairwiseSimilarity/">TermPairwiseSimilarity</a></td>
 <td></td>
+<td>direct</td>
+</tr>
+<tr>
+<td><a href="../frequency/">frequency</a></td>
+<td>0..1 <br/> <a href="../Float/">Float</a></td>
+<td>In a search, the recorded frequency of the result entity's matched phenotype:...</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -2176,6 +2184,17 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchResult</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">frequency</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frequency</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;In</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">search,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">recorded</span><span class="nv"> </span><span class="s">frequency</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">result</span><span class="nv"> </span><span class="s">entity</span><span class="se">&#39;&#39;</span><span class="s">s</span><span class="nv"> </span><span class="s">matched</span>
+<span class="w">      </span><span class="s">phenotype:</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">share</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">patients</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">individuals</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">entity</span><span class="nv"> </span><span class="s">who</span><span class="nv"> </span><span class="s">show</span><span class="nv"> </span><span class="s">it,</span>
+<span class="w">      </span><span class="s">from</span><span class="nv"> </span><span class="s">OMIM</span><span class="nv"> </span><span class="s">counts</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">HPO</span><span class="nv"> </span><span class="s">frequency</span><span class="nv"> </span><span class="s">categories.</span><span class="nv"> </span><span class="s">Absent</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">annotation</span><span class="nv"> </span><span class="s">records</span>
+<span class="w">      </span><span class="s">none.&#39;</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py-similarity</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BestMatch</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
 </code></pre></div>
 </details>
 
@@ -2264,6 +2283,19 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchResult</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">frequency</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frequency</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;In</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">search,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">recorded</span><span class="nv"> </span><span class="s">frequency</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">result</span><span class="nv"> </span><span class="s">entity</span><span class="se">&#39;&#39;</span><span class="s">s</span><span class="nv"> </span><span class="s">matched</span>
+<span class="w">      </span><span class="s">phenotype:</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">share</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">patients</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">individuals</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">entity</span><span class="nv"> </span><span class="s">who</span><span class="nv"> </span><span class="s">show</span><span class="nv"> </span><span class="s">it,</span>
+<span class="w">      </span><span class="s">from</span><span class="nv"> </span><span class="s">OMIM</span><span class="nv"> </span><span class="s">counts</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">HPO</span><span class="nv"> </span><span class="s">frequency</span><span class="nv"> </span><span class="s">categories.</span><span class="nv"> </span><span class="s">Absent</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">annotation</span><span class="nv"> </span><span class="s">records</span>
+<span class="w">      </span><span class="s">none.&#39;</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py-similarity</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frequency</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BestMatch</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BestMatch</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
 </code></pre></div>
 </details>
 

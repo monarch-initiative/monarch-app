@@ -457,6 +457,10 @@
          <lastmod>2026-10-30</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/default_frequency/</loc>
+         <lastmod>2026-10-30</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/deprecated/</loc>
          <lastmod>2026-10-30</lastmod>
     </url>
@@ -550,6 +554,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/file_source/</loc>
+         <lastmod>2026-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/frequency/</loc>
          <lastmod>2026-10-30</lastmod>
     </url>
     <url>
@@ -1298,6 +1306,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/text/</loc>
+         <lastmod>2026-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/tie_break/</loc>
          <lastmod>2026-10-30</lastmod>
     </url>
     <url>
