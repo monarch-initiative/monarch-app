@@ -985,9 +985,22 @@ def build_grid_row_query(
 _SUMMARY_FIELD_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
+# Fields whose values are (nearly) unique per row or multiply each row by its ancestors:
+# grouping, counting or faceting on them makes Solr hold a bucket per row or per ancestor
+# across the whole section, which on an inferred section is millions of buckets and can
+# run Solr out of heap. Every other field is allowed, so the summary stays generic.
+def _summary_field_is_unbounded(name: str) -> bool:
+    return name == "id" or "_closure" in name or name.endswith("_ancestor_path")
+
+
 def _summary_field(name: str) -> str:
     if not _SUMMARY_FIELD_NAME.match(name or ""):
         raise ValueError(f"Invalid field name for an association summary: {name!r}")
+    if _summary_field_is_unbounded(name):
+        raise ValueError(
+            f"{name!r} cannot be used in an association summary: id, closure and ancestor-path "
+            "fields have too many distinct values to group, count or facet on"
+        )
     return name
 
 

@@ -54,6 +54,61 @@ def test_summary_facet_rejects_bad_input(kwargs):
         build_association_summary_facet(**kwargs)
 
 
+# Every field list rejects id, closure, closure-label and ancestor-path fields: grouping,
+# counting or faceting on them makes Solr build a bucket per row or per ancestor.
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"group_by": "id"},
+        {"group_by": "object_closure"},
+        {"group_by": "subject", "unique_fields": ["id"]},
+        {"group_by": "subject", "unique_fields": ["object_closure"]},
+        {"group_by": "subject", "stat_fields": ["subject_closure"]},
+        {"group_by": "subject", "label_fields": ["object_closure_label"]},
+        {"group_by": "subject", "facet_fields": ["id"]},
+        {"group_by": "subject", "facet_fields": ["subject_taxon_closure"]},
+        {"group_by": "subject", "facet_fields": ["object_ancestor_path"]},
+        {"group_by": "subject", "facet_labels": {"id": "subject_label"}},
+        {"group_by": "subject", "facet_labels": {"object": "object_closure_label"}},
+    ],
+)
+def test_summary_facet_rejects_unbounded_fields(kwargs):
+    with pytest.raises(ValueError, match="cannot be used in an association summary"):
+        build_association_summary_facet(**kwargs)
+
+
+# The summaries SectionDrugUses.vue requests, on a disease page (side = subject) and a
+# drug page (side = object); none of them may trip the guard.
+@pytest.mark.parametrize(
+    "side, secondary",
+    [("subject", "object"), ("object", "disease_context_qualifier")],
+)
+def test_summary_facet_allows_drug_uses_requests(side, secondary):
+    build_association_summary_facet(
+        group_by=side,
+        unique_fields=["grouping_key", secondary],
+        stat_fields=["medic_approval_date"],
+        label_fields=[f"{side}_label", f"{side}_category"],
+        facet_fields=["medic_jurisdiction", secondary, "agent_type", "knowledge_level"],
+        facet_labels={secondary: f"{secondary}_label"},
+    )
+    build_association_summary_facet(group_by="medic_jurisdiction", unique_fields=[side])
+    build_association_summary_facet(group_by="predicate")
+    build_association_summary_facet(
+        group_by="grouping_key",
+        stat_fields=["medic_approval_date"],
+        label_fields=["predicate", "object", "object_label", "object_category"],
+        facet_fields=[
+            "medic_jurisdiction",
+            "disease_context_qualifier",
+            "population_context_qualifier",
+            "agent_type",
+            "knowledge_level",
+        ],
+        facet_labels={"disease_context_qualifier": "disease_context_qualifier_label"},
+    )
+
+
 SUMMARY_FACETS = {
     "count": 7,
     "unique_grouping_key": 4,

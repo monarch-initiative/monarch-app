@@ -104,6 +104,10 @@ def test_association_summary_rejects_malformed_facet_labels():
     [
         {"group_by": "subject", "group_sort": "object"},  # not count, index or a unique field
         {"group_by": "subject) OR (*"},  # not a field name
+        # the review's example: exact distinct counts over a whole inferred section
+        {"group_by": "id", "unique_fields": ["subject", "object"]},
+        {"group_by": "subject", "facet_fields": "object_closure"},  # a bucket per ancestor
+        {"group_by": "subject", "facet_labels": "object:object_closure_label"},
     ],
 )
 @patch("monarch_py.service.solr_service.SolrService.query")
