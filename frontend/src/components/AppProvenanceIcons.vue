@@ -10,6 +10,7 @@
       :key="meta.label"
       v-tooltip="`<b>${meta.label}</b><br>${meta.description}`"
       :class="['marker', { labelled: showLabels, machine: meta.machine }]"
+      role="img"
       :aria-label="`${meta.label}: ${meta.description}`"
     >
       <AppIcon :icon="meta.icon" />
@@ -20,6 +21,7 @@
       :key="meta.label"
       v-tooltip="`<b>${meta.label}</b><br>${meta.description}`"
       :class="['marker', { labelled: showLabels }]"
+      role="img"
       :aria-label="`${meta.label}: ${meta.description}`"
     >
       <AppIcon :icon="meta.icon" />

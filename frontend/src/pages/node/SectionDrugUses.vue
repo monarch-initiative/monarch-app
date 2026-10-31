@@ -24,12 +24,20 @@
           v-if="!acknowledged"
           class="acknowledge"
           :text="`I understand, show ${sectionNoun}`"
-          @click="acknowledge"
+          @click="onAcknowledge"
         />
       </div>
     </AppAlert>
 
-    <template v-if="acknowledged">
+    <!-- focused after "I understand" so keyboard users land on the content -->
+    <div
+      v-if="acknowledged"
+      ref="content"
+      class="content"
+      tabindex="-1"
+      role="region"
+      :aria-label="sectionLabel ?? sectionNoun"
+    >
       <!-- direct vs. inferred (subtypes), as in the other association sections -->
       <AppAssociationTabs
         v-if="hasTabs && allCount > 0"
@@ -70,14 +78,15 @@
 
       <div class="chips">
         <button
-          v-for="j in jurisdictionChips"
+          v-for="j in chips"
           :key="j.value"
           :class="['chip', { active: jurisdiction === j.value }]"
+          :aria-pressed="jurisdiction === j.value"
           :title="`Only show ${groupNoun}s with a ${jurisdictionName(j.value)} label`"
           @click="toggleJurisdiction(j.value)"
         >
           {{ jurisdictionName(j.value) }}
-          <span class="chip-count">{{ j.unique[side] }}</span>
+          <span class="chip-count">{{ j.count }}</span>
         </button>
         <template
           v-if="
@@ -88,6 +97,7 @@
           <span class="chip-sep" />
           <button
             :class="['chip', { active: includeInvestigational }]"
+            :aria-pressed="includeInvestigational"
             :title="`${plural(investigationalCount, groupNoun)} with only clinical-trial, studied or off-label (applied) uses`"
             @click="includeInvestigational = !includeInvestigational"
           >
@@ -99,21 +109,28 @@
 
       <!-- level 1: one row per drug / condition -->
       <ul v-if="!summary.isError.value" class="groups">
-        <li v-for="group in groups" :key="group.value" class="group">
-          <!-- the whole row toggles; names inside it are links -->
-          <div
-            class="group-row"
-            role="button"
-            tabindex="0"
-            :aria-expanded="expanded === group.value"
-            :aria-label="`Show statements for ${group.fields[labelField]}`"
-            @click="toggleGroup(group.value)"
-            @keydown.enter.space.self.prevent="toggleGroup(group.value)"
-          >
-            <AppIcon
+        <li
+          v-for="(group, groupIndex) in groups"
+          :key="group.value"
+          class="group"
+        >
+          <!--
+            disclosure: the expand button is the control; the row is also
+            clickable as a mouse convenience, and names inside it are links
+          -->
+          <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+          <div class="group-row" @click="toggleGroup(group.value)">
+            <button
               class="expand"
-              :icon="expanded === group.value ? 'angle-down' : 'angle-right'"
-            />
+              :aria-expanded="expanded === group.value"
+              :aria-controls="`${sectionKey}-statements-${groupIndex}`"
+              :aria-label="`Statements for ${group.fields[labelField] ?? group.value}`"
+              @click.stop="toggleGroup(group.value)"
+            >
+              <AppIcon
+                :icon="expanded === group.value ? 'angle-down' : 'angle-right'"
+              />
+            </button>
             <span class="group-node" @click.stop>
               <AppNodeBadge
                 :node="{
@@ -169,7 +186,11 @@
           </div>
 
           <!-- level 2: distinct statements for this drug / condition -->
-          <div v-if="expanded === group.value" class="statements">
+          <div
+            v-if="expanded === group.value"
+            :id="`${sectionKey}-statements-${groupIndex}`"
+            class="statements"
+          >
             <AppStatus v-if="statements.isLoading.value" code="loading"
               >Loading statements</AppStatus
             >
@@ -178,23 +199,28 @@
             >
             <ul v-else>
               <li
-                v-for="st in statements.data.value.groups"
+                v-for="(st, statementIndex) in statements.data.value.groups"
                 :key="st.value"
                 class="statement"
               >
-                <div
-                  class="statement-row"
-                  role="button"
-                  tabindex="0"
-                  :aria-expanded="openStatement === st.value"
-                  @click="toggleStatement(st.value)"
-                  @keydown.enter.space.self.prevent="toggleStatement(st.value)"
-                >
-                  <AppIcon
-                    :icon="
-                      openStatement === st.value ? 'angle-down' : 'angle-right'
-                    "
-                  />
+                <!-- mouse convenience; the expand button is the keyboard control -->
+                <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+                <div class="statement-row" @click="toggleStatement(st.value)">
+                  <button
+                    class="expand"
+                    :aria-expanded="openStatement === st.value"
+                    :aria-controls="`${sectionKey}-assertions-${statementIndex}`"
+                    :aria-label="`Assertions for ${predicateLabel(st.fields.predicate)} ${st.fields.object_label ?? st.fields.object ?? ''}`"
+                    @click.stop="toggleStatement(st.value)"
+                  >
+                    <AppIcon
+                      :icon="
+                        openStatement === st.value
+                          ? 'angle-down'
+                          : 'angle-right'
+                      "
+                    />
+                  </button>
                   <span class="predicate">{{
                     predicateLabel(st.fields.predicate)
                   }}</span>
@@ -252,7 +278,11 @@
                 </ul>
 
                 <!-- level 3: the label assertions behind one statement -->
-                <div v-if="openStatement === st.value" class="assertions">
+                <div
+                  v-if="openStatement === st.value"
+                  :id="`${sectionKey}-assertions-${statementIndex}`"
+                  class="assertions"
+                >
                   <AppStatus v-if="assertions.isLoading.value" code="loading"
                     >Loading assertions</AppStatus
                   >
@@ -419,12 +449,12 @@
           :association="selectedAssociation"
         />
       </AppModal>
-    </template>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import {
   getAssociationSummary,
   solrQuote,
@@ -473,6 +503,13 @@ const PAGE = 10;
  * acknowledged
  */
 const { acknowledged, acknowledge } = useResearchUseAcknowledgement();
+const content = ref<HTMLElement | null>(null);
+/** acknowledge, then move focus to the content the button revealed */
+const onAcknowledge = async () => {
+  acknowledge();
+  await nextTick();
+  content.value?.focus();
+};
 
 const isDiseasePage = computed(() =>
   ["biolink:Disease", "biolink:PhenotypicFeature"].includes(
@@ -748,9 +785,12 @@ const reload = async ({
   firstPage();
   if (chips) jurisdictions.query();
 };
+/** nothing is fetched until the research-use notice is acknowledged */
 watch(
-  () => [props.node.id, props.sectionKey],
-  () => reload({ newNode: true }),
+  () => [props.node.id, props.sectionKey, acknowledged.value],
+  () => {
+    if (acknowledged.value) reload({ newNode: true });
+  },
   { immediate: true },
 );
 watch(includeInvestigational, () => reload());
@@ -772,6 +812,20 @@ const facetValues = (values?: { value: string }[]) =>
 const moreTargets = (group: AssociationSummaryGroup) =>
   (group.unique[secondaryField.value] ?? 0) -
   (group.facets[secondaryField.value]?.length ?? 0);
+
+/**
+ * the jurisdiction chips, keeping the selected one even when the current
+ * filters leave it no rows, so it can always be turned off
+ */
+const chips = computed(() => {
+  const list = jurisdictionChips.value.map((j) => ({
+    value: j.value,
+    count: j.unique[side.value] ?? 0,
+  }));
+  if (jurisdiction.value && !list.some((j) => j.value === jurisdiction.value))
+    list.push({ value: jurisdiction.value, count: 0 });
+  return list;
+});
 
 const toggleJurisdiction = (value: string) =>
   (jurisdiction.value = jurisdiction.value === value ? null : value);
@@ -1050,11 +1104,31 @@ const plural = (n: number, noun: string) =>
   &:hover {
     background: $off-white;
   }
+}
+
+/* the disclosure control at the start of a row */
+.expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: $rounded;
+  background: none;
+  color: inherit;
+  cursor: pointer;
 
   &:focus-visible {
     outline: none;
     box-shadow: $outline;
   }
+}
+
+/* receives focus after "I understand"; no ring around the whole section */
+.content:focus {
+  outline: none;
 }
 
 .group-row {
