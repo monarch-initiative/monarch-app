@@ -1,4 +1,11 @@
-from monarch_py.service.solr_service import SolrService, FIELD_TYPE_SUFFIXES
+import json
+from unittest.mock import patch
+
+import pytest
+import requests
+
+from monarch_py.datamodels.solr import SolrQuery, core
+from monarch_py.service.solr_service import SolrQueryError, SolrService, FIELD_TYPE_SUFFIXES
 
 
 def test_consolidate_highlights():
@@ -102,3 +109,33 @@ def test_strip_json_by_suffix():
 
     # Assert the result matches the expected output
     assert doc == expected
+
+
+def _solr_response(status_code: int, text: str) -> requests.Response:
+    response = requests.Response()
+    response.status_code = status_code
+    response._content = text.encode()
+    return response
+
+
+def test_query_raises_solr_query_error_with_solr_message_on_4xx():
+    body = json.dumps({"responseHeader": {"status": 400, "QTime": 0}, "error": {"msg": "undefined field nope"}})
+    solr = SolrService(base_url="http://solr", core=core.ASSOCIATION)
+    with patch("requests.post", return_value=_solr_response(400, body)):
+        with pytest.raises(SolrQueryError, match="undefined field nope"):
+            solr.query(SolrQuery())
+
+
+@pytest.mark.parametrize(
+    "status_code,text",
+    [
+        (500, json.dumps({"responseHeader": {"status": 500, "QTime": 0}, "error": {"msg": "boom"}})),
+        (502, "<html>Bad Gateway</html>"),  # e.g. from a proxy; not JSON
+    ],
+)
+def test_query_keeps_server_errors_as_http_errors(status_code, text):
+    solr = SolrService(base_url="http://solr", core=core.ASSOCIATION)
+    with patch("requests.post", return_value=_solr_response(status_code, text)):
+        with pytest.raises(requests.HTTPError) as excinfo:
+            solr.query(SolrQuery())
+    assert not isinstance(excinfo.value, SolrQueryError)

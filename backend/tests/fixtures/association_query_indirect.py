@@ -37,4 +37,5 @@ def association_query_indirect():
         "sort": None,
         "hl": True,
         "hl_method": "unified",
+        "json_facet": None,
     }

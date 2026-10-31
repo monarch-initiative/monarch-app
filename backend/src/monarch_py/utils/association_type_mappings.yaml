@@ -80,11 +80,66 @@
   category: "biolink:GenotypeToDiseaseAssociation"
   subject_category: "biolink:Genotype"
   object_category: "biolink:Disease"
-- subject_label: Medical Action
-  object_label: Medical Action
-  category: "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
-  # Note: subject_category/object_category omitted - this association uses disease_context_qualifier
-  # and requires special 1-hop handling that isn't yet implemented in the entity grid
+# Drug indications / treatments, contraindications and diagnostic uses. MEDIC
+# (label-derived, FDA/EMA/PMDA/CDSCO), CTD and CURE ID edges share two association
+# categories across all of these predicates, so each section matches on category
+# AND predicate (match_criteria: full) to keep contraindications out of the
+# treatments table. Indications are shown on a drug/chemical page and Treatments
+# on a disease/phenotype page; the investigational predicates sit behind the
+# table's expand toggle (frontend/src/util/predicateFilterConfig.ts).
+# subject_category includes NamedThing because some drug subjects carry no more
+# specific category; it only gates which pages get the section.
+- key: drug_indications
+  match_criteria: full
+  subject_label: Indications
+  object_label: Treatments
+  category:
+  - "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
+  - "biolink:ChemicalEntityToDiseaseOrPhenotypicFeatureAssociation"
+  predicate:
+  - "biolink:treats"
+  - "biolink:preventative_for_condition"
+  - "biolink:in_clinical_trials_for"
+  - "biolink:studied_to_treat"
+  - "biolink:applied_to_treat"
+  - "biolink:treats_or_applied_or_studied_to_treat"
+  subject_category:
+  - "biolink:Drug"
+  - "biolink:ChemicalEntity"
+  - "biolink:NamedThing"
+  object_category:
+  - "biolink:Disease"
+  - "biolink:PhenotypicFeature"
+- key: drug_contraindications
+  match_criteria: full
+  subject_label: Contraindications
+  object_label: Contraindicated Drugs
+  category:
+  - "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
+  - "biolink:ChemicalEntityToDiseaseOrPhenotypicFeatureAssociation"
+  predicate: "biolink:contraindicated_in"
+  subject_category:
+  - "biolink:Drug"
+  - "biolink:ChemicalEntity"
+  - "biolink:NamedThing"
+  object_category:
+  - "biolink:Disease"
+  - "biolink:PhenotypicFeature"
+- key: drug_diagnostics
+  match_criteria: full
+  subject_label: Diagnostic Uses
+  object_label: Diagnostic Agents
+  category:
+  - "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
+  - "biolink:ChemicalEntityToDiseaseOrPhenotypicFeatureAssociation"
+  predicate: "biolink:diagnoses"
+  subject_category:
+  - "biolink:Drug"
+  - "biolink:ChemicalEntity"
+  - "biolink:NamedThing"
+  object_category:
+  - "biolink:Disease"
+  - "biolink:PhenotypicFeature"
 - subject_label: Variant to Phenotype
   object_label: Variant to Phenotype
   category: "biolink:VariantToPhenotypicFeatureAssociation"

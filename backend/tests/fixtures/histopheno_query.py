@@ -44,4 +44,5 @@ def histopheno_query():
         "sort": None,
         "hl": False,
         "hl_method": None,
+        "json_facet": None,
     }

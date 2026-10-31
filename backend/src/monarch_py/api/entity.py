@@ -7,8 +7,10 @@ from fastapi.responses import StreamingResponse
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
+from monarch_py.datamodels.association_summary import AssociationSummary
 from monarch_py.datamodels.category_enums import AssociationCategory
 from monarch_py.datamodels.model import AssociationTableResults, Node
+from monarch_py.service.solr_service import SolrQueryError
 from monarch_py.utils.association_type_utils import AssociationTypeMappings
 from monarch_py.utils.format_utils import to_json, to_tsv
 
@@ -73,6 +75,88 @@ def _validated_section_key(category: str) -> str:
                 f"section key or a biolink association category."
             ),
         )
+
+
+@router.get("/{id}/{category}/summary")
+def _association_summary(
+    id: str = Path(title="ID of the entity to summarize associations for", examples=["MONDO:0005148"]),
+    category: str = Path(
+        title="Association-type section key (an AssociationTypeMapping key), as for the association table",
+        examples=["drug_indications"],
+    ),
+    group_by: str = Query(
+        title="Field to group the section's rows by; one bucket per value",
+        examples=["subject", "object", "grouping_key"],
+    ),
+    unique_fields: List[str] = Query(
+        default=None,
+        title="Fields to count distinct values of, section-wide and per group",
+        examples=["grouping_key", "object"],
+    ),
+    stat_fields: List[str] = Query(
+        default=None, title="Fields to report the min/max of per group", examples=["medic_approval_date"]
+    ),
+    label_fields: List[str] = Query(
+        default=None,
+        title="Fields to report the most common value of per group (e.g. the group's label)",
+        examples=["subject_label"],
+    ),
+    facet_fields: List[str] = Query(
+        default=None,
+        title="Fields to facet on, section-wide and per group",
+        examples=["medic_jurisdiction", "predicate"],
+    ),
+    facet_labels: List[str] = Query(
+        default=None,
+        title="Label fields for facet fields, as field:label_field; each facet value is reported with its label",
+        examples=["object:object_label"],
+    ),
+    group_sort: str = Query(
+        default="count",
+        title="Group order: 'count' (rows), 'index' (value), or a unique_fields entry (most distinct first)",
+    ),
+    facet_limit: int = Query(default=10, ge=1, le=100, title="Maximum values per facet"),
+    direct: bool = Query(default=False, title="Only summarize direct associations"),
+    query: str = Query(default=None, title="query string to limit results to a subset"),
+    filter_queries: List[str] = Query(default=None, title="Filter queries to limit the rows summarized"),
+    pagination: PaginationParams = Depends(),
+) -> AssociationSummary:
+    """
+    Summarizes an entity's association section with facets instead of rows
+
+    Returns section-wide totals and one bucket per value of `group_by` (paged with
+    `limit`/`offset`), each with distinct counts, min/max values, its most common
+    label and term facets. Fetch the rows behind a bucket from the association table
+    endpoint with a matching `filter_queries` entry.
+    """
+    try:
+        labels = {}
+        for pair in facet_labels or []:
+            field, sep, label_field = pair.partition(":")
+            if not sep:
+                raise ValueError(f"facet_labels entries must be field:label_field, not {pair!r}")
+            labels[field] = label_field
+        return solr().get_association_summary(
+            entity=id,
+            category=_validated_section_key(category),
+            group_by=group_by,
+            unique_fields=unique_fields,
+            stat_fields=stat_fields,
+            label_fields=label_fields,
+            facet_fields=facet_fields,
+            facet_labels=labels,
+            group_sort=group_sort,
+            facet_limit=facet_limit,
+            direct=direct,
+            q=query,
+            filter_queries=filter_queries,
+            offset=pagination.offset,
+            limit=pagination.limit,
+        )
+    # SolrQueryError: Solr rejected the request, e.g. a field that does not exist or is not
+    # indexed, or an unparseable filter query.
+    except (ValueError, SolrQueryError) as e:
+        raise HTTPException(status_code=422, detail=str(e))
 
 
 @router.get("/{id}/{category}")

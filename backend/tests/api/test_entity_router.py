@@ -1,12 +1,15 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 from fastapi import HTTPException
 
 from fastapi.testclient import TestClient
 
 from monarch_py.api.entity import router
+from monarch_py.datamodels.association_summary import AssociationSummary
 from monarch_py.datamodels.model import Node
+from monarch_py.service.solr_service import SolrQueryError
 from monarch_py.datamodels.category_enums import AssociationCategory
 
 client = TestClient(router)
@@ -72,3 +75,61 @@ def test_association_table_rejects_unknown_section_key(key):
 def test_association_table_accepts_configured_section_keys(mock_get_assoc_table, key):
     mock_get_assoc_table.return_value = MagicMock()
     assert client.get(f"/MONDO:0019391/{key}").status_code == 200
+
+
+SUMMARY_SECTION = "biolink:DiseaseToPhenotypicFeatureAssociation"
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_association_summary")
+def test_association_summary_parses_facet_labels(mock_get_summary):
+    mock_get_summary.return_value = AssociationSummary(total=0, group_by="subject", group_total=0)
+    response = client.get(
+        f"/MONDO:0019391/{SUMMARY_SECTION}/summary",
+        params={"group_by": "subject", "facet_labels": ["object:object_label", "subject:subject_label"]},
+    )
+    assert response.status_code == 200
+    kwargs = mock_get_summary.call_args.kwargs
+    assert kwargs["facet_labels"] == {"object": "object_label", "subject": "subject_label"}
+    assert kwargs["category"] == SUMMARY_SECTION
+
+
+def test_association_summary_rejects_malformed_facet_labels():
+    with pytest.raises(HTTPException) as excinfo:
+        client.get(f"/MONDO:0019391/{SUMMARY_SECTION}/summary", params={"group_by": "subject", "facet_labels": "x"})
+    assert excinfo.value.status_code == 422
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {"group_by": "subject", "group_sort": "object"},  # not count, index or a unique field
+        {"group_by": "subject) OR (*"},  # not a field name
+        # the review's example: exact distinct counts over a whole inferred section
+        {"group_by": "id", "unique_fields": ["subject", "object"]},
+        {"group_by": "subject", "facet_fields": "object_closure"},  # a bucket per ancestor
+        {"group_by": "subject", "facet_labels": "object:object_closure_label"},
+    ],
+)
+@patch("monarch_py.service.solr_service.SolrService.query")
+def test_association_summary_bad_input_is_422(mock_query, params):
+    with pytest.raises(HTTPException) as excinfo:
+        client.get(f"/MONDO:0019391/{SUMMARY_SECTION}/summary", params=params)
+    assert excinfo.value.status_code == 422
+    mock_query.assert_not_called()
+
+
+@patch("monarch_py.service.solr_service.SolrService.query")
+def test_association_summary_solr_rejection_is_422(mock_query):
+    # Solr 400s on e.g. an unknown or unindexed field; its message becomes the detail.
+    mock_query.side_effect = SolrQueryError("undefined field: nonexistent_field")
+    with pytest.raises(HTTPException) as excinfo:
+        client.get(f"/MONDO:0019391/{SUMMARY_SECTION}/summary", params={"group_by": "nonexistent_field"})
+    assert excinfo.value.status_code == 422
+    assert excinfo.value.detail == "undefined field: nonexistent_field"
+
+
+@patch("monarch_py.service.solr_service.SolrService.query")
+def test_association_summary_solr_server_error_is_not_422(mock_query):
+    mock_query.side_effect = requests.HTTPError("500 Server Error")
+    with pytest.raises(requests.HTTPError):
+        client.get(f"/MONDO:0019391/{SUMMARY_SECTION}/summary", params={"group_by": "subject"})
