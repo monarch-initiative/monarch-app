@@ -21,46 +21,134 @@ const engineParam = (): { engine?: string } => {
   return engine ? { engine } : {};
 };
 
+/** published documentation of the phenotype similarity settings */
+export const settingsDocsUrl =
+  "https://monarch-initiative.github.io/monarch-app/Phenotype-Similarity/";
+
 /** similarity metrics available for comparison */
 export const metricOptions = [
-  { id: "ancestor_information_content", label: "Ancestor Information Content" },
-  { id: "jaccard_similarity", label: "Jaccard Similarity" },
-  { id: "phenodigm_score", label: "Phenodigm Score" },
+  {
+    id: "ancestor_information_content",
+    label: "Ancestor Information Content",
+    tooltip: "How specific the most specific ancestor two phenotypes share is",
+  },
+  {
+    id: "jaccard_similarity",
+    label: "Jaccard Similarity",
+    tooltip: "How much the ancestors of two phenotypes overlap",
+  },
+  {
+    id: "phenodigm_score",
+    label: "Phenodigm Score",
+    tooltip:
+      "The geometric mean of ancestor information content and Jaccard similarity",
+  },
 ];
+
+/** explanation of the metric setting */
+export const metricHelp = `How each pair of phenotypes is scored.
+<b>Ancestor information content</b> scores how specific the most specific
+ancestor they share is. <b>Jaccard similarity</b> scores how much their
+ancestors overlap. <b>Phenodigm</b> combines the two.`;
 
 /**
  * How per-phenotype best matches are averaged into a score. In a search the
  * subject is each result and the object is the query.
  */
 export const directionalityOptions = [
-  { id: "bidirectional", label: "Both directions (default)" },
+  {
+    id: "bidirectional",
+    label: "Both directions (default)",
+    tooltip: "The average of the two directions below",
+  },
   {
     id: "object_to_subject",
     label: "How much of the query each result covers",
+    tooltip:
+      "Average over the query's phenotypes. Doesn't penalize results with many phenotypes.",
   },
   {
     id: "subject_to_object",
     label: "How much of each result the query covers",
+    tooltip: "Average over each result's phenotypes",
   },
 ];
 
+/** explanation of the direction setting */
+export const directionalityHelp = `Each phenotype is matched to its most
+similar phenotype on the other side, and the scores of those best matches are
+averaged. <b>How much of the query each result covers</b> averages over the
+query's phenotypes, so a result isn't penalized for having many phenotypes the
+query doesn't mention. <b>How much of each result the query covers</b> averages
+over the result's phenotypes. The default averages the two.`;
+
 /** which entities a search scores */
 export const searchModeOptions = [
-  { id: "hybrid", label: "Prefilter by overlap (default)" },
-  { id: "full", label: "Score every entity" },
+  {
+    id: "hybrid",
+    label: "Prefilter by overlap (default)",
+    tooltip:
+      "Fast. Scores only entities that share the most phenotypes with the query.",
+  },
+  {
+    id: "full",
+    label: "Score every entity",
+    tooltip: "Slower. Scores every entity in the group.",
+  },
 ];
+
+/** explanation of the candidates setting */
+export const searchModeHelp = `By default, a quick first pass keeps only the
+entities whose phenotypes overlap the query most, and only those are scored.
+That pass can drop entities with many phenotypes before they are scored.
+<b>Score every entity</b> skips it: slower, but nothing is dropped.`;
 
 /** where phenotype information content comes from */
 export const informationContentOptions = [
-  { id: "ontology", label: "Ontology structure (default)" },
-  { id: "annotation", label: "How often phenotypes are annotated" },
+  {
+    id: "ontology",
+    label: "Ontology structure (default)",
+    tooltip: "Phenotypes with fewer descendant terms count for more",
+  },
+  {
+    id: "annotation",
+    label: "How often phenotypes are annotated",
+    tooltip: "Phenotypes annotated to fewer entities count for more",
+  },
 ];
+
+/** explanation of the information content setting */
+export const informationContentHelp = `Information content measures how
+specific, and so how informative, a phenotype is. By default it comes from the
+ontology: a term with fewer descendants counts for more. <b>How often phenotypes
+are annotated</b> instead counts how few entities in the group carry the
+phenotype or a more specific one, so rarely seen phenotypes count for more.`;
+
+/** explanation of the annotation corpus setting on the compare page */
+export const corpusHelp = `The group whose annotations decide how rare each
+phenotype is, for example Human Diseases.`;
 
 /** how a search orders results with equal scores */
 export const tieBreakOptions = [
-  { id: "none", label: "By ID (default)" },
-  { id: "frequency", label: "By phenotype frequency" },
+  {
+    id: "none",
+    label: "By ID (default)",
+    tooltip: "Equal scores are ordered by entity ID",
+  },
+  {
+    id: "frequency",
+    label: "By phenotype frequency",
+    tooltip:
+      "Equal scores are ordered by how frequent the matched phenotypes are in each result",
+  },
 ];
+
+/** explanation of the tie-break setting */
+export const tieBreakHelp = `Results often tie, for example when every query
+phenotype is annotated to several of them. By default ties are ordered by ID.
+<b>By phenotype frequency</b> ranks a result higher when the phenotypes matching
+the query are frequent in it, as recorded in its annotations (such as "9 of 12
+patients" or "Frequent"). Annotations with no recorded frequency count as 50%.`;
 
 /** search settings beyond the metric. omitted ones take the API defaults. */
 export type SearchSettings = {

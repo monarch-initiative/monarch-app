@@ -43,28 +43,41 @@
         name="Similarity metric"
         :options="metricOptions"
       />
+      <AppInfo :text="metricHelp" label="similarity metric" />
     </AppFlex>
     <AppAccordion text="Advanced ranking settings" icon="wrench">
       <div class="settings">
-        <strong>Score by</strong>
+        <span class="setting-label">
+          <strong>Score by</strong>
+          <AppInfo :text="directionalityHelp" label="score direction" />
+        </span>
         <AppSelectSingle
           v-model="directionality"
           name="Score direction"
           :options="directionalityOptions"
         />
-        <strong>Candidates</strong>
+        <span class="setting-label">
+          <strong>Candidates</strong>
+          <AppInfo :text="searchModeHelp" label="candidates" />
+        </span>
         <AppSelectSingle
           v-model="searchMode"
           name="Search mode"
           :options="searchModeOptions"
         />
-        <strong>Information content from</strong>
+        <span class="setting-label">
+          <strong>Information content from</strong>
+          <AppInfo :text="informationContentHelp" label="information content" />
+        </span>
         <AppSelectSingle
           v-model="informationContent"
           name="Information content source"
           :options="informationContentOptions"
         />
-        <strong>Break ties</strong>
+        <span class="setting-label">
+          <strong>Break ties</strong>
+          <AppInfo :text="tieBreakHelp" label="tie-break" />
+        </span>
         <AppSelectSingle
           v-model="tieBreak"
           name="Tie-break"
@@ -72,11 +85,10 @@
         />
       </div>
       <p class="settings-help">
-        The defaults reproduce the current ranking. "How much of the query each
-        result covers" doesn't penalize results with many phenotypes, and
-        scoring every entity keeps them from being dropped before scoring.
-        Annotation-based information content makes rarely annotated phenotypes
-        count for more. These settings are experimental.
+        The defaults reproduce the current ranking. These settings are
+        experimental. Hover or focus the
+        <AppIcon icon="circle-info" /> icons for what each one does, or read the
+        <AppLink :to="settingsDocsUrl">full documentation</AppLink>.
       </p>
     </AppAccordion>
     <AppButton
@@ -157,17 +169,24 @@ import { ApiError } from "@/api";
 import {
   cleanSettings,
   compareSetToGroup,
+  directionalityHelp,
   directionalityOptions,
   getPhenotypes,
   groups,
+  informationContentHelp,
   informationContentOptions,
+  metricHelp,
   metricOptions,
+  searchModeHelp,
   searchModeOptions,
+  settingsDocsUrl,
+  tieBreakHelp,
   tieBreakOptions,
   type Group,
 } from "@/api/phenotype-explorer";
 import AppAccordion from "@/components/AppAccordion.vue";
 import AppAlert from "@/components/AppAlert.vue";
+import AppInfo from "@/components/AppInfo.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
@@ -439,13 +458,19 @@ $wrap: 1000px;
   margin: 0 auto;
   gap: 10px 15px;
 }
-.settings > strong {
-  text-align: right;
+.setting-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
 }
 @media (max-width: 600px) {
   .settings {
     grid-template-columns: 1fr;
     justify-items: center;
+  }
+  .setting-label {
+    justify-content: center;
   }
 }
 p {
