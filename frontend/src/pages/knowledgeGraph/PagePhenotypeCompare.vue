@@ -41,6 +41,7 @@
         name="Similarity metric"
         :options="metricOptions"
       />
+      <AppInfo :text="metricHelp" label="similarity metric" />
     </AppFlex>
     <AppFlex gap="small">
       <strong>... with information content from</strong>
@@ -49,6 +50,7 @@
         name="Information content source"
         :options="informationContentOptions"
       />
+      <AppInfo :text="informationContentHelp" label="information content" />
       <template v-if="informationContent.id === 'annotation'">
         <strong>among</strong>
         <AppSelectSingle
@@ -56,6 +58,7 @@
           name="Annotation corpus"
           :options="corpusOptions"
         />
+        <AppInfo :text="corpusHelp" label="annotation corpus" />
       </template>
     </AppFlex>
     <!-- Analyze Button -->
@@ -151,12 +154,16 @@ import { ApiError } from "@/api";
 import {
   cleanSettings,
   compareSetToSet,
+  corpusHelp,
   getPhenotypes,
   groups,
+  informationContentHelp,
   informationContentOptions,
+  metricHelp,
   metricOptions,
 } from "@/api/phenotype-explorer";
 import AppButton from "@/components/AppButton.vue";
+import AppInfo from "@/components/AppInfo.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";

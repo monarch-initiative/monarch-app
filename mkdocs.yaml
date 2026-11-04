@@ -41,6 +41,7 @@ nav:
   - Neo4J: 'Neo4J/index.md'
   - Monarch R: 'MonarchR/index.md'
   - Phenogrid: 'Phenogrid/index.md'
+  - Phenotype Similarity: 'Phenotype-Similarity/index.md'
   - FastAPI:
     - Overview: 'FastAPI/index.md'
     - Endpoints:
