@@ -227,12 +227,24 @@ const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
  * like a pasted list.
  */
 const phenotypeIds = useParam("phenotypes", stringParam(), "");
-const idList = (phenotypes: Options) =>
-  phenotypes.map(({ id }) => id).join(",");
+
+/**
+ * longest id list to put in the url. servers refuse urls much past 8 KB, so a
+ * longer list is left out, leaving a link that loads with an empty box rather
+ * than an error page. the longest disease profile is about 3 KB.
+ */
+const maxUrlIds = 6000;
+
+/** ids of phenotypes as they go in the url, empty if too long */
+const urlIds = (phenotypes: Options) => {
+  const ids = phenotypes.map(({ id }) => id).join(",");
+  return ids.length > maxUrlIds ? "" : ids;
+};
+
 watch(
   phenotypeIds,
   (ids) => {
-    if (ids === idList(aPhenotypes.value)) return;
+    if (ids === urlIds(aPhenotypes.value)) return;
     aPhenotypes.value = ids
       .split(",")
       .map((id) => id.trim())
@@ -244,7 +256,7 @@ watch(
 watch(
   aPhenotypes,
   (phenotypes) => {
-    phenotypeIds.value = idList(phenotypes);
+    phenotypeIds.value = urlIds(phenotypes);
   },
   { deep: true },
 );

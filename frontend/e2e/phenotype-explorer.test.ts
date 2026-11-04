@@ -92,3 +92,17 @@ test("Similarity Search: chosen phenotypes are kept in the url", async ({
     .click();
   await expect(page).toHaveURL(/phenotypes=HP/);
 });
+
+test("Similarity Search: too many phenotypes for a url are left out of it", async ({
+  page,
+}) => {
+  await page.goto("/search-phenotypes?directionality=object_to_subject");
+  const ids = Array.from(
+    { length: 600 },
+    (_, index) => `HP:${String(index).padStart(7, "0")}`,
+  );
+  await paste(page.locator(".select-tags input"), ids.join(","));
+  await expect(page.locator(".select-tags > .box > button")).toHaveCount(600);
+  await expect(page).toHaveURL(/directionality=object_to_subject/);
+  expect(page.url()).not.toContain("phenotypes=");
+});
