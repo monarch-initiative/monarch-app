@@ -61,3 +61,34 @@ test("Similarity Search: untouched settings send only the metric", async ({
   const body = (await request).postDataJSON();
   expect(Object.keys(body).sort()).toEqual(["group", "metric", "termset"]);
 });
+
+test("Similarity Search: phenotypes and settings load from the url", async ({
+  page,
+}) => {
+  await page.goto(
+    "/search-phenotypes?phenotypes=HP:0001250,HP:0003186&directionality=object_to_subject",
+  );
+  await expect(page.locator(".select-tags > .box > button")).toHaveCount(2);
+  await expect(page.getByText("HP:0003186")).toBeVisible();
+
+  const request = page.waitForRequest("**/semsim/search*");
+  await page
+    .getByRole("button", { name: /Analyze/i })
+    .first()
+    .click();
+  const body = (await request).postDataJSON();
+  expect(body.termset).toEqual(["HP:0001250", "HP:0003186"]);
+  expect(body.directionality).toBe("object_to_subject");
+});
+
+test("Similarity Search: chosen phenotypes are kept in the url", async ({
+  page,
+}) => {
+  await page.goto("/search-phenotypes");
+  await page.getByRole("button", { name: /Similarity Search/i }).click();
+  await page
+    .getByText(/example/i)
+    .first()
+    .click();
+  await expect(page).toHaveURL(/phenotypes=HP/);
+});

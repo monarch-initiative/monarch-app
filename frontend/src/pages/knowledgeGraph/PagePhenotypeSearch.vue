@@ -193,7 +193,7 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
-import { useParam, type Param } from "@/composables/use-param";
+import { stringParam, useParam, type Param } from "@/composables/use-param";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
@@ -221,6 +221,33 @@ const optionParam: Param<Option> = {
 
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
+
+/**
+ * query phenotype ids, kept in the url so a link fills in the form. ids only,
+ * like a pasted list.
+ */
+const phenotypeIds = useParam("phenotypes", stringParam(), "");
+const idList = (phenotypes: Options) =>
+  phenotypes.map(({ id }) => id).join(",");
+watch(
+  phenotypeIds,
+  (ids) => {
+    if (ids === idList(aPhenotypes.value)) return;
+    aPhenotypes.value = ids
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean)
+      .map((id) => ({ id }));
+  },
+  { immediate: true },
+);
+watch(
+  aPhenotypes,
+  (phenotypes) => {
+    phenotypeIds.value = idList(phenotypes);
+  },
+  { deep: true },
+);
 
 /** selected metric */
 const metric = ref<Option>(metricOptions[0]);
