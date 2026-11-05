@@ -371,6 +371,50 @@ class Ducksim:
             out.setdefault(e, []).append(p)
         return out
 
+    def annotations_by_prefix(self, entity_prefix, phenotype_prefix=None) -> dict:
+        """{entity -> sorted [phenotype, ...]} for every entity whose id has `entity_prefix`, optionally
+        keeping only phenotypes with `phenotype_prefix`. Reads the whole corpus, so it is for offline
+        use (the evaluation harness), not for request handling."""
+        where = "entity LIKE ? || ':%'"
+        params = [entity_prefix]
+        if phenotype_prefix:
+            where += " AND phenotype LIKE ? || ':%'"
+            params.append(phenotype_prefix)
+        rows = self._read(
+            f"SELECT DISTINCT entity, phenotype FROM _assoc WHERE {where} ORDER BY entity, phenotype", params
+        ).fetchall()
+        out = {}
+        for e, p in rows:
+            out.setdefault(e, []).append(p)
+        return out
+
+    def direct_parents(self, prefix) -> dict:
+        """{term -> sorted [parent, ...]} from the KG's asserted `biolink:subclass_of` edges, for terms
+        and parents that both have `prefix`. Direct parents only, unlike the closure."""
+        rows = self._read(
+            "SELECT DISTINCT subject, object FROM src.edges WHERE predicate = 'biolink:subclass_of' "
+            "AND subject LIKE ? || ':%' AND object LIKE ? || ':%' ORDER BY subject, object",
+            [prefix, prefix],
+        ).fetchall()
+        out = {}
+        for child, parent in rows:
+            out.setdefault(child, []).append(parent)
+        return out
+
+    def causal_genes_by_disease(self, gene_prefix) -> dict:
+        """{disease -> sorted [gene, ...]} from `biolink:causes` gene-to-disease edges, for genes with
+        `gene_prefix`."""
+        rows = self._read(
+            "SELECT DISTINCT object, subject FROM src.edges "
+            "WHERE category = 'biolink:CausalGeneToDiseaseAssociation' AND predicate = 'biolink:causes' "
+            "AND subject LIKE ? || ':%' ORDER BY object, subject",
+            [gene_prefix],
+        ).fetchall()
+        out = {}
+        for disease, gene in rows:
+            out.setdefault(disease, []).append(gene)
+        return out
+
     def entities(self, entity_ids) -> dict:
         """{id -> column->value row dict} from the KG `nodes` table — all-DuckDB entity hydration of
         search results, so the similarity backend needs no external entity store. One query."""
