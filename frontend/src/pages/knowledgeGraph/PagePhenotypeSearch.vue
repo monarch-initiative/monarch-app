@@ -193,7 +193,7 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
-import { useParam, type Param } from "@/composables/use-param";
+import { stringParam, useParam, type Param } from "@/composables/use-param";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
@@ -221,6 +221,45 @@ const optionParam: Param<Option> = {
 
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
+
+/**
+ * query phenotype ids, kept in the url so a link fills in the form. ids only,
+ * like a pasted list.
+ */
+const phenotypeIds = useParam("phenotypes", stringParam(), "");
+
+/**
+ * longest id list to put in the url. servers refuse urls much past 8 KB, so a
+ * longer list is left out, leaving a link that loads with an empty box rather
+ * than an error page. the longest disease profile is about 3 KB.
+ */
+const maxUrlIds = 6000;
+
+/** ids of phenotypes as they go in the url, empty if too long */
+const urlIds = (phenotypes: Options) => {
+  const ids = phenotypes.map(({ id }) => id).join(",");
+  return ids.length > maxUrlIds ? "" : ids;
+};
+
+watch(
+  phenotypeIds,
+  (ids) => {
+    if (ids === urlIds(aPhenotypes.value)) return;
+    aPhenotypes.value = ids
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean)
+      .map((id) => ({ id }));
+  },
+  { immediate: true },
+);
+watch(
+  aPhenotypes,
+  (phenotypes) => {
+    phenotypeIds.value = urlIds(phenotypes);
+  },
+  { deep: true },
+);
 
 /** selected metric */
 const metric = ref<Option>(metricOptions[0]);
