@@ -22,6 +22,8 @@ converter.prefix_map["ICD10CM"] = "https://www.icd10data.com/search?s="
 # which doesn't resolve; identifiers.org expects a colon (.../NANDO:2200622).
 # The colon form is only a prefix_alias upstream, so patch prefix_map directly.
 converter.prefix_map["NANDO"] = "http://identifiers.org/NANDO:"
+# Classes minted by uphenotizer (DPO-ext / APO-ext), imported by phenio.
+converter.add_prefix("PHENOTYPE", "https://w3id.org/monarch-initiative/entity/PHENOTYPE_")
 converter.add_prefix(
     "phenopacket.store",
     "https://github.com/monarch-initiative/phenopacket-store/blob/main/notebooks/",
