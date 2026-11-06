@@ -35,15 +35,15 @@ export const associations: DownloadItem[] = [
   {
     label:
       "Chemical or drug or treatment to disease or phenotypic feature association",
-    url: "https://data.monarchinitiative.org/monarch-kg/latest/tsv/all_associations/chemical_or_drug_or_treatment_to_disease_or_phenotypic_feature_association.all.tsv.gz",
+    url: "https://data.monarchinitiative.org/monarch-kg/latest/tsv/all_associations/chemical_or_drug_or_treatment_adverse_event_association.all.tsv.gz",
   },
   {
     label: "Chemical to disease or phenotypic feature association",
-    url: "https://data.monarchinitiative.org/monarch-kg/latest/tsv/all_associations/chemical_to_disease_or_phenotypic_feature_association.all.tsv.gz",
+    url: "https://data.monarchinitiative.org/monarch-kg/latest/tsv/all_associations/chemical_entity_to_disease_or_phenotypic_feature_association.all.tsv.gz",
   },
   {
     label: "Chemical to pathway association",
-    url: "https://data.monarchinitiative.org/monarch-kg/latest/tsv/all_associations/chemical_to_pathway_association.all.tsv.gz",
+    url: "https://data.monarchinitiative.org/monarch-kg/latest/tsv/all_associations/chemical_entity_to_pathway_association.all.tsv.gz",
   },
   {
     label: "Correlated gene to disease association",
