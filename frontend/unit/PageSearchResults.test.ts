@@ -5,6 +5,7 @@ import components from "@/global/components";
 import plugins from "@/global/plugins";
 import PageSearchResults from "@/pages/knowledgeGraph/PageSearchResults.vue";
 import "@/global/icons";
+import { apiCall } from "./setup";
 
 vi.mock("vue-router", () => ({
   useRoute: () => ({
@@ -42,4 +43,12 @@ test("Delegates to TabSearch rather than reimplementing it", () => {
 test("Renders TabSearch's full (non-minimal) mode", () => {
   /** only present when minimal is falsy, so it pins the branch the page needs */
   expect(mountPage().find(".search-row-full").exists()).toBe(true);
+});
+
+test("Lists page buttons in numeric order", async () => {
+  const wrapper = mountPage();
+  await apiCall();
+  const pages = wrapper.findAll(".page-button").map((b) => Number(b.text()));
+  /** search fixture has 134 results; at 10 per page that's 14 pages */
+  expect(pages).toEqual([1, 2, 3, 12, 13, 14]);
 });
