@@ -7,6 +7,7 @@ from fastapi.responses import RedirectResponse
 from monarch_py.api import (
     association,
     case_phenotype,
+    dismech,
     entity,
     entity_grid,
     histopheno,
@@ -47,6 +48,7 @@ app.include_router(entity_grid.router, prefix=f"{PREFIX}/entity")
 app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
 app.include_router(meta.router, prefix=PREFIX)
 app.include_router(pathograph.router, prefix=f"{PREFIX}/pathograph")
+app.include_router(dismech.router, prefix=f"{PREFIX}/dismech")
 app.include_router(search.router, prefix=PREFIX)
 app.include_router(semsim.router, prefix=f"{PREFIX}/semsim")
 app.include_router(sources_versions.router, prefix=PREFIX)
