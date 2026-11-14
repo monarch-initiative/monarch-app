@@ -122,7 +122,12 @@
           </div>
         </div>
 
-        <template v-if="category">
+        <!-- experimental (?dismech=1): collapsed phenotypes with dismech corroboration -->
+        <PhenotypeProfileTable
+          v-if="showPhenotypeProfile(category.id)"
+          :node="node"
+        />
+        <template v-else-if="category">
           <!-- table view of associations -->
           <AssociationsTable
             :node="node"
@@ -156,6 +161,10 @@
     when there is no pathograph.
   -->
   <SectionPathograph :node="node" />
+
+  <!-- experimental (?dismech=1); each self-gates on node type and self-hides when empty -->
+  <SectionDismechTreatments :node="node" />
+  <SectionDismechMechanisms :node="node" />
 </template>
 
 <script setup lang="ts">
@@ -172,9 +181,13 @@ import { useAssociationCategories } from "@/composables/use-association-categori
 import { useResearchUseAcknowledgement } from "@/composables/use-research-use-acknowledgement";
 import { DRUG_SECTIONS } from "@/pages/node/associationColumns";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import PhenotypeProfileTable from "@/pages/node/PhenotypeProfileTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
+import SectionDismechMechanisms from "@/pages/node/SectionDismechMechanisms.vue";
+import SectionDismechTreatments from "@/pages/node/SectionDismechTreatments.vue";
 import SectionDrugUses from "@/pages/node/SectionDrugUses.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
+import { useDismechPreview } from "@/util/dismech";
 import {
   expandLabelFor,
   predicateFilterState,
@@ -310,6 +323,18 @@ const diffFor = (id: string) => {
 const hasTotals = (id: string) => totalsByCategory.value[id] !== undefined;
 const activeTabIsDirect = (id: string) =>
   (selectedTabs.value[id] ?? defaultTab(id)) === "direct";
+
+const dismechPreview = useDismechPreview();
+
+/**
+ * experimental collapsed phenotype table (?dismech=1): a disease's direct
+ * phenotypes, or the diseases with a phenotype
+ */
+const showPhenotypeProfile = (id: string) =>
+  dismechPreview.value &&
+  id.startsWith("biolink:DiseaseToPheno") &&
+  ((isDiseaseNode.value && activeTabIsDirect(id)) ||
+    props.node.id?.startsWith("HP:"));
 
 const onInferredLabel = ({
   categoryId,
