@@ -23,6 +23,7 @@ const icons = [
   far.faEnvelope,
   far.faEye,
   far.faFileLines,
+  far.faFlag,
   far.faFloppyDisk,
   far.faLightbulb,
   far.faNewspaper,

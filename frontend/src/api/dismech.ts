@@ -150,28 +150,82 @@ export type DismechTreatments = {
   mechanism_nodes: Record<string, MechanismNode>;
 };
 
-export type DismechMechanism = {
-  mondo_id?: string | null;
+/** a disease whose dismech mechanisms involve a GO/CL/UBERON term */
+export type TermDisease = {
+  disease_id?: string | null;
+  label: string;
   disorder: string;
   disorder_file: string;
-  node_id: string;
-  node_name: string;
+  /** the disease's mechanisms annotated with the term */
+  mechanisms: { node_id: string; name: string; slots: string[] }[];
   /** descriptor slots the term appears in, e.g. cell_types */
   slots: string[];
-  modifier?: string | null;
-  /** phenotypes downstream of this mechanism */
-  leads_to: {
-    hpo_id: string;
-    hpo_label?: string | null;
-    diagnostic: boolean;
-  }[];
+  /** phenotypes downstream of those mechanisms */
+  leads_to: { hpo_id: string; label?: string | null; diagnostic: boolean }[];
+  /** causal edges from those mechanisms to those phenotypes */
+  edges: MechanismEdge[];
 };
 
-export type DismechMechanisms = {
+export type TermDiseases = {
   id: string;
   release: string;
   label?: string | null;
-  rows: DismechMechanism[];
+  total: number;
+  rows: TermDisease[];
+  mechanism_nodes: Record<string, MechanismNode>;
+};
+
+/** a dismech genetics record for a gene-disease pair */
+export type DismechGene = {
+  gene_id: string;
+  symbol: string;
+  mondo_id?: string | null;
+  disorder: string;
+  disorder_file: string;
+  relationship_type?: string | null;
+  association?: string | null;
+  kind: "causal" | "correlated";
+  variant_origin?: string | null;
+  validity: { classification?: string | null; classified_by?: string | null }[];
+  notes?: string | null;
+  evidence: DismechEvidence[];
+  /** mechanism nodes annotated with the gene in this disorder */
+  mechanisms: { node_id: string; name: string; slots: string[] }[];
+  /** phenotypes downstream of those mechanisms */
+  leads_to: { hpo_id: string; label?: string | null; diagnostic: boolean }[];
+  /** causal edges from those mechanisms to those phenotypes */
+  edges: MechanismEdge[];
+};
+
+/**
+ * one collapsed gene-disease row: a disease (gene page) or a gene (disease
+ * page)
+ */
+export type GeneDiseaseRow = {
+  disease_id?: string;
+  gene_id?: string;
+  label?: string | null;
+  sources: string[];
+  observations: {
+    source: string;
+    predicate: string;
+    record?: string | null;
+    publications?: string[] | null;
+  }[];
+  dismech: DismechGene[];
+  dismech_only: boolean;
+};
+
+export type GeneDiseaseProfile = {
+  id: string;
+  release: string;
+  kind: "causal" | "correlated";
+  total: number;
+  rows: GeneDiseaseRow[];
+  dismech_available: boolean;
+  kg_total: number;
+  dismech_corroborated: number;
+  dismech_unmatched: number;
   mechanism_nodes: Record<string, MechanismNode>;
 };
 
@@ -219,11 +273,41 @@ export const getPhenotypeDiseases = async (
 /** dismech treatments for a disease, or the diseases a drug is used for */
 export const getDismechTreatments = async (
   id: string,
+  /** a drug's name, matched as a whole word in dismech treatment names */
+  name?: string,
 ): Promise<DismechTreatments> =>
-  await request<DismechTreatments>(`${base}/dismech/treatments/${id}`);
+  await request<DismechTreatments>(
+    `${base}/dismech/treatments/${id}`,
+    name ? { name } : {},
+  );
 
-/** dismech mechanisms annotated with an ontology term */
-export const getDismechMechanisms = async (
+/** diseases whose dismech mechanisms involve a GO/CL/UBERON term */
+export const getTermDiseases = async (
   id: string,
-): Promise<DismechMechanisms> =>
-  await request<DismechMechanisms>(`${base}/dismech/mechanisms/${id}`);
+  options: { limit?: number; offset?: number } = {},
+): Promise<TermDiseases> =>
+  await request<TermDiseases>(`${base}/dismech/term-diseases/${id}`, {
+    limit: options.limit ?? 10,
+    offset: options.offset ?? 0,
+  });
+
+/**
+ * a gene's diseases or a disease's genes in one KG category, with dismech's
+ * genetics
+ */
+export const getGeneDiseaseProfile = async (
+  id: string,
+  kind: "causal" | "correlated",
+  options: ProfileOptions = {},
+): Promise<GeneDiseaseProfile> =>
+  await request<GeneDiseaseProfile>(
+    `${base}/dismech/gene-disease-profile/${id}`,
+    { kind, ...profileParams(options) },
+  );
+
+/**
+ * the dismech release the api serves; throws when it serves no dismech
+ * integrations
+ */
+export const getDismechStatus = async (): Promise<{ release: string }> =>
+  await request<{ release: string }>(`${base}/dismech/status`);

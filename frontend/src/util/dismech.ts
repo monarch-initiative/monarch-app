@@ -1,18 +1,28 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { getDismechStatus } from "@/api/dismech";
 import type { DismechMatch, MechanismNode } from "@/api/dismech";
 import type { DagEdge, DagNode } from "@/pages/node/MechanismDag.vue";
 import { pathographTooltip } from "@/util/pathographTooltip";
 
+/** whether the api serves dismech integrations; asked once per page load */
+const available = ref<boolean | null>(null);
+let asked = false;
+
 /**
- * experimental dismech integrations show only with ?dismech=1 (or the older
- * ?profile=1)
+ * dismech integrations show wherever the api serves them (not against an api
+ * without dismech.duckdb, where the existing tables show instead). ?dismech=0
+ * turns them off, to compare.
  */
-export const useDismechPreview = () => {
+export const useDismech = () => {
   const route = useRoute();
-  return computed(
-    () => route.query.dismech === "1" || route.query.profile === "1",
-  );
+  if (!asked) {
+    asked = true;
+    getDismechStatus()
+      .then(() => (available.value = true))
+      .catch(() => (available.value = false));
+  }
+  return computed(() => !!available.value && route.query.dismech !== "0");
 };
 
 export const DISMECH_SITE = "https://dismech.monarchinitiative.org";
@@ -125,4 +135,38 @@ export const mechanismGraph = (
     };
   });
   return { nodes: dagNodes, edges: [...edges.values()] };
+};
+
+/** "1 gene", "2 genes" */
+export const plural = (count: number, noun: string) =>
+  `${count.toLocaleString()} ${noun}${count === 1 ? "" : "s"}`;
+
+/**
+ * keep a mini graph readable: the nodes nearest the focus nodes, level by
+ * level, until about `max` are kept. returns how many were left out.
+ */
+export const trimGraph = (
+  nodes: DagNode[],
+  edges: DagEdge[],
+  max = 40,
+): { nodes: DagNode[]; edges: DagEdge[]; hidden: number } => {
+  if (nodes.length <= max) return { nodes, edges, hidden: 0 };
+  const children = new Map<string, string[]>();
+  for (const e of edges)
+    children.set(e.source, [...(children.get(e.source) ?? []), e.target]);
+  const focus = nodes.filter((n) => n.focus).map((n) => n.id);
+  const keep = new Set(focus.length ? focus : [nodes[0].id]);
+  let level = [...keep];
+  while (level.length && keep.size < max) {
+    const next = level
+      .flatMap((id) => children.get(id) ?? [])
+      .filter((id) => !keep.has(id));
+    for (const id of next) if (keep.size < max) keep.add(id);
+    level = next;
+  }
+  return {
+    nodes: nodes.filter((n) => keep.has(n.id)),
+    edges: edges.filter((e) => keep.has(e.source) && keep.has(e.target)),
+    hidden: nodes.length - keep.size,
+  };
 };

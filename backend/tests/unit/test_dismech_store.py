@@ -69,6 +69,41 @@ def kg_edge(subject, subject_label, obj, obj_label, source, negated=None, count=
     }
 
 
+def gene_record(gene, symbol, relationship, kind):
+    return {
+        "gene_id": gene,
+        "symbol": symbol,
+        "name": symbol,
+        "mondo_id": WILSON,
+        "disorder": "Wilson Disease",
+        "disorder_file": "Wilson_Disease",
+        "relationship_type": relationship,
+        "association": None,
+        "kind": kind,
+        "variant_origin": None,
+        "validity": [{"classification": "DEFINITIVE", "classified_by": "CLINGEN"}],
+        "notes": None,
+        "evidence": [ev()],
+    }
+
+
+def gene_edge(gene, symbol, category, source):
+    return {
+        "subject_key": int(gene.split(":")[1]),
+        "object_key": 10200,
+        "subject": gene,
+        "subject_label": symbol,
+        "object": WILSON,
+        "object_label": "Wilson disease",
+        "category": f"biolink:{category}GeneToDiseaseAssociation",
+        "predicate": "biolink:causes",
+        "primary_knowledge_source": source,
+        "original_subject": None,
+        "publications": [],
+        "has_evidence": [],
+    }
+
+
 TABLES = {
     "core.release": [{"release": "v0.1.47"}],
     "core.phenotype": [
@@ -122,7 +157,18 @@ TABLES = {
             "term_id": "CL:0000182",
             "term_label": "hepatocyte",
             "modifier": None,
-        }
+        },
+        {
+            "mondo_id": WILSON,
+            "disorder": "Wilson Disease",
+            "disorder_file": "Wilson_Disease",
+            "node_id": f"{N}Copper",
+            "node_name": "Copper",
+            "slot": "genes",
+            "term_id": "HGNC:870",
+            "term_label": "ATP7B",
+            "modifier": None,
+        },
     ],
     "core.treatment": [
         {
@@ -203,9 +249,24 @@ TABLES = {
     "app.kg_node": [
         {"id": "CHEBI:39501", "name": "trientine", "category": "biolink:ChemicalEntity"},
         {"id": "CL:0000182", "name": "hepatocyte", "category": "biolink:Cell"},
+        {"id": WILSON, "name": "Wilson disease", "category": "biolink:Disease"},
+        {"id": "HGNC:999", "name": "GENE9", "category": "biolink:Gene"},
+    ],
+    "core.gene": [
+        gene_record("HGNC:870", "ATP7B", "CAUSATIVE", "causal"),
+        # dismech calls it causal, the KG only correlated: corroborates the correlated row
+        gene_record("HGNC:111", "MOD1", "CAUSATIVE", "causal"),
+        # in neither KG category: dismech-only, in dismech's category
+        gene_record("HGNC:999", "GENE9", "SUSCEPTIBILITY", "correlated"),
+    ],
+    "app.kg_gene_disease": [
+        gene_edge("HGNC:870", "ATP7B", "Causal", "infores:omim"),
+        gene_edge("HGNC:870", "ATP7B", "Causal", "infores:clingen"),
+        gene_edge("HGNC:111", "MOD1", "Correlated", "infores:orphanet"),
     ],
 }
 TABLES["app.kg_phenotype_disease"] = TABLES["app.kg_disease_phenotype"]
+TABLES["app.kg_disease_gene"] = TABLES["app.kg_gene_disease"]
 
 
 @pytest.fixture(scope="module")
@@ -286,12 +347,44 @@ def test_treatments_for_a_disease_and_for_a_drug(store):
     assert store.treatments("CHEBI:1")["rows"] == []
 
 
-def test_mechanisms_by_term_lead_to_phenotypes(store):
-    result = store.mechanisms("CL:0000182")
-    assert result["label"] == "hepatocyte"
+def test_treatments_match_a_drug_by_name(store):
+    # dismech often names a drug without an agent term
+    assert [r["name"] for r in store.treatments("RXCUI:1", name="trientine")["rows"]] == ["Trientine"]
+    assert store.treatments("RXCUI:1", name="tri")["rows"] == []
+
+
+def test_term_diseases_one_row_per_disease(store):
+    result = store.term_diseases("CL:0000182")
+    assert (result["label"], result["total"]) == ("hepatocyte", 1)
     [row] = result["rows"]
-    assert row["slots"] == ["cell_types"]
+    assert (row["disease_id"], row["label"], row["slots"]) == (WILSON, "Wilson disease", ["cell_types"])
+    assert [m["name"] for m in row["mechanisms"]] == ["Copper"]
     assert [p["hpo_id"] for p in row["leads_to"]] == [CIRRHOSIS]
+    assert row["leads_to"][0]["diagnostic"] is True
+    assert [(e["source"], e["target"]) for e in row["edges"]] == [(f"{N}Copper", f"{N}Cirrhosis")]
+
+
+def test_gene_profile_collapses_sources_and_attaches_mechanisms(store):
+    result = store.gene_disease_profile("HGNC:870", "causal")
+    [row] = result["rows"]
+    assert (row["disease_id"], row["sources"]) == (WILSON, ["infores:clingen", "infores:omim"])
+    [rec] = row["dismech"]
+    assert [m["name"] for m in rec["mechanisms"]] == ["Copper"]
+    assert [p["hpo_id"] for p in rec["leads_to"]] == [CIRRHOSIS]
+    assert f"{N}Copper" in result["mechanism_nodes"]
+
+
+def test_gene_profile_from_a_disease_page(store):
+    causal = store.gene_disease_profile(WILSON, "causal", dismech_only=True)
+    assert [r["gene_id"] for r in causal["rows"]] == ["HGNC:870"]
+    correlated = store.gene_disease_profile(WILSON, "correlated", dismech_only=True)
+    rows = {r["gene_id"]: r for r in correlated["rows"]}
+    # dismech says causal but the KG has the pair as correlated: corroborates that row
+    assert rows["HGNC:111"]["dismech"][0]["relationship_type"] == "CAUSATIVE"
+    assert rows["HGNC:999"]["dismech_only"] is True
+    assert rows["HGNC:999"]["label"] == "GENE9"
+    assert store.gene_disease_profile(WILSON, "correlated")["dismech_unmatched"] == 1
+    assert "HGNC:999" not in {r["gene_id"] for r in store.gene_disease_profile(WILSON, "correlated")["rows"]}
 
 
 def test_pathograph_graphs_by_disease_and_gene(store):
@@ -322,15 +415,23 @@ def test_dismech_routes(client):
     assert client.get(f"/v3/api/dismech/phenotype-profile/{WILSON}").json()["total"] == 2
     assert client.get(f"/v3/api/dismech/phenotype-diseases/{LIVER}").json()["total"] == 2
     assert len(client.get(f"/v3/api/dismech/treatments/{WILSON}").json()["rows"]) == 1
-    assert client.get("/v3/api/dismech/mechanisms/CL:0000182").json()["label"] == "hepatocyte"
+    assert client.get("/v3/api/dismech/term-diseases/CL:0000182").json()["total"] == 1
+    assert client.get("/v3/api/dismech/gene-disease-profile/HGNC:870").json()["total"] == 1
 
 
 def test_dismech_routes_validate_ids(client):
     assert client.get(f"/v3/api/dismech/phenotype-profile/{LIVER}").status_code == 400
     assert client.get(f"/v3/api/dismech/phenotype-diseases/{WILSON}").status_code == 400
-    assert client.get("/v3/api/dismech/mechanisms/MONDO:1").status_code == 400
+    assert client.get("/v3/api/dismech/term-diseases/CHEBI:1").status_code == 400
+    assert client.get("/v3/api/dismech/gene-disease-profile/HP:0000001").status_code == 400
+    assert client.get("/v3/api/dismech/gene-disease-profile/HGNC:870?kind=other").status_code == 422
+
+
+def test_status_reports_the_release(client):
+    assert client.get("/v3/api/dismech/status").json() == {"release": "v0.1.47"}
 
 
 def test_dismech_routes_404_when_unconfigured(monkeypatch):
     monkeypatch.setattr(dismech_route, "dismech_store", lambda: None)
+    assert TestClient(app).get("/v3/api/dismech/status").status_code == 404
     assert TestClient(app).get(f"/v3/api/dismech/treatments/{WILSON}").status_code == 404

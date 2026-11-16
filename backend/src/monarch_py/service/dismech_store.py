@@ -6,6 +6,7 @@ READ_ONLY, so a worker starts in milliseconds and many workers share one file th
 page cache. dismech stays out of the KG.
 """
 
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -200,10 +201,118 @@ class DismechStore:
         )
         return {r.pop("node_id"): r for r in rows}
 
+    # gene <-> disease
+
+    def gene_disease_profile(
+        self, node_id: str, kind: str, corroborated_only=False, dismech_only=False, limit=None, offset=0
+    ) -> dict:
+        """a gene's diseases (HGNC) or a disease's genes (MONDO) in one KG association category
+        (causal / correlated), collapsed across sources, with dismech's genetics records for the pair
+        and the gene's mechanisms in that disease.
+
+        A dismech record corroborates the KG row for the same pair in either category; it becomes a
+        dismech_only row only when the KG has the pair in neither, in the category dismech gives it.
+        """
+        by_gene = node_id.startswith("HGNC:")
+        table, key, other = (
+            ("kg_gene_disease", "subject", "object") if by_gene else ("kg_disease_gene", "object", "subject")
+        )
+        id_col = "disease_id" if by_gene else "gene_id"
+        kg = self._rows(
+            f"SELECT category, {other} AS other_id, any_value({other}_label) AS label, list({{"
+            "'source': primary_knowledge_source, 'predicate': predicate, 'record': original_subject, "
+            "'publications': publications, 'evidence': has_evidence} ORDER BY primary_knowledge_source) AS observations "
+            f"FROM dm.app.{table} WHERE {key}_key = {_ID_KEY} AND {key} = $id GROUP BY category, {other}",
+            {"id": node_id},
+        )
+        category = {
+            "causal": "biolink:CausalGeneToDiseaseAssociation",
+            "correlated": "biolink:CorrelatedGeneToDiseaseAssociation",
+        }[kind]
+        in_kg = {r["other_id"] for r in kg}
+        rows = []
+        for r in kg:
+            if r["category"] == category:
+                rows.append({id_col: r["other_id"], "label": r["label"], "observations": r["observations"]})
+        for row in rows:
+            row["dismech"] = []
+            row["dismech_only"] = False
+            row["sources"] = sorted({o["source"] for o in row["observations"] if o["source"]})
+        records = self._rows(
+            "SELECT gene_id, symbol, mondo_id, disorder, disorder_file, relationship_type, association, kind, "
+            "variant_origin, validity, notes, evidence FROM dm.core.gene "
+            f"WHERE {'gene_id' if by_gene else 'mondo_id'} = $id",
+            {"id": node_id},
+        )
+        here = {row[id_col]: row for row in rows}
+        unmatched = []
+        for rec in records:
+            other_id = rec["mondo_id"] if by_gene else rec["gene_id"]
+            if other_id in here:
+                here[other_id]["dismech"].append(rec)
+            elif other_id not in in_kg and rec["kind"] == kind:
+                unmatched.append(rec)
+        labels = self.kg_nodes({(r["mondo_id"] if by_gene else r["gene_id"]) for r in unmatched})
+        rows += _dismech_only_rows(
+            unmatched,
+            key="mondo_id" if by_gene else "gene_id",
+            row=lambda r: {
+                id_col: r["mondo_id"] if by_gene else r["gene_id"],
+                "label": (labels.get(r["mondo_id"] if by_gene else r["gene_id"]) or {}).get("name")
+                or (r["disorder"] if by_gene else r["symbol"]),
+            },
+        )
+        rows.sort(key=lambda r: (r["dismech_only"], -len(r["sources"]), not r["dismech"], (r["label"] or "").lower()))
+        counts = {
+            "kg_total": sum(1 for r in rows if not r["dismech_only"]),
+            "dismech_corroborated": sum(1 for r in rows if r["dismech"] and not r["dismech_only"]),
+            "dismech_unmatched": sum(1 for r in rows if r["dismech_only"]),
+        }
+        rows = [r for r in rows if (dismech_only or not r["dismech_only"]) and (not corroborated_only or r["dismech"])]
+        page = rows[offset : offset + limit if limit else None]
+        records = [m for r in page for m in r["dismech"]]
+        self._gene_mechanisms(records)
+        node_ids = {m["node_id"] for rec in records for m in rec["mechanisms"]} | {
+            x for rec in records for e in rec["edges"] for x in (e["source"], e["target"])
+        }
+        return {
+            "id": node_id,
+            "release": self.release,
+            "kind": kind,
+            "total": len(rows),
+            "rows": page,
+            "dismech_available": True,
+            **counts,
+            "mechanism_nodes": self.nodes(node_ids),
+        }
+
+    def _gene_mechanisms(self, records):
+        """add each genetics record's mechanisms (nodes annotated with its gene in its disorder), the
+        phenotypes downstream of them, and the edges leading there"""
+        if not records:
+            return
+        found = defaultdict(list)
+        for m in self._rows(
+            "SELECT term_id, disorder_file, node_id, node_name, list(DISTINCT slot ORDER BY slot) AS slots "
+            "FROM dm.core.descriptor WHERE term_id IN (SELECT unnest($genes)) "
+            "AND disorder_file IN (SELECT unnest($files)) GROUP BY ALL ORDER BY node_name",
+            {"genes": sorted({r["gene_id"] for r in records}), "files": sorted({r["disorder_file"] for r in records})},
+        ):
+            found[(m["term_id"], m["disorder_file"])].append(
+                {"node_id": m["node_id"], "name": m["node_name"], "slots": m["slots"]}
+            )
+        for rec in records:
+            rec["mechanisms"] = found.get((rec["gene_id"], rec["disorder_file"]), [])
+        self._downstream(records)
+
     # treatments
 
-    def treatments(self, node_id: str) -> dict:
-        """dismech treatments for a disease (MONDO), or the diseases a drug (CHEBI/NCIT) treats"""
+    def treatments(self, node_id: str, name: str | None = None) -> dict:
+        """dismech treatments for a disease (MONDO), or the diseases a drug treats.
+
+        A drug matches a treatment by agent id, or, given its name, by that name as a whole word in
+        the treatment's name or an agent's label: dismech often names a drug without an agent term.
+        """
         if node_id.startswith("MONDO:"):
             rows = self._rows(
                 f"SELECT {_TREATMENT_COLUMNS} FROM dm.core.treatment "
@@ -213,8 +322,11 @@ class DismechStore:
         else:
             rows = self._rows(
                 f"SELECT {_TREATMENT_COLUMNS} FROM dm.core.treatment "
-                "WHERE list_contains(list_transform(agents, a -> a.id), $id) ORDER BY disorder, name",
-                {"id": node_id},
+                "WHERE list_contains(list_transform(agents, a -> a.id), $id) OR ($word IS NOT NULL AND ("
+                "  regexp_matches(lower(name), $word)"
+                "  OR len(list_filter(agents, a -> regexp_matches(lower(coalesce(a.label, '')), $word))) > 0"
+                ")) ORDER BY disorder, name",
+                {"id": node_id, "word": rf"\b{re.escape(name.lower())}\b" if name and len(name) > 2 else None},
             )
         known = self.kg_nodes(
             {a["id"] for r in rows for a in r["agents"]} | {r["mondo_id"] for r in rows if r["mondo_id"]}
@@ -231,35 +343,79 @@ class DismechStore:
             "mechanism_nodes": self.nodes(targets),
         }
 
-    # mechanisms by ontology term
+    # diseases by mechanism term
 
-    def mechanisms(self, term_id: str) -> dict:
-        """dismech mechanism nodes annotated with a GO/CL/UBERON/CHEBI/HGNC term, and the phenotypes
-        each one leads to"""
-        rows = self._rows(
-            "SELECT mondo_id, disorder, disorder_file, node_id, node_name, list(DISTINCT slot) AS slots, "
-            "any_value(modifier) AS modifier FROM dm.core.descriptor WHERE term_id = $id "
-            "GROUP BY ALL ORDER BY disorder, node_name",
+    def term_diseases(self, term_id: str, limit: int | None = None, offset: int = 0) -> dict:
+        """diseases whose dismech mechanisms are annotated with a GO/CL/UBERON term, one row per disease.
+
+        Each row carries the matching mechanisms, the phenotypes downstream of them, and the causal
+        edges from those mechanisms to those phenotypes, for one merged graph per disease.
+        """
+        mechanisms = self._rows(
+            "SELECT mondo_id, disorder, disorder_file, node_id, node_name, list(DISTINCT slot ORDER BY slot) AS slots "
+            "FROM dm.core.descriptor WHERE term_id = $id GROUP BY ALL ORDER BY node_name",
             {"id": term_id},
         )
-        node_ids = sorted({r["node_id"] for r in rows})
-        leads_to = defaultdict(list)
-        if node_ids:
-            for p in self._rows(
-                "SELECT node_id, hpo_id, hpo_label, diagnostic FROM dm.core.phenotype_mechanism "
-                "WHERE node_id IN (SELECT unnest($ids)) ORDER BY diagnostic DESC, hpo_label",
-                {"ids": node_ids},
-            ):
-                leads_to[p.pop("node_id")].append(p)
-        for r in rows:
-            r["leads_to"] = leads_to.get(r["node_id"], [])
+        diseases = {}
+        for m in mechanisms:
+            row = diseases.setdefault(
+                m["disorder_file"],
+                {
+                    "disease_id": m["mondo_id"],
+                    "disorder": m["disorder"],
+                    "disorder_file": m["disorder_file"],
+                    "mechanisms": [],
+                },
+            )
+            row["mechanisms"].append({"node_id": m["node_id"], "name": m["node_name"], "slots": m["slots"]})
+        labels = self.kg_nodes({r["disease_id"] for r in diseases.values() if r["disease_id"]})
+        for row in diseases.values():
+            row["label"] = (labels.get(row["disease_id"]) or {}).get("name") or row["disorder"]
+            row["slots"] = sorted({s for m in row["mechanisms"] for s in m["slots"]})
+        rows = sorted(diseases.values(), key=lambda r: (-len(r["mechanisms"]), r["label"].lower()))
+        page = rows[offset : offset + limit if limit else None]
+        self._downstream(page)
+        node_ids = {m["node_id"] for r in page for m in r["mechanisms"]} | {
+            x for r in page for e in r["edges"] for x in (e["source"], e["target"])
+        }
         return {
             "id": term_id,
             "release": self.release,
             "label": (self.kg_nodes({term_id}).get(term_id) or {}).get("name"),
-            "rows": rows,
-            "mechanism_nodes": self.nodes(set(node_ids)),
+            "total": len(rows),
+            "rows": page,
+            "mechanism_nodes": self.nodes(node_ids),
         }
+
+    def _downstream(self, rows):
+        """add each row's phenotypes downstream of its mechanisms, and the edges leading there"""
+        ids = sorted({m["node_id"] for r in rows for m in r["mechanisms"]})
+        reached = defaultdict(list)
+        if ids:
+            for p in self._rows(
+                "SELECT DISTINCT pm.node_id, p.disorder_file, p.hpo_id, p.hpo_label, p.diagnostic, p.upstream_edges "
+                "FROM dm.core.phenotype_mechanism pm "
+                "JOIN dm.core.phenotype p ON p.phenotype_node_id = pm.phenotype_node_id "
+                "WHERE pm.node_id IN (SELECT unnest($ids))",
+                {"ids": ids},
+            ):
+                reached[p["disorder_file"]].append(p)
+        for row in rows:
+            start = {m["node_id"] for m in row["mechanisms"]}
+            phenotypes, edges = {}, {}
+            for p in reached.get(row["disorder_file"], []):
+                if p["node_id"] not in start:
+                    continue
+                seen = phenotypes.setdefault(
+                    p["hpo_id"], {"hpo_id": p["hpo_id"], "label": p["hpo_label"], "diagnostic": False}
+                )
+                seen["diagnostic"] = seen["diagnostic"] or p["diagnostic"]
+                for e in p["upstream_edges"]:
+                    edges[(e["source"], e["target"])] = e
+            row["leads_to"] = sorted(
+                phenotypes.values(), key=lambda p: (not p["diagnostic"], (p["label"] or "").lower())
+            )
+            row["edges"] = _reachable(edges.values(), start)
 
     def kg_nodes(self, ids) -> dict:
         if not ids:
@@ -306,6 +462,22 @@ class DismechStore:
             for n in g["nodes"]:
                 n["meta"] = _json(n["meta"])
         return [(d["mondo_id"], d["name"] or d["mondo_id"], d["slug"], graphs[d["file"]]) for d in disorders]
+
+
+def _reachable(edges, start):
+    """the edges on paths leaving `start`: a phenotype's upstream subgraph also holds causes that
+    have nothing to do with the term"""
+    children = defaultdict(list)
+    for e in edges:
+        children[e["source"]].append(e)
+    keep, todo, seen = [], list(start), set(start)
+    while todo:
+        for e in children.get(todo.pop(), []):
+            keep.append(e)
+            if e["target"] not in seen:
+                seen.add(e["target"])
+                todo.append(e["target"])
+    return keep
 
 
 def _json(value):

@@ -14,23 +14,31 @@
   >
   <div v-else class="profile">
     <div class="summary">
-      <span
-        ><strong>{{ profile.kg_total.toLocaleString() }}</strong> {{ rowNoun }}s
-        in Monarch</span
-      >
-      <span v-if="profile.dismech_available">
+      <span v-if="!profile.kg_total && profile.dismech_unmatched">
         <AppIcon icon="robot" class="ai" />
-        {{ profile.dismech_corroborated.toLocaleString() }} corroborated by
-        Dismech
+        <strong>{{ plural(profile.dismech_unmatched, rowNoun) }}</strong> from
+        Dismech only
         <span class="muted">(AI-assisted curation, may have mistakes)</span>
       </span>
+      <template v-else>
+        <span
+          ><strong>{{ plural(profile.kg_total, rowNoun) }}</strong> in
+          Monarch</span
+        >
+        <span v-if="profile.dismech_available">
+          <AppIcon icon="robot" class="ai" />
+          {{ profile.dismech_corroborated.toLocaleString() }} corroborated by
+          Dismech
+          <span class="muted">(AI-assisted curation, may have mistakes)</span>
+        </span>
+      </template>
       <AppCheckbox
         v-if="profile.dismech_corroborated"
         v-model="onlyCorroborated"
         text="Only Dismech-corroborated"
       />
       <AppCheckbox
-        v-if="profile.dismech_unmatched"
+        v-if="profile.kg_total && profile.dismech_unmatched"
         v-model="showDismechOnly"
         :text="`Show ${profile.dismech_unmatched.toLocaleString()} Dismech-only ${rowNoun}s`"
       />
@@ -74,9 +82,14 @@
               >
             </td>
             <td class="frequency">
-              <div v-if="row.dismech_only" class="muted">
-                Not in OMIM or Orphanet annotations
-              </div>
+              <template v-if="row.dismech_only">
+                <div v-for="(f, i) in dismechFrequencies(row)" :key="i">
+                  <span class="muted">Dismech</span> {{ f }}
+                </div>
+                <div v-if="profile.kg_total" class="muted">
+                  Not in OMIM or Orphanet annotations
+                </div>
+              </template>
               <div v-for="(f, i) in frequencies(row)" :key="i">
                 <span class="muted">{{ f.source }}</span> {{ f.text }}
               </div>
@@ -130,6 +143,7 @@
                     <q v-if="e.snippet">{{ e.snippet }}</q>
                   </li>
                 </ul>
+                <DismechFeedback :record="feedbackRecord(row, m)" />
               </div>
               <AppLink
                 v-for="d in disorders(row)"
@@ -144,37 +158,20 @@
       </tbody>
     </table>
 
-    <div v-if="pageCount > 1" class="pager">
-      <AppButton
-        icon="angle-left"
-        design="small"
-        color="secondary"
-        :disabled="page === 0"
-        aria-label="Previous page"
-        @click="page--"
-      />
-      <span
-        >{{ (page * PER_PAGE + 1).toLocaleString() }}–{{
-          Math.min((page + 1) * PER_PAGE, profile.total).toLocaleString()
-        }}
-        of {{ profile.total.toLocaleString() }}</span
-      >
-      <AppButton
-        icon="angle-right"
-        design="small"
-        color="secondary"
-        :disabled="page >= pageCount - 1"
-        aria-label="Next page"
-        @click="page++"
-      />
-    </div>
+    <TheTableControls
+      v-model:per-page="perPage"
+      v-model:start="start"
+      :rows="profile.rows"
+      :total="profile.total"
+      :show-download="false"
+    />
     <div class="muted release">Dismech release {{ profile.release }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { uniqBy } from "lodash";
+import { uniq, uniqBy } from "lodash";
 import { getPhenotypeDiseases, getPhenotypeProfile } from "@/api/dismech";
 import type {
   DismechMatch,
@@ -183,22 +180,27 @@ import type {
 } from "@/api/dismech";
 import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
+import TheTableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
+import DismechFeedback from "@/pages/node/DismechFeedback.vue";
 import MechanismDag from "@/pages/node/MechanismDag.vue";
 import {
   dismechDisorderUrl,
   FREQUENCY_LABELS,
   mechanismGraph,
+  plural,
   sourceLabel,
 } from "@/util/dismech";
+import type { DismechFeedbackRecord } from "@/util/dismech-feedback";
+import { labeledChain } from "@/util/dismech-feedback";
 
 type Props = {
   node: Node;
+  /** start with dismech-only rows shown, when the KG has none */
+  dismechOnly?: boolean;
 };
 
 const props = defineProps<Props>();
-
-const PER_PAGE = 25;
 
 /** disease page: rows are phenotypes. phenotype page: rows are diseases */
 const byDisease = computed(() => props.node.category === "biolink:Disease");
@@ -207,8 +209,9 @@ const rowLabel = computed(() => (byDisease.value ? "Phenotype" : "Disease"));
 
 const onlyCorroborated = ref(false);
 /** dismech-only rows are opt in: they have no OMIM/Orphanet corroboration */
-const showDismechOnly = ref(false);
-const page = ref(0);
+const showDismechOnly = ref(props.dismechOnly ?? false);
+const perPage = ref(10);
+const start = ref(0);
 const expanded = ref<Record<string, boolean>>({});
 
 const rowId = (row: PhenotypeProfileRow) => row.hpo_id ?? row.disease_id ?? "";
@@ -249,6 +252,45 @@ const frequencies = (row: PhenotypeProfileRow) =>
     })
     .filter((f) => f.text);
 
+/** dismech's frequencies, for a row no KG source annotates */
+const dismechFrequencies = (row: PhenotypeProfileRow) =>
+  uniq(
+    row.dismech
+      .map((m) => FREQUENCY_LABELS[m.frequency_hp ?? ""] ?? m.frequency_text)
+      .filter(Boolean),
+  );
+
+const MATCH_TEXT: Record<DismechMatch["match"], string> = {
+  exact: "Same term",
+  more_specific: "Refines this term",
+  dismech_only: "Dismech only; no OMIM or Orphanet annotation",
+};
+
+/** a dismech phenotype record, as it appears in this row, for feedback */
+const feedbackRecord = (
+  row: PhenotypeProfileRow,
+  m: DismechMatch,
+): DismechFeedbackRecord => {
+  const frequency = FREQUENCY_LABELS[m.frequency_hp ?? ""] ?? m.frequency_text;
+  return {
+    kind: "phenotype",
+    claim: `${m.disorder}: ${m.hpo_label || m.phenotype_name}`,
+    disorder: m.disorder,
+    disorder_file: m.disorder_file,
+    release: profile.value.release,
+    fields: [
+      ["Phenotype", `${m.phenotype_name} (${m.hpo_id})`],
+      ...(frequency ? [["Frequency", frequency] as [string, string]] : []),
+      ...(m.diagnostic ? [["Diagnostic", "Yes"] as [string, string]] : []),
+      ["Monarch row", `${row.label ?? rowId(row)} (${rowId(row)})`],
+      ["Match", MATCH_TEXT[m.match]],
+    ],
+    evidence: m.evidence,
+    chain: labeledChain(m.upstream_edges, profile.value.mechanism_nodes),
+    diagnostic: m.diagnostic,
+  };
+};
+
 const graph = (row: PhenotypeProfileRow) =>
   mechanismGraph(row.dismech, profile.value.mechanism_nodes);
 
@@ -262,8 +304,8 @@ const {
     const options = {
       corroboratedOnly: onlyCorroborated.value,
       dismechOnly: showDismechOnly.value,
-      limit: PER_PAGE,
-      offset: page.value * PER_PAGE,
+      limit: perPage.value,
+      offset: start.value,
     };
     return byDisease.value
       ? await getPhenotypeProfile(props.node.id, options)
@@ -282,19 +324,17 @@ const {
   } as PhenotypeProfile,
 );
 
-const pageCount = computed(() => Math.ceil(profile.value.total / PER_PAGE));
-
 watch([onlyCorroborated, showDismechOnly], () => {
-  if (page.value) page.value = 0;
+  if (start.value) start.value = 0;
   else runGetProfile();
 });
-watch(page, runGetProfile);
+watch([perPage, start], runGetProfile);
 watch(
   () => props.node.id,
   () => {
-    page.value = 0;
     expanded.value = {};
-    runGetProfile();
+    if (start.value) start.value = 0;
+    else runGetProfile();
   },
   { immediate: true },
 );
@@ -400,13 +440,6 @@ watch(
     color: $dark-gray;
     font-style: italic;
   }
-}
-
-.pager {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
 }
 
 .release {

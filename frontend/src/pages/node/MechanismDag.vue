@@ -47,7 +47,7 @@
           interactive: true,
           appendTo: appendToBody,
         }"
-        :class="['node', node.kind]"
+        :class="['node', node.kind, { focus: node.focus }]"
       >
         <rect
           :x="node.x"
@@ -84,6 +84,8 @@ export type DagNode = {
   kind: "mechanism" | "sequela" | "phenotype";
   /** tooltip html */
   tooltip?: string;
+  /** emphasize, e.g. the mechanisms that matched the page's term */
+  focus?: boolean;
 };
 
 export type DagEdge = {
@@ -218,6 +220,11 @@ const layout = computed(() => {
     fill: $black;
     font-size: 11px;
   }
+}
+
+.node.focus rect {
+  fill: $theme-light;
+  stroke-width: 2.5;
 }
 
 .node.sequela rect {

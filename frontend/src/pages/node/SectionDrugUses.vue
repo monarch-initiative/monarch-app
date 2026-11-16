@@ -105,6 +105,19 @@
             <span class="chip-count">{{ investigationalCount }}</span>
           </button>
         </template>
+        <!-- when the api serves dismech: treatments only dismech records -->
+        <template v-if="dismech.unmatched.value.length">
+          <span class="chip-sep" />
+          <button
+            :class="['chip', { active: showDismechOnly }]"
+            :aria-pressed="showDismechOnly"
+            :title="`Treatments Dismech records that match no ${groupNoun} here (AI-assisted curation, may have mistakes)`"
+            @click="showDismechOnly = !showDismechOnly"
+          >
+            <AppIcon icon="robot" /> + Dismech-only
+            <span class="chip-count">{{ dismech.unmatched.value.length }}</span>
+          </button>
+        </template>
       </div>
 
       <!-- level 1: one row per drug / condition -->
@@ -164,6 +177,14 @@
               <span v-if="moreTargets(group) > 0" class="muted">
                 +{{ moreTargets(group) }} more</span
               >
+              <span
+                v-if="dismechFor(group).length"
+                v-tooltip="
+                  'Dismech also records this, with the mechanisms it targets'
+                "
+                class="dismech-mark"
+                ><AppIcon icon="robot" /> Dismech</span
+              >
             </span>
             <span class="where">
               <span
@@ -191,6 +212,13 @@
             :id="`${sectionKey}-statements-${groupIndex}`"
             class="statements"
           >
+            <DismechTreatmentDetail
+              v-if="dismechFor(group).length"
+              :treatments="dismechFor(group)"
+              :nodes="dismech.data.value.mechanism_nodes"
+              :release="dismech.data.value.release"
+              :monarch-row="`${group.fields[labelField] ?? group.value} (${group.value})`"
+            />
             <AppStatus v-if="statements.isLoading.value" code="loading"
               >Loading statements</AppStatus
             >
@@ -433,6 +461,13 @@
         </li>
       </ul>
 
+      <DismechTreatmentDetail
+        v-if="showDismechOnly && dismech.unmatched.value.length"
+        :treatments="dismech.unmatched.value"
+        :nodes="dismech.data.value.mechanism_nodes"
+        :release="dismech.data.value.release"
+        :show-disease="!isDiseasePage"
+      />
       <TheTableControls
         v-if="groupTotal > 0 && !summary.isError.value"
         v-model:per-page="perPage"
@@ -454,7 +489,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue";
+import { computed, nextTick, ref, toRef, watch } from "vue";
 import {
   getAssociationSummary,
   solrQuote,
@@ -477,8 +512,10 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppProvenanceIcons from "@/components/AppProvenanceIcons.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
+import { useDismechTreatments } from "@/composables/use-dismech-treatments";
 import { useQuery } from "@/composables/use-query";
 import { useResearchUseAcknowledgement } from "@/composables/use-research-use-acknowledgement";
+import DismechTreatmentDetail from "@/pages/node/DismechTreatmentDetail.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import {
   defaultPredicatesFor,
@@ -531,6 +568,20 @@ const secondaryField = computed(() =>
   isDiseasePage.value ? "object" : "disease_context_qualifier",
 );
 const groupNoun = computed(() => (isDiseasePage.value ? "drug" : "condition"));
+
+/**
+ * dismech treatments matched to this section's rows, when the api serves
+ * dismech
+ */
+const dismech = useDismechTreatments(
+  toRef(props, "node"),
+  toRef(props, "sectionKey"),
+  isDiseasePage,
+  acknowledged,
+);
+const showDismechOnly = ref(false);
+const dismechFor = (group: AssociationSummaryGroup) =>
+  dismech.forRow(group.value, String(group.fields[labelField.value] ?? ""));
 
 const jurisdiction = ref<string | null>(null);
 const includeInvestigational = ref(false);
@@ -1077,6 +1128,13 @@ const plural = (n: number, noun: string) =>
 .chip-count {
   color: $dark-gray;
   font-weight: 600;
+}
+
+.dismech-mark {
+  margin-left: 8px;
+  color: $theme;
+  font-size: 0.85em;
+  white-space: nowrap;
 }
 
 .chip-sep {
