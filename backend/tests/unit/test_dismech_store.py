@@ -14,6 +14,7 @@ from monarch_py.api import dismech as dismech_route
 from monarch_py.api import pathograph as pathograph_route
 from monarch_py.api.main import app
 from monarch_py.service.dismech_store import DismechStore
+from monarch_py.service.phenotype_profile import frequency_score
 
 WILSON = "MONDO:0010200"
 OTHER = "MONDO:0000001"
@@ -23,6 +24,7 @@ LIVER = "HP:0001392"
 CIRRHOSIS = "HP:0001394"
 JAUNDICE = "HP:0000952"
 DIGESTIVE = "UPHENO:0002443"
+LIVER_ORGAN = "UBERON:0002107"
 N = "dismech:Wilson_Disease#"
 
 
@@ -250,6 +252,8 @@ TABLES = {
         {"ancestor_key": 952, "hpo_id": JAUNDICE, "ancestor_id": JAUNDICE},
         {"ancestor_key": 2443, "hpo_id": LIVER, "ancestor_id": DIGESTIVE},
         {"ancestor_key": 2443, "hpo_id": CIRRHOSIS, "ancestor_id": DIGESTIVE},
+        {"ancestor_key": 2107, "hpo_id": LIVER, "ancestor_id": LIVER_ORGAN},
+        {"ancestor_key": 2107, "hpo_id": CIRRHOSIS, "ancestor_id": LIVER_ORGAN},
     ],
     "app.kg_node": [
         {"id": "CHEBI:39501", "name": "trientine", "category": "biolink:ChemicalEntity"},
@@ -329,7 +333,7 @@ def test_dismech_only_rows_are_opt_in(store):
 def test_phenotype_diseases_matches_records_of_subclasses(store):
     result = store.phenotype_diseases(LIVER)
     rows = by_id(result["rows"], "disease_id")
-    assert set(rows) == {WILSON, OTHER, ONLY_DISMECH}
+    assert set(rows) == {WILSON, OTHER, ONLY_DISMECH, NEGATED}
     assert [m["hpo_id"] for m in rows[WILSON]["dismech"]] == [CIRRHOSIS]
     assert rows[WILSON]["label"] == "Wilson disease"
 
@@ -338,8 +342,20 @@ def test_phenotype_diseases_rolls_up_kg_annotations_of_subclasses(store):
     rows = by_id(store.phenotype_diseases(LIVER)["rows"], "disease_id")
     assert rows[OTHER]["dismech_only"] is False
     assert [(o["phenotype"], o["phenotype_label"]) for o in rows[OTHER]["observations"]] == [(CIRRHOSIS, "Cirrhosis")]
-    # NOT cirrhosis says nothing about the liver as a whole
-    assert NEGATED not in rows
+    # kept, as the stock table keeps it; the row says which term is negated
+    assert rows[NEGATED]["negated"] is True
+    assert [o["phenotype"] for o in rows[NEGATED]["observations"]] == [CIRRHOSIS]
+
+
+def test_phenotype_diseases_scores_like_the_profile(store):
+    rows = by_id(store.phenotype_diseases(LIVER)["rows"], "disease_id")
+    assert rows[WILSON]["frequency_score"] == pytest.approx(frequency_score(rows[WILSON]))
+
+
+def test_phenotype_diseases_loads_only_the_page(store):
+    result = store.phenotype_diseases(LIVER, limit=1)
+    assert result["total"] == 4 and len(result["rows"]) == 1
+    assert result["rows"][0]["observations"]
 
 
 def test_phenotype_diseases_keeps_negated_annotations_of_the_term_itself(store):
@@ -347,10 +363,10 @@ def test_phenotype_diseases_keeps_negated_annotations_of_the_term_itself(store):
     assert [r["negated"] for r in rows if r["disease_id"] == NEGATED] == [True]
 
 
-def test_phenotype_diseases_for_an_upheno_grouping_class(store):
-    result = store.phenotype_diseases(DIGESTIVE)
-    rows = by_id(result["rows"], "disease_id")
-    assert set(rows) == {WILSON, OTHER, ONLY_DISMECH}
+@pytest.mark.parametrize("term", [DIGESTIVE, LIVER_ORGAN])
+def test_phenotype_diseases_for_upheno_and_anatomy_terms(store, term):
+    rows = by_id(store.phenotype_diseases(term)["rows"], "disease_id")
+    assert set(rows) == {WILSON, OTHER, ONLY_DISMECH, NEGATED}
     assert {m["hpo_id"] for m in rows[WILSON]["dismech"]} == {CIRRHOSIS}
 
 
@@ -446,8 +462,8 @@ def test_pathograph_route_reads_the_store(client):
 
 def test_dismech_routes(client):
     assert client.get(f"/v3/api/dismech/phenotype-profile/{WILSON}").json()["total"] == 2
-    assert client.get(f"/v3/api/dismech/phenotype-diseases/{LIVER}").json()["total"] == 3
-    assert client.get(f"/v3/api/dismech/phenotype-diseases/{DIGESTIVE}").json()["total"] == 3
+    assert client.get(f"/v3/api/dismech/phenotype-diseases/{LIVER}").json()["total"] == 4
+    assert client.get(f"/v3/api/dismech/phenotype-diseases/{LIVER_ORGAN}").json()["total"] == 4
     assert len(client.get(f"/v3/api/dismech/treatments/{WILSON}").json()["rows"]) == 1
     assert client.get("/v3/api/dismech/term-diseases/CL:0000182").json()["total"] == 1
     assert client.get("/v3/api/dismech/gene-disease-profile/HGNC:870").json()["total"] == 1
@@ -455,7 +471,7 @@ def test_dismech_routes(client):
 
 def test_dismech_routes_validate_ids(client):
     assert client.get(f"/v3/api/dismech/phenotype-profile/{LIVER}").status_code == 400
-    assert client.get(f"/v3/api/dismech/phenotype-diseases/{WILSON}").status_code == 400
+    assert client.get(f"/v3/api/dismech/phenotype-diseases/not-a-curie").status_code == 400
     assert client.get("/v3/api/dismech/term-diseases/CHEBI:1").status_code == 400
     assert client.get("/v3/api/dismech/gene-disease-profile/HP:0000001").status_code == 400
     assert client.get("/v3/api/dismech/gene-disease-profile/HGNC:870?kind=other").status_code == 422

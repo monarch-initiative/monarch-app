@@ -14,7 +14,8 @@ from monarch_py.api.config import dismech_store
 router = APIRouter(tags=["dismech"], responses={404: {"description": "Not Found"}})
 
 _MONDO = re.compile(r"^MONDO:\d{7}$")
-_PHENOTYPE = re.compile(r"^(HP|UPHENO):\d{7}$")
+# a phenotype, or any term phenotypes sit under in the KG closure (UPHENO, UBERON, GO, ...)
+_CURIE = re.compile(r"^[A-Za-z][A-Za-z0-9_.]*:[A-Za-z0-9_.-]+$")
 _GENE_OR_DISEASE = re.compile(r"^(HGNC:\d+|MONDO:\d{7})$")
 _TREATMENT_ID = re.compile(r"^(MONDO:\d{7}|(CHEBI|NCIT|RXCUI|DRUGBANK|UNII|MESH):[A-Z0-9]+)$")
 _TERM = re.compile(r"^(GO|CL|UBERON):\d+$")
@@ -63,8 +64,8 @@ def _phenotype_diseases(
     limit: int | None = Query(25, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ) -> dict:
-    """Diseases with a phenotype or a subclass of it, collapsed across primary knowledge sources, with dismech corroboration"""
-    store = _store(id, _PHENOTYPE, "an HP or UPHENO id")
+    """Diseases with a phenotype or anything under the term, collapsed across primary knowledge sources, with dismech corroboration"""
+    store = _store(id, _CURIE, "a CURIE")
     return store.phenotype_diseases(id, **_page(corroborated_only, dismech_only, limit, offset))
 
 

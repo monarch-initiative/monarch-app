@@ -12,7 +12,7 @@ from pathlib import Path
 
 import duckdb
 
-from monarch_py.service.phenotype_profile import frequency_score, rank_key
+from monarch_py.service.phenotype_profile import FREQUENCY_BAND_FLOOR, frequency_score, rank_key
 
 # numeric local id, matching the sort key the build uses
 _ID_KEY = "try_cast(split_part($id, ':', 2) AS BIGINT)"
@@ -43,21 +43,48 @@ WHERE subject_key = {_ID_KEY} AND subject = $id
 GROUP BY object, negated
 """
 
-# diseases annotated to a phenotype or any of its subclasses, as the stock association table
-# counts them. a negated subclass says nothing about the phenotype, so only the term's own
-# negations come along. observations stay slim, since a high-level term reaches every disease.
-_KG_DISEASES = f"""
-SELECT subject AS disease_id, any_value(subject_label) AS label, {_NEGATED},
+# a phenotype page's KG edges: those to the term or anything under it in the KG's closure
+# (subclasses, and for an anatomy or process term, the phenotypes affecting it), as the stock
+# association table counts them
+_UNDER_TERM = (
+    "SEMI JOIN dm.app.hp_closure c ON c.hpo_id = p.object "
+    f"AND c.ancestor_key IS NOT DISTINCT FROM {_ID_KEY} AND c.ancestor_id = $id"
+)
+
+# one observation's frequency estimate, as phenotype_profile.frequency_score reads it
+_OBSERVATION_SCORE = f"""CASE
+  WHEN k IS NOT NULL AND n > 0 THEN greatest(0, (k / n + 3.8416 / (2 * n)
+    - 1.96 * sqrt((k / n * (1 - k / n) + 3.8416 / (4 * n)) / n)) / (1 + 3.8416 / n))
+  WHEN pct IS NOT NULL THEN pct / 100
+  ELSE CASE band {" ".join(f"WHEN '{k}' THEN {v}" for k, v in FREQUENCY_BAND_FLOOR.items())} END
+END"""
+
+# a high-level term reaches every disease, so a phenotype page ranks on one summary row per
+# (disease, negated) and only loads the observations of the page it shows
+_KG_DISEASE_SUMMARY = f"""
+WITH e AS (
+  SELECT subject, subject_label, {_NEGATED}, primary_knowledge_source AS source,
+    try_cast(has_count AS DOUBLE) AS k, try_cast(has_total AS DOUBLE) AS n,
+    try_cast(has_percentage AS DOUBLE) AS pct, frequency_qualifier AS band
+  FROM dm.app.kg_phenotype_disease p {_UNDER_TERM}
+)
+SELECT subject AS disease_id, any_value(subject_label) AS label, negated,
+  coalesce(list(DISTINCT source ORDER BY source) FILTER (WHERE source IS NOT NULL), []) AS sources,
+  avg({_OBSERVATION_SCORE}) AS kg_score
+FROM e GROUP BY subject, negated
+"""
+
+_KG_DISEASE_OBSERVATIONS = f"""
+SELECT subject AS disease_id, {_NEGATED},
   list({{
     'source': primary_knowledge_source, 'record': original_subject,
     'phenotype': object, 'phenotype_label': object_label,
     'frequency': frequency_qualifier, 'frequency_label': frequency_qualifier_label,
     'percentage': try_cast(has_percentage AS DOUBLE),
     'count': try_cast(has_count AS INTEGER), 'total': try_cast(has_total AS INTEGER)
-  }}) AS observations
-FROM dm.app.kg_phenotype_disease p
-SEMI JOIN dm.app.hp_closure c ON c.hpo_id = p.object AND c.ancestor_key = {_ID_KEY} AND c.ancestor_id = $id
-WHERE NOT {_NEGATED.removesuffix(" AS negated")} OR object = $id
+  }} ORDER BY primary_knowledge_source, object) AS observations
+FROM dm.app.kg_phenotype_disease p {_UNDER_TERM}
+WHERE subject IN (SELECT unnest($diseases))
 GROUP BY subject, negated
 """
 
@@ -75,13 +102,23 @@ FROM dm JOIN dm.app.hp_closure c ON c.hpo_id = dm.hpo_id
 WHERE c.ancestor_id IN (SELECT unnest($kg_hpo))
 """
 
-# dismech records of a phenotype or any of its subclasses, across diseases
+# dismech records of a phenotype or anything under it, across diseases
+_UNDER_TERM_RECORDS = f"""
+FROM dm.core.phenotype WHERE mondo_id IS NOT NULL AND hpo_id IN (
+  SELECT hpo_id FROM dm.app.hp_closure
+  WHERE ancestor_key IS NOT DISTINCT FROM {_ID_KEY} AND ancestor_id = $id
+)"""
+
+_PHENOTYPE_RECORD_SUMMARY = f"""
+SELECT mondo_id, any_value(disorder) AS disorder, bool_or(diagnostic) AS diagnostic,
+  avg(CASE frequency_hp {" ".join(f"WHEN '{k}' THEN {v}" for k, v in FREQUENCY_BAND_FLOOR.items())} END) AS score
+{_UNDER_TERM_RECORDS}
+GROUP BY mondo_id
+"""
+
 _PHENOTYPE_RECORDS = f"""
-WITH sub AS (
-  SELECT hpo_id FROM dm.app.hp_closure WHERE ancestor_key = {_ID_KEY} AND ancestor_id = $id
-)
 SELECT CASE WHEN hpo_id = $id THEN 'exact' ELSE 'more_specific' END AS match, {_RECORD}
-FROM dm.core.phenotype WHERE hpo_id IN (SELECT hpo_id FROM sub) AND mondo_id IS NOT NULL
+{_UNDER_TERM_RECORDS} AND mondo_id IN (SELECT unnest($diseases))
 """
 
 _TREATMENT_COLUMNS = (
@@ -137,36 +174,65 @@ class DismechStore:
         return {"id": disease_id, "release": self.release, **self._finish(rows, **page)}
 
     def phenotype_diseases(self, phenotype_id: str, **page) -> dict:
-        """diseases with a phenotype, collapsed across KG sources, with dismech corroboration.
+        """diseases with a phenotype or anything under it, collapsed across KG sources, with
+        dismech corroboration.
 
-        dismech records of the phenotype or a subclass of it corroborate the disease's row; records
-        for a disease without a KG row for this phenotype come back as dismech_only rows.
+        dismech records under the term corroborate the disease's row; records for a disease
+        without a KG row come back as dismech_only rows. rows are ranked on summaries, and only
+        the page shown gets its observations and records.
         """
         params = {"id": phenotype_id}
-        rows = self._rows(_KG_DISEASES, params)
-        for row in rows:
-            row["observations"].sort(key=lambda o: (o["source"] or "", o["phenotype"]))
-            _init_row(row)
-        by_disease = {r["disease_id"]: r for r in rows if not r["negated"]}
-        unmatched = []
-        for m in self._rows(_PHENOTYPE_RECORDS, params):
-            target = by_disease.get(m["mondo_id"])
-            if target is not None:
-                target["dismech"].append(m)
-            else:
-                unmatched.append({**m, "match": "dismech_only", "specific_match": m["match"]})
-        labels = self._disease_labels({m["mondo_id"] for m in unmatched})
-        rows += _dismech_only_rows(
-            unmatched,
-            key="mondo_id",
-            row=lambda r: {"disease_id": r["mondo_id"], "label": labels.get(r["mondo_id"]) or r["disorder"]},
-        )
-        return {"id": phenotype_id, "release": self.release, **self._finish(rows, **page)}
+        records = {r["mondo_id"]: r for r in self._rows(_PHENOTYPE_RECORD_SUMMARY, params)}
+        rows, matched = [], set()
+        for row in self._rows(_KG_DISEASE_SUMMARY, params):
+            record = None if row["negated"] else records.get(row["disease_id"])
+            if record:
+                matched.add(row["disease_id"])
+            score = row.pop("kg_score")
+            # the record summary stands in for the records until the row is on the page
+            rows.append({**row, "dismech": [record] if record else [], "dismech_only": False})
+            rows[-1]["frequency_score"] = score if score is not None else record and record["score"]
+        unmatched = [r for id, r in records.items() if id not in matched]
+        labels = self._disease_labels({r["mondo_id"] for r in unmatched})
+        for r in unmatched:
+            rows.append(
+                {
+                    "disease_id": r["mondo_id"],
+                    "label": labels.get(r["mondo_id"]) or r["disorder"],
+                    "negated": False,
+                    "sources": [],
+                    "dismech": [r],
+                    "dismech_only": True,
+                    "frequency_score": r["score"],
+                }
+            )
 
-    def _finish(self, rows, corroborated_only=False, dismech_only=False, limit=None, offset=0):
-        """rank, filter, then page; counts describe every row, before filtering"""
+        def hydrate(page):
+            ids = sorted({r["disease_id"] for r in page})
+            observations = {
+                (o["disease_id"], o["negated"]): o["observations"]
+                for o in self._rows(_KG_DISEASE_OBSERVATIONS, {**params, "diseases": ids})
+            }
+            full = defaultdict(list)
+            for m in self._rows(_PHENOTYPE_RECORDS, {**params, "diseases": ids}):
+                full[m["mondo_id"]].append(m)
+            for row in page:
+                row["observations"] = observations.get((row["disease_id"], row["negated"]), [])
+                if row["dismech_only"]:
+                    row["dismech"] = [
+                        {**m, "match": "dismech_only", "specific_match": m["match"]} for m in full[row["disease_id"]]
+                    ]
+                elif row["dismech"]:
+                    row["dismech"] = full[row["disease_id"]]
+
+        return {"id": phenotype_id, "release": self.release, **self._finish(rows, hydrate=hydrate, **page)}
+
+    def _finish(self, rows, corroborated_only=False, dismech_only=False, limit=None, offset=0, hydrate=None):
+        """rank, filter, then page; counts describe every row, before filtering. `hydrate` fills
+        in the page's rows when they were ranked on summaries."""
         for row in rows:
-            row["frequency_score"] = frequency_score(row)
+            if "frequency_score" not in row:
+                row["frequency_score"] = frequency_score(row)
         rows.sort(key=rank_key)
         counts = {
             "kg_total": sum(1 for r in rows if not r["dismech_only"]),
@@ -175,6 +241,8 @@ class DismechStore:
         }
         rows = [r for r in rows if (dismech_only or not r["dismech_only"]) and (not corroborated_only or r["dismech"])]
         page = rows[offset : offset + limit if limit else None]
+        if hydrate:
+            hydrate(page)
         return {
             "total": len(rows),
             "rows": page,

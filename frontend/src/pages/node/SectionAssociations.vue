@@ -379,13 +379,13 @@ const sections = computed(() =>
 
 /**
  * collapsed phenotype table, when the api serves dismech: a disease's direct
- * phenotypes, or the diseases with a phenotype
+ * phenotypes, or the diseases with a phenotype or anything under the term
+ * (UPHENO, UBERON, GO, ...)
  */
 const showPhenotypeProfile = (id: string) =>
   dismechEnabled.value &&
   id.startsWith("biolink:DiseaseToPheno") &&
-  ((isDiseaseNode.value && activeTabIsDirect(id)) ||
-    /^(HP|UPHENO):/.test(props.node.id ?? ""));
+  (!isDiseaseNode.value || activeTabIsDirect(id));
 
 const GENE_DISEASE_KINDS: Record<string, "causal" | "correlated"> = {
   "biolink:CausalGeneToDiseaseAssociation": "causal",
