@@ -43,10 +43,21 @@ WHERE subject_key = {_ID_KEY} AND subject = $id
 GROUP BY object, negated
 """
 
+# diseases annotated to a phenotype or any of its subclasses, as the stock association table
+# counts them. a negated subclass says nothing about the phenotype, so only the term's own
+# negations come along. observations stay slim, since a high-level term reaches every disease.
 _KG_DISEASES = f"""
-SELECT subject AS disease_id, any_value(subject_label) AS label, {_NEGATED}, {_OBSERVATIONS}
-FROM dm.app.kg_phenotype_disease
-WHERE object_key = {_ID_KEY} AND object = $id
+SELECT subject AS disease_id, any_value(subject_label) AS label, {_NEGATED},
+  list({{
+    'source': primary_knowledge_source, 'record': original_subject,
+    'phenotype': object, 'phenotype_label': object_label,
+    'frequency': frequency_qualifier, 'frequency_label': frequency_qualifier_label,
+    'percentage': try_cast(has_percentage AS DOUBLE),
+    'count': try_cast(has_count AS INTEGER), 'total': try_cast(has_total AS INTEGER)
+  }}) AS observations
+FROM dm.app.kg_phenotype_disease p
+SEMI JOIN dm.app.hp_closure c ON c.hpo_id = p.object AND c.ancestor_key = {_ID_KEY} AND c.ancestor_id = $id
+WHERE NOT {_NEGATED.removesuffix(" AS negated")} OR object = $id
 GROUP BY subject, negated
 """
 
@@ -134,6 +145,7 @@ class DismechStore:
         params = {"id": phenotype_id}
         rows = self._rows(_KG_DISEASES, params)
         for row in rows:
+            row["observations"].sort(key=lambda o: (o["source"] or "", o["phenotype"]))
             _init_row(row)
         by_disease = {r["disease_id"]: r for r in rows if not r["negated"]}
         unmatched = []
@@ -308,7 +320,8 @@ class DismechStore:
     # treatments
 
     def treatments(self, node_id: str, name: str | None = None) -> dict:
-        """dismech treatments for a disease (MONDO), or the diseases a drug treats.
+        """dismech treatments for a disease (MONDO), or the diseases a drug treats, each with the
+        phenotypes downstream of its target mechanisms and the edges leading there.
 
         A drug matches a treatment by agent id, or, given its name, by that name as a whole word in
         the treatment's name or an agent's label: dismech often names a drug without an agent term.
@@ -335,12 +348,20 @@ class DismechStore:
             for a in r["agents"]:
                 a["in_kg"] = a["id"] in known
                 a["label"] = a["label"] or (known.get(a["id"]) or {}).get("name")
-        targets = {m["node_id"] for r in rows for m in r["target_mechanisms"] if m["resolved"]}
+        # the phenotypes downstream of each treatment's targets, for its mechanism graph
+        for r in rows:
+            r["mechanisms"] = [{"node_id": m["node_id"]} for m in r["target_mechanisms"] if m["resolved"]]
+        self._downstream(rows)
+        for r in rows:
+            del r["mechanisms"]
+        node_ids = {m["node_id"] for r in rows for m in r["target_mechanisms"] if m["resolved"]} | {
+            x for r in rows for e in r["edges"] for x in (e["source"], e["target"])
+        }
         return {
             "id": node_id,
             "release": self.release,
             "rows": rows,
-            "mechanism_nodes": self.nodes(targets),
+            "mechanism_nodes": self.nodes(node_ids),
         }
 
     # diseases by mechanism term

@@ -65,6 +65,12 @@
                 >diagnostic</span
               >
               <div class="muted id">{{ rowId(row) }}</div>
+              <div v-if="subclasses(row).length" class="muted">
+                with {{ subclasses(row).slice(0, 3).join(", ")
+                }}<template v-if="subclasses(row).length > 3">
+                  and {{ subclasses(row).length - 3 }} more</template
+                >
+              </div>
             </td>
             <td class="chips">
               <span
@@ -90,8 +96,11 @@
                   Not in OMIM or Orphanet annotations
                 </div>
               </template>
-              <div v-for="(f, i) in frequencies(row)" :key="i">
+              <div v-for="(f, i) in frequencies(row).slice(0, 3)" :key="i">
                 <span class="muted">{{ f.source }}</span> {{ f.text }}
+              </div>
+              <div v-if="frequencies(row).length > 3" class="muted">
+                and {{ frequencies(row).length - 3 }} more
               </div>
             </td>
             <td>
@@ -239,6 +248,14 @@ const recordsFor = (row: PhenotypeProfileRow, source: string) =>
     .map((o) => o.record)
     .join(", ");
 
+/** on a phenotype page, the subclasses the KG annotates the disease with */
+const subclasses = (row: PhenotypeProfileRow) =>
+  uniq(
+    row.observations
+      .filter((o) => o.phenotype && o.phenotype !== props.node.id)
+      .map((o) => o.phenotype_label ?? o.phenotype ?? ""),
+  );
+
 /** one frequency line per source, kept separate since sources often disagree */
 const frequencies = (row: PhenotypeProfileRow) =>
   row.observations
@@ -248,6 +265,8 @@ const frequencies = (row: PhenotypeProfileRow) =>
         text = `${o.count}/${o.total} (${Math.round((o.count / o.total) * 100)}%)`;
       else if (o.percentage != null) text = `${o.percentage}%`;
       else if (o.frequency_label) text = o.frequency_label;
+      if (text && o.phenotype && o.phenotype !== props.node.id)
+        text += ` (${o.phenotype_label ?? o.phenotype})`;
       return { source: sourceLabel(o.source), text };
     })
     .filter((f) => f.text);

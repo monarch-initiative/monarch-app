@@ -1,7 +1,11 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { getDismechStatus } from "@/api/dismech";
-import type { DismechMatch, MechanismNode } from "@/api/dismech";
+import type {
+  DismechMatch,
+  DismechTreatment,
+  MechanismNode,
+} from "@/api/dismech";
 import type { DagEdge, DagNode } from "@/pages/node/MechanismDag.vue";
 import { pathographTooltip } from "@/util/pathographTooltip";
 
@@ -135,6 +139,72 @@ export const mechanismGraph = (
     };
   });
   return { nodes: dagNodes, edges: [...edges.values()] };
+};
+
+/**
+ * a treatment's graph: the treatment, the mechanisms it targets (labeled with
+ * its effect), the phenotypes downstream of them, and the phenotypes it treats
+ */
+export const treatmentGraph = (
+  t: DismechTreatment,
+  nodes: Record<string, MechanismNode>,
+) => {
+  const treated = new Set(t.target_phenotypes.map((p) => p.hpo_id));
+  const edges = new Map<string, DagEdge>();
+  const add = (e: DagEdge) => edges.set(`${e.source}>${e.target}`, e);
+  for (const m of t.target_mechanisms)
+    if (m.resolved)
+      add({
+        source: t.treatment_node_id,
+        target: m.node_id,
+        linkType: enumLabel(m.effect) || "Targets",
+      });
+  for (const e of t.edges)
+    add({ source: e.source, target: e.target, linkType: e.link_type });
+  const sources = new Set([...edges.values()].map((e) => e.source));
+  const ids = new Set([...edges.values()].flatMap((e) => [e.source, e.target]));
+  /** treated phenotypes the targets don't lead to hang off the treatment */
+  const reached = new Set(
+    [...ids].map((id) => nodes[id]?.term_id).filter(Boolean),
+  );
+  const extra: DagNode[] = t.target_phenotypes
+    .filter((p) => !reached.has(p.hpo_id))
+    .map((p) => {
+      const id = `${t.treatment_node_id}>${p.hpo_id}`;
+      add({ source: t.treatment_node_id, target: id, linkType: "Treats" });
+      return { id, label: p.label || p.hpo_id, kind: "phenotype", focus: true };
+    });
+  const dagNodes: DagNode[] = [...ids]
+    .filter((id) => id !== t.treatment_node_id)
+    .map((id) => {
+      const node = nodes[id];
+      const terminal = node?.kind === "phenotype" && !sources.has(id);
+      return {
+        id,
+        label: node?.name ?? id,
+        kind:
+          node?.kind === "mechanism"
+            ? "mechanism"
+            : terminal
+              ? "phenotype"
+              : "sequela",
+        tooltip: nodeTooltip(nodes, id, terminal),
+        focus: treated.has(node?.term_id ?? ""),
+      };
+    });
+  return trimGraph(
+    [
+      {
+        id: t.treatment_node_id,
+        label: t.name,
+        kind: "treatment",
+        focus: true,
+      },
+      ...dagNodes,
+      ...extra,
+    ],
+    [...edges.values()],
+  );
 };
 
 /** "1 gene", "2 genes" */

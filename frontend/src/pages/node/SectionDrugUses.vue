@@ -111,11 +111,11 @@
           <button
             :class="['chip', { active: showDismechOnly }]"
             :aria-pressed="showDismechOnly"
-            :title="`Treatments Dismech records that match no ${groupNoun} here (AI-assisted curation, may have mistakes)`"
+            :title="`Published uses from Dismech that match no ${groupNoun} here (AI-assisted curation, may have mistakes)`"
             @click="showDismechOnly = !showDismechOnly"
           >
             <AppIcon icon="robot" /> + Dismech-only
-            <span class="chip-count">{{ dismech.unmatched.value.length }}</span>
+            <span class="chip-count">{{ dismechOnlyGroups.length }}</span>
           </button>
         </template>
       </div>
@@ -212,13 +212,6 @@
             :id="`${sectionKey}-statements-${groupIndex}`"
             class="statements"
           >
-            <DismechTreatmentDetail
-              v-if="dismechFor(group).length"
-              :treatments="dismechFor(group)"
-              :nodes="dismech.data.value.mechanism_nodes"
-              :release="dismech.data.value.release"
-              :monarch-row="`${group.fields[labelField] ?? group.value} (${group.value})`"
-            />
             <AppStatus v-if="statements.isLoading.value" code="loading"
               >Loading statements</AppStatus
             >
@@ -445,6 +438,18 @@
                   </template>
                 </div>
               </li>
+              <!-- dismech's record of the same use, after the section's own -->
+              <DismechTreatmentStatement
+                v-for="t in dismechFor(group)"
+                :key="t.treatment_node_id"
+                :treatment="t"
+                :nodes="dismech.data.value.mechanism_nodes"
+                :release="dismech.data.value.release"
+                :predicate="predicateLabel('biolink:treats')"
+                :show-disease="!isDiseasePage"
+                :disease-name="node.name"
+                :monarch-row="`${group.fields[labelField] ?? group.value} (${group.value})`"
+              />
             </ul>
             <p
               v-if="
@@ -461,13 +466,57 @@
         </li>
       </ul>
 
-      <DismechTreatmentDetail
-        v-if="showDismechOnly && dismech.unmatched.value.length"
-        :treatments="dismech.unmatched.value"
-        :nodes="dismech.data.value.mechanism_nodes"
-        :release="dismech.data.value.release"
-        :show-disease="!isDiseasePage"
-      />
+      <!-- dismech-only: rows like the section's own, one per drug / condition -->
+      <ul v-if="showDismechOnly" class="groups">
+        <li v-for="g in dismechOnlyGroups" :key="g.key" class="group">
+          <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
+          <div class="group-row" @click="toggleDismechGroup(g.key)">
+            <button
+              class="expand"
+              :aria-expanded="expandedDismech === g.key"
+              :aria-label="`Dismech records for ${g.label}`"
+              @click.stop="toggleDismechGroup(g.key)"
+            >
+              <AppIcon
+                :icon="expandedDismech === g.key ? 'angle-down' : 'angle-right'"
+              />
+            </button>
+            <span class="group-node" @click.stop>
+              <AppNodeBadge v-if="g.node" :node="g.node" />
+              <span v-else>{{ g.label }}</span>
+            </span>
+            <span class="targets">
+              <span
+                v-tooltip="
+                  `Dismech records this use; Monarch's other sources don't (AI-assisted curation, may have mistakes)`
+                "
+                class="dismech-mark"
+                ><AppIcon icon="robot" /> Dismech only</span
+              >
+            </span>
+            <span class="where" />
+            <AppProvenanceIcons
+              class="provenance-cell"
+              :agent-types="['automated_agent']"
+            />
+            <span class="since" />
+          </div>
+          <div v-if="expandedDismech === g.key" class="statements">
+            <ul>
+              <DismechTreatmentStatement
+                v-for="t in g.treatments"
+                :key="t.treatment_node_id"
+                :treatment="t"
+                :nodes="dismech.data.value.mechanism_nodes"
+                :release="dismech.data.value.release"
+                :predicate="predicateLabel('biolink:treats')"
+                :show-disease="!isDiseasePage"
+                :disease-name="node.name"
+              />
+            </ul>
+          </div>
+        </li>
+      </ul>
       <TheTableControls
         v-if="groupTotal > 0 && !summary.isError.value"
         v-model:per-page="perPage"
@@ -497,6 +546,7 @@ import {
   type AssociationSummaryGroup,
 } from "@/api/association-summary";
 import { getAssociations } from "@/api/associations";
+import type { DismechTreatment } from "@/api/dismech";
 import type {
   AssociationTableResults,
   DirectionalAssociation,
@@ -515,7 +565,7 @@ import TheTableControls from "@/components/TheTableContols.vue";
 import { useDismechTreatments } from "@/composables/use-dismech-treatments";
 import { useQuery } from "@/composables/use-query";
 import { useResearchUseAcknowledgement } from "@/composables/use-research-use-acknowledgement";
-import DismechTreatmentDetail from "@/pages/node/DismechTreatmentDetail.vue";
+import DismechTreatmentStatement from "@/pages/node/DismechTreatmentStatement.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import {
   defaultPredicatesFor,
@@ -582,6 +632,43 @@ const dismech = useDismechTreatments(
 const showDismechOnly = ref(false);
 const dismechFor = (group: AssociationSummaryGroup) =>
   dismech.forRow(group.value, String(group.fields[labelField.value] ?? ""));
+
+/**
+ * dismech-only treatments as section rows: by drug on a disease page (its first
+ * agent Monarch knows, else its name), by disease on a drug page
+ */
+const dismechOnlyGroups = computed(() => {
+  const groups = new Map<
+    string,
+    {
+      key: string;
+      label: string;
+      node?: { id: string; name: string; category: string };
+      treatments: DismechTreatment[];
+    }
+  >();
+  for (const t of dismech.unmatched.value) {
+    const agent = t.agents.find((a) => a.in_kg);
+    const node = isDiseasePage.value
+      ? agent && {
+          id: agent.id,
+          name: agent.label ?? agent.id,
+          category: "biolink:Drug",
+        }
+      : t.mondo_id
+        ? { id: t.mondo_id, name: t.disorder, category: "biolink:Disease" }
+        : undefined;
+    const label = node?.name ?? (isDiseasePage.value ? t.name : t.disorder);
+    const key = node?.id ?? label.toLowerCase();
+    const group = groups.get(key) ?? { key, label, node, treatments: [] };
+    group.treatments.push(t);
+    groups.set(key, group);
+  }
+  return [...groups.values()].sort((a, b) => a.label.localeCompare(b.label));
+});
+const expandedDismech = ref<string | null>(null);
+const toggleDismechGroup = (key: string) =>
+  (expandedDismech.value = expandedDismech.value === key ? null : key);
 
 const jurisdiction = ref<string | null>(null);
 const includeInvestigational = ref(false);

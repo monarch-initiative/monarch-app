@@ -54,8 +54,8 @@
           :y="node.y"
           :width="NODE_W"
           :height="NODE_H"
-          rx="5"
-          ry="5"
+          :rx="node.kind === 'treatment' ? NODE_H / 2 : 5"
+          :ry="node.kind === 'treatment' ? NODE_H / 2 : 5"
         />
         <text
           v-for="(line, i) in node.lines"
@@ -80,8 +80,11 @@ import { appendToBody } from "@/global/tooltip";
 export type DagNode = {
   id: string;
   label: string;
-  /** mechanism node, sequela phenotype on the way, or the terminal phenotype */
-  kind: "mechanism" | "sequela" | "phenotype";
+  /**
+   * mechanism node, sequela phenotype on the way, the terminal phenotype, or a
+   * treatment acting on the graph
+   */
+  kind: "mechanism" | "sequela" | "phenotype" | "treatment";
   /** tooltip html */
   tooltip?: string;
   /** emphasize, e.g. the mechanisms that matched the page's term */
@@ -225,6 +228,12 @@ const layout = computed(() => {
 .node.focus rect {
   fill: $theme-light;
   stroke-width: 2.5;
+}
+
+.node.treatment rect {
+  fill: $off-white;
+  stroke: $off-black;
+  stroke-width: 1.5;
 }
 
 .node.sequela rect {

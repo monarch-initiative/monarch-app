@@ -385,7 +385,7 @@ const showPhenotypeProfile = (id: string) =>
   dismechEnabled.value &&
   id.startsWith("biolink:DiseaseToPheno") &&
   ((isDiseaseNode.value && activeTabIsDirect(id)) ||
-    props.node.id?.startsWith("HP:"));
+    /^(HP|UPHENO):/.test(props.node.id ?? ""));
 
 const GENE_DISEASE_KINDS: Record<string, "causal" | "correlated"> = {
   "biolink:CausalGeneToDiseaseAssociation": "causal",

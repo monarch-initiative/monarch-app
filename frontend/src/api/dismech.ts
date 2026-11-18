@@ -4,6 +4,9 @@ import { apiUrl, request } from "./index";
 export type PhenotypeObservation = {
   source: string;
   record?: string | null;
+  /** on a phenotype page, the term (the page's or a subclass) the KG annotates */
+  phenotype?: string;
+  phenotype_label?: string | null;
   frequency?: string | null;
   frequency_label?: string | null;
   percentage?: number | null;
@@ -141,6 +144,10 @@ export type DismechTreatment = {
   }[];
   target_phenotypes: { hpo_id: string; label?: string | null }[];
   evidence: DismechEvidence[];
+  /** phenotypes downstream of the resolved target mechanisms */
+  leads_to: { hpo_id: string; label?: string | null; diagnostic: boolean }[];
+  /** causal edges from the target mechanisms to those phenotypes */
+  edges: MechanismEdge[];
 };
 
 export type DismechTreatments = {
