@@ -186,6 +186,8 @@ import { labeledChain } from "@/util/dismech-feedback";
 type Props = {
   node: Node;
   kind: "causal" | "correlated";
+  /** the section's search box */
+  search?: string;
 };
 
 const props = defineProps<Props>();
@@ -290,6 +292,7 @@ const {
     await getGeneDiseaseProfile(props.node.id, props.kind, {
       corroboratedOnly: onlyCorroborated.value,
       dismechOnly: showDismechOnly.value,
+      search: props.search,
       limit: perPage.value,
       offset: start.value,
     }),
@@ -307,7 +310,7 @@ const {
   } as GeneDiseaseProfile,
 );
 
-watch([onlyCorroborated, showDismechOnly], () => {
+watch([onlyCorroborated, showDismechOnly, () => props.search], () => {
   if (start.value) start.value = 0;
   else runGetProfile();
 });

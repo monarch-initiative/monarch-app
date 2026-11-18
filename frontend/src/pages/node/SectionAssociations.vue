@@ -127,11 +127,13 @@
           v-if="showPhenotypeProfile(category.id)"
           :node="node"
           :dismech-only="dismechFills(category.id)"
+          :search="debouncedSearchValues[category.id]"
         />
         <GeneDiseaseTable
           v-else-if="geneDiseaseKind(category.id)"
           :node="node"
           :kind="geneDiseaseKind(category.id)!"
+          :search="debouncedSearchValues[category.id]"
         />
         <template v-else-if="category">
           <!-- table view of associations -->

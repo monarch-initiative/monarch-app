@@ -485,3 +485,41 @@ def test_dismech_routes_404_when_unconfigured(monkeypatch):
     monkeypatch.setattr(dismech_route, "dismech_store", lambda: None)
     assert TestClient(app).get("/v3/api/dismech/status").status_code == 404
     assert TestClient(app).get(f"/v3/api/dismech/treatments/{WILSON}").status_code == 404
+
+
+def test_phenotype_diseases_search_matches_labels_and_annotated_subclasses(store):
+    def ids(**kw):
+        return {r["disease_id"] for r in store.phenotype_diseases(LIVER, dismech_only=True, **kw)["rows"]}
+
+    assert ids(search="wilson") == {WILSON}
+    # OTHER is under the liver page through its cirrhosis annotation
+    assert ids(search="CIRRH") >= {OTHER}
+    assert ids(search="other cirrhosis") == {OTHER}
+    assert ids(search="no such thing") == set()
+    result = store.phenotype_diseases(LIVER, search="wilson")
+    assert result["total"] == 1 and result["kg_total"] == 4
+
+
+def test_profile_and_gene_tables_search(store):
+    assert [r["hpo_id"] for r in store.phenotype_profile(WILSON, search="jaund")["rows"]] == [JAUNDICE]
+    assert store.gene_disease_profile("HGNC:870", "causal", search="nothing")["total"] == 0
+
+
+def test_dismech_routes_pass_the_search(client):
+    assert client.get(f"/v3/api/dismech/phenotype-diseases/{LIVER}?search=wilson").json()["total"] == 1
+
+
+def test_profile_and_gene_routes_pass_the_search(client):
+    assert client.get(f"/v3/api/dismech/phenotype-profile/{WILSON}?search=jaund").json()["total"] == 1
+    assert client.get("/v3/api/dismech/gene-disease-profile/HGNC:870?search=nothing").json()["total"] == 0
+    assert client.get("/v3/api/dismech/gene-disease-profile/HGNC:870?search=wilson").json()["total"] == 1
+
+
+@pytest.mark.parametrize("term", [LIVER, CIRRHOSIS, DIGESTIVE, LIVER_ORGAN])
+def test_phenotype_diseases_has_the_stock_tables_diseases(store, term):
+    """the KG rows are exactly the diseases with an edge under the term in the closure, the set
+    the stock (solr object_closure) table lists"""
+    under = {r["hpo_id"] for r in TABLES["app.hp_closure"] if r["ancestor_id"] == term}
+    expected = {(e["subject"], bool(e["negated"])) for e in TABLES["app.kg_phenotype_disease"] if e["object"] in under}
+    rows = store.phenotype_diseases(term)["rows"]
+    assert {(r["disease_id"], r["negated"]) for r in rows if not r["dismech_only"]} == expected

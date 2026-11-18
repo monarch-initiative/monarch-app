@@ -30,8 +30,14 @@ def _store(id: str, pattern: re.Pattern, expected: str):
     return store
 
 
-def _page(corroborated_only: bool, dismech_only: bool, limit: int | None, offset: int) -> dict:
-    return {"corroborated_only": corroborated_only, "dismech_only": dismech_only, "limit": limit, "offset": offset}
+def _page(corroborated_only: bool, dismech_only: bool, search: str | None, limit: int | None, offset: int) -> dict:
+    return {
+        "corroborated_only": corroborated_only,
+        "dismech_only": dismech_only,
+        "search": search,
+        "limit": limit,
+        "offset": offset,
+    }
 
 
 @router.get("/status", include_in_schema=False)
@@ -48,12 +54,13 @@ def _phenotype_profile(
     id: str = Path(examples=["MONDO:0010200"]),
     corroborated_only: bool = Query(False, description="Only rows dismech corroborates"),
     dismech_only: bool = Query(False, description="Include phenotypes only dismech records"),
+    search: str | None = Query(None, max_length=200, description="Words every row must match"),
     limit: int | None = Query(None, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ) -> dict:
     """A disease's phenotypes collapsed across primary knowledge sources, with dismech corroboration"""
     store = _store(id, _MONDO, "a MONDO id")
-    return store.phenotype_profile(id, **_page(corroborated_only, dismech_only, limit, offset))
+    return store.phenotype_profile(id, **_page(corroborated_only, dismech_only, search, limit, offset))
 
 
 @router.get("/phenotype-diseases/{id}", include_in_schema=False)
@@ -61,12 +68,13 @@ def _phenotype_diseases(
     id: str = Path(examples=["HP:0001394"]),
     corroborated_only: bool = Query(False, description="Only rows dismech corroborates"),
     dismech_only: bool = Query(False, description="Include diseases only dismech records"),
+    search: str | None = Query(None, max_length=200, description="Words every row must match"),
     limit: int | None = Query(25, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ) -> dict:
     """Diseases with a phenotype or anything under the term, collapsed across primary knowledge sources, with dismech corroboration"""
     store = _store(id, _CURIE, "a CURIE")
-    return store.phenotype_diseases(id, **_page(corroborated_only, dismech_only, limit, offset))
+    return store.phenotype_diseases(id, **_page(corroborated_only, dismech_only, search, limit, offset))
 
 
 @router.get("/gene-disease-profile/{id}", include_in_schema=False)
@@ -75,12 +83,13 @@ def _gene_disease_profile(
     kind: Literal["causal", "correlated"] = Query("causal", description="KG association category"),
     corroborated_only: bool = Query(False, description="Only rows dismech corroborates"),
     dismech_only: bool = Query(False, description="Include pairs only dismech records"),
+    search: str | None = Query(None, max_length=200, description="Words every row must match"),
     limit: int | None = Query(10, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ) -> dict:
     """A gene's diseases or a disease's genes collapsed across sources, with dismech's genetics records"""
     store = _store(id, _GENE_OR_DISEASE, "an HGNC or MONDO id")
-    return store.gene_disease_profile(id, kind, **_page(corroborated_only, dismech_only, limit, offset))
+    return store.gene_disease_profile(id, kind, **_page(corroborated_only, dismech_only, search, limit, offset))
 
 
 @router.get("/treatments/{id}", include_in_schema=False)

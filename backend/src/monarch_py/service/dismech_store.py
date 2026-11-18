@@ -63,14 +63,14 @@ END"""
 # (disease, negated) and only loads the observations of the page it shows
 _KG_DISEASE_SUMMARY = f"""
 WITH e AS (
-  SELECT subject, subject_label, {_NEGATED}, primary_knowledge_source AS source,
+  SELECT subject, subject_label, object_label, {_NEGATED}, primary_knowledge_source AS source,
     try_cast(has_count AS DOUBLE) AS k, try_cast(has_total AS DOUBLE) AS n,
     try_cast(has_percentage AS DOUBLE) AS pct, frequency_qualifier AS band
   FROM dm.app.kg_phenotype_disease p {_UNDER_TERM}
 )
 SELECT subject AS disease_id, any_value(subject_label) AS label, negated,
   coalesce(list(DISTINCT source ORDER BY source) FILTER (WHERE source IS NOT NULL), []) AS sources,
-  avg({_OBSERVATION_SCORE}) AS kg_score
+  avg({_OBSERVATION_SCORE}) AS kg_score, {{terms}} AS terms
 FROM e GROUP BY subject, negated
 """
 
@@ -111,7 +111,8 @@ FROM dm.core.phenotype WHERE mondo_id IS NOT NULL AND hpo_id IN (
 
 _PHENOTYPE_RECORD_SUMMARY = f"""
 SELECT mondo_id, any_value(disorder) AS disorder, bool_or(diagnostic) AS diagnostic,
-  avg(CASE frequency_hp {" ".join(f"WHEN '{k}' THEN {v}" for k, v in FREQUENCY_BAND_FLOOR.items())} END) AS score
+  avg(CASE frequency_hp {" ".join(f"WHEN '{k}' THEN {v}" for k, v in FREQUENCY_BAND_FLOOR.items())} END) AS score,
+  {{terms}} AS terms
 {_UNDER_TERM_RECORDS}
 GROUP BY mondo_id
 """
@@ -182,15 +183,29 @@ class DismechStore:
         the page shown gets its observations and records.
         """
         params = {"id": phenotype_id}
-        records = {r["mondo_id"]: r for r in self._rows(_PHENOTYPE_RECORD_SUMMARY, params)}
+        searching = bool(page.get("search"))
+        records = {
+            r["mondo_id"]: r
+            for r in self._rows(
+                _PHENOTYPE_RECORD_SUMMARY.format(
+                    terms="string_agg(DISTINCT hpo_label || ' ' || phenotype_name, ' | ')" if searching else "NULL"
+                ),
+                params,
+            )
+        }
         rows, matched = [], set()
-        for row in self._rows(_KG_DISEASE_SUMMARY, params):
+        kg = self._rows(
+            _KG_DISEASE_SUMMARY.format(terms="string_agg(DISTINCT object_label, ' | ')" if searching else "NULL"),
+            params,
+        )
+        for row in kg:
             record = None if row["negated"] else records.get(row["disease_id"])
             if record:
                 matched.add(row["disease_id"])
             score = row.pop("kg_score")
             # the record summary stands in for the records until the row is on the page
-            rows.append({**row, "dismech": [record] if record else [], "dismech_only": False})
+            terms = [row.pop("terms"), record and record["terms"]]
+            rows.append({**row, "dismech": [record] if record else [], "dismech_only": False, "_terms": terms})
             rows[-1]["frequency_score"] = score if score is not None else record and record["score"]
         unmatched = [r for id, r in records.items() if id not in matched]
         labels = self._disease_labels({r["mondo_id"] for r in unmatched})
@@ -204,6 +219,7 @@ class DismechStore:
                     "dismech": [r],
                     "dismech_only": True,
                     "frequency_score": r["score"],
+                    "_terms": [r["terms"]],
                 }
             )
 
@@ -227,7 +243,9 @@ class DismechStore:
 
         return {"id": phenotype_id, "release": self.release, **self._finish(rows, hydrate=hydrate, **page)}
 
-    def _finish(self, rows, corroborated_only=False, dismech_only=False, limit=None, offset=0, hydrate=None):
+    def _finish(
+        self, rows, corroborated_only=False, dismech_only=False, search=None, limit=None, offset=0, hydrate=None
+    ):
         """rank, filter, then page; counts describe every row, before filtering. `hydrate` fills
         in the page's rows when they were ranked on summaries."""
         for row in rows:
@@ -239,7 +257,15 @@ class DismechStore:
             "dismech_corroborated": sum(1 for r in rows if r["dismech"] and not r["dismech_only"]),
             "dismech_unmatched": sum(1 for r in rows if r["dismech_only"]),
         }
-        rows = [r for r in rows if (dismech_only or not r["dismech_only"]) and (not corroborated_only or r["dismech"])]
+        rows = [
+            r
+            for r in rows
+            if (dismech_only or not r["dismech_only"])
+            and (not corroborated_only or r["dismech"])
+            and _matches(r, search)
+        ]
+        for r in rows:
+            r.pop("_terms", None)
         page = rows[offset : offset + limit if limit else None]
         if hydrate:
             hydrate(page)
@@ -284,7 +310,7 @@ class DismechStore:
     # gene <-> disease
 
     def gene_disease_profile(
-        self, node_id: str, kind: str, corroborated_only=False, dismech_only=False, limit=None, offset=0
+        self, node_id: str, kind: str, corroborated_only=False, dismech_only=False, search=None, limit=None, offset=0
     ) -> dict:
         """a gene's diseases (HGNC) or a disease's genes (MONDO) in one KG association category
         (causal / correlated), collapsed across sources, with dismech's genetics records for the pair
@@ -348,7 +374,13 @@ class DismechStore:
             "dismech_corroborated": sum(1 for r in rows if r["dismech"] and not r["dismech_only"]),
             "dismech_unmatched": sum(1 for r in rows if r["dismech_only"]),
         }
-        rows = [r for r in rows if (dismech_only or not r["dismech_only"]) and (not corroborated_only or r["dismech"])]
+        rows = [
+            r
+            for r in rows
+            if (dismech_only or not r["dismech_only"])
+            and (not corroborated_only or r["dismech"])
+            and _matches(r, search)
+        ]
         page = rows[offset : offset + limit if limit else None]
         records = [m for r in page for m in r["dismech"]]
         self._gene_mechanisms(records)
@@ -573,6 +605,27 @@ def _json(value):
     import json
 
     return json.loads(value) if isinstance(value, str) else value
+
+
+def _matches(row, search):
+    """every word of a table search appears in the row's label or id, or in the terms behind
+    it: a phenotype page's annotated subclasses, and dismech's phenotypes"""
+    if not search:
+        return True
+    text = " ".join(
+        filter(
+            None,
+            [
+                row.get("label"),
+                row.get("hpo_id"),
+                row.get("disease_id"),
+                row.get("gene_id"),
+                *row.get("_terms", []),
+                *(f"{m.get('hpo_label') or ''} {m.get('phenotype_name') or ''}" for m in row["dismech"]),
+            ],
+        )
+    ).lower()
+    return all(word in text for word in search.lower().split())
 
 
 def _init_row(row):

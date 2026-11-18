@@ -110,6 +110,8 @@ export type PhenotypeProfile = {
 export type ProfileOptions = {
   corroboratedOnly?: boolean;
   dismechOnly?: boolean;
+  /** words every row must match, from the section's search box */
+  search?: string;
   limit?: number;
   offset?: number;
 };
@@ -250,6 +252,7 @@ const base =
 const profileParams = (options: ProfileOptions) => ({
   corroborated_only: options.corroboratedOnly ?? false,
   dismech_only: options.dismechOnly ?? false,
+  ...(options.search?.trim() ? { search: options.search.trim() } : {}),
   ...(options.limit ? { limit: options.limit } : {}),
   offset: options.offset ?? 0,
 });

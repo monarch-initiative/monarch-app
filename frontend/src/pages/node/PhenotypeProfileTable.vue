@@ -180,7 +180,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { uniq, uniqBy } from "lodash";
+import { sortBy, uniq, uniqBy } from "lodash";
 import { getPhenotypeDiseases, getPhenotypeProfile } from "@/api/dismech";
 import type {
   DismechMatch,
@@ -207,6 +207,8 @@ type Props = {
   node: Node;
   /** start with dismech-only rows shown, when the KG has none */
   dismechOnly?: boolean;
+  /** the section's search box */
+  search?: string;
 };
 
 const props = defineProps<Props>();
@@ -248,13 +250,22 @@ const recordsFor = (row: PhenotypeProfileRow, source: string) =>
     .map((o) => o.record)
     .join(", ");
 
-/** on a phenotype page, the subclasses the KG annotates the disease with */
-const subclasses = (row: PhenotypeProfileRow) =>
-  uniq(
+/**
+ * on a phenotype page, the subclasses the KG annotates the disease with, those
+ * matching the search first
+ */
+const subclasses = (row: PhenotypeProfileRow) => {
+  const words = (props.search ?? "").toLowerCase().split(/\s+/).filter(Boolean);
+  const labels = uniq(
     row.observations
       .filter((o) => o.phenotype && o.phenotype !== props.node.id)
       .map((o) => o.phenotype_label ?? o.phenotype ?? ""),
   );
+  return sortBy(
+    labels,
+    (label) => !words.some((w) => label.toLowerCase().includes(w)),
+  );
+};
 
 /** one frequency line per source, kept separate since sources often disagree */
 const frequencies = (row: PhenotypeProfileRow) =>
@@ -323,6 +334,7 @@ const {
     const options = {
       corroboratedOnly: onlyCorroborated.value,
       dismechOnly: showDismechOnly.value,
+      search: props.search,
       limit: perPage.value,
       offset: start.value,
     };
@@ -343,7 +355,7 @@ const {
   } as PhenotypeProfile,
 );
 
-watch([onlyCorroborated, showDismechOnly], () => {
+watch([onlyCorroborated, showDismechOnly, () => props.search], () => {
   if (start.value) start.value = 0;
   else runGetProfile();
 });
