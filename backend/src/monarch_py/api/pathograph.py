@@ -7,6 +7,8 @@ of N cross-origin fetches in the browser.
 
 The artifact base is ``settings.dismech_pathographs_url`` (a published URL in
 prod, a local directory while developing against an un-pushed dismech export).
+When ``settings.dismech_duckdb_path`` is set, the same per-disorder graphs are
+read from dismech.duckdb instead, pinned to the release that file was built from.
 """
 
 from __future__ import annotations
@@ -28,7 +30,7 @@ from monarch_py.api.additional_models import (
     PathographNode,
     PathographSource,
 )
-from monarch_py.api.config import settings
+from monarch_py.api.config import dismech_store, settings
 
 router = APIRouter(tags=["pathograph"], responses={404: {"description": "Not Found"}})
 
@@ -226,7 +228,39 @@ async def _get_pathograph(
     if not _CURIE_PATTERN.match(node_id):
         raise HTTPException(status_code=400, detail="Invalid node id; expected a CURIE like MONDO:0018923")
 
-    upper = node_id.upper()
+    upper = _normalize_curie(node_id)
+    store = dismech_store()
+    if store is not None:
+        if not upper.startswith(("MONDO:", "HGNC:")):
+            raise HTTPException(
+                status_code=404, detail=f"Pathographs are only available for diseases and genes, not {upper}"
+            )
+        graphs = store.pathograph_graphs(upper)
+        category = "disease" if upper.startswith("MONDO:") else "gene"
+    else:
+        graphs, category = await _fetch_graphs(node_id, upper)
+    if not graphs:
+        raise HTTPException(status_code=404, detail=f"No pathograph data found for {upper}")
+
+    nodes, edges = _merge(graphs)
+    # De-dupe contributing disorders, preserving first-seen order.
+    sources: dict[str, tuple[str, str | None]] = {}
+    for mondo, name, slug, _graph in graphs:
+        sources.setdefault(mondo, (name, slug))
+
+    return Pathograph(
+        node_id=upper,
+        category=category,
+        nodes=nodes,
+        edges=edges,
+        sources=[
+            PathographSource(id=mondo, name=name, url=_disorder_url(slug)) for mondo, (name, slug) in sources.items()
+        ],
+    )
+
+
+async def _fetch_graphs(node_id: str, upper: str) -> tuple[list[tuple[str, str, str | None, dict]], str]:
+    """per-disorder graphs from the published pathograph artifact"""
     async with httpx.AsyncClient(timeout=15) as client:
         index = await _load_index(client, "index.json")
 
@@ -246,22 +280,4 @@ async def _get_pathograph(
                 status_code=404, detail=f"Pathographs are only available for diseases and genes, not {upper}"
             )
 
-        graphs = await _collect_graphs(client, mondo_ids, index)
-    if not graphs:
-        raise HTTPException(status_code=404, detail=f"No pathograph data found for {upper}")
-
-    nodes, edges = _merge(graphs)
-    # De-dupe contributing disorders, preserving first-seen order.
-    sources: dict[str, tuple[str, str | None]] = {}
-    for mondo, name, slug, _graph in graphs:
-        sources.setdefault(mondo, (name, slug))
-
-    return Pathograph(
-        node_id=upper,
-        category=category,
-        nodes=nodes,
-        edges=edges,
-        sources=[
-            PathographSource(id=mondo, name=name, url=_disorder_url(slug)) for mondo, (name, slug) in sources.items()
-        ],
-    )
+        return await _collect_graphs(client, mondo_ids, index), category

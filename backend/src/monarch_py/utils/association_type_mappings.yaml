@@ -84,14 +84,15 @@
 # (label-derived, FDA/EMA/PMDA/CDSCO), CTD and CURE ID edges share two association
 # categories across all of these predicates, so each section matches on category
 # AND predicate (match_criteria: full) to keep contraindications out of the
-# treatments table. Indications are shown on a drug/chemical page and Treatments
-# on a disease/phenotype page; the investigational predicates sit behind the
-# table's expand toggle (frontend/src/util/predicateFilterConfig.ts).
+# treatments table. Therapeutic Uses are shown on a drug/chemical page (broader
+# than regulatory indications: it also holds investigational and published uses)
+# and Treatments on a disease/phenotype page; the investigational predicates sit
+# behind the table's expand toggle (frontend/src/util/predicateFilterConfig.ts).
 # subject_category includes NamedThing because some drug subjects carry no more
 # specific category; it only gates which pages get the section.
 - key: drug_indications
   match_criteria: full
-  subject_label: Indications
+  subject_label: Therapeutic Uses
   object_label: Treatments
   category:
   - "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"

@@ -80,6 +80,11 @@ class Settings(BaseModel):
     # contributing disorder back to its dismech page (pages/disorders/<slug>.html).
     dismech_site_url: str = os.getenv("DISMECH_SITE_URL", "https://dismech.monarchinitiative.org")
 
+    # Experimental: dismech.duckdb, built from a pinned dismech release by scripts/dismech_db.py.
+    # When set, pathographs are read from it instead of fetched from dismech_pathographs_url, and
+    # the /dismech endpoints (phenotype profiles, treatments, mechanisms) are served. Unset = off.
+    dismech_duckdb_path: str = os.getenv("DISMECH_DUCKDB_PATH", "")
+
 
 settings = Settings()
 
@@ -102,6 +107,18 @@ def ducksim():
     )
     # No entity store needed: the DuckDB backend hydrates result entities from the KG `nodes` table.
     return DucksimService(engine=engine)
+
+
+@lru_cache(maxsize=1)
+def dismech_store():
+    """Experimental dismech integrations, read from dismech.duckdb; None when it isn't configured."""
+    if not settings.dismech_duckdb_path:
+        return None
+    from monarch_py.service.dismech_store import DismechStore
+
+    return DismechStore.open(
+        settings.dismech_duckdb_path, memory_limit=settings.ducksim_memory_limit, threads=settings.ducksim_threads
+    )
 
 
 @lru_cache(maxsize=1)

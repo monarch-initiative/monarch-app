@@ -4,13 +4,13 @@
 
 <template>
   <!-- show an AppSection for each category in categoryOptions  -->
-  <div v-for="category in categoryOptions" :key="category.id">
+  <div v-for="category in sections" :key="category.id">
     <!-- Association table -->
     <AppSection alignment="left" width="full" class="inset">
       <AppHeading :id="category.label" :level="3">{{
         sectionTitle(category.id, category.label)
       }}</AppHeading>
-      <span v-if="!categoryOptions.length"
+      <span v-if="!sections.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
@@ -122,7 +122,20 @@
           </div>
         </div>
 
-        <template v-if="category">
+        <!-- when the api serves dismech: collapsed phenotypes with dismech corroboration -->
+        <PhenotypeProfileTable
+          v-if="showPhenotypeProfile(category.id)"
+          :node="node"
+          :dismech-only="dismechFills(category.id)"
+          :search="debouncedSearchValues[category.id]"
+        />
+        <GeneDiseaseTable
+          v-else-if="geneDiseaseKind(category.id)"
+          :node="node"
+          :kind="geneDiseaseKind(category.id)!"
+          :search="debouncedSearchValues[category.id]"
+        />
+        <template v-else-if="category">
           <!-- table view of associations -->
           <AssociationsTable
             :node="node"
@@ -156,10 +169,14 @@
     when there is no pathograph.
   -->
   <SectionPathograph :node="node" />
+
+  <!-- when the api serves dismech; self-gates to GO/CL/UBERON and self-hides when empty -->
+  <SectionTermDiseases :node="node" />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { getPhenotypeProfile } from "@/api/dismech";
 import type { Node } from "@/api/model";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import AppButton from "@/components/AppButton.vue";
@@ -172,9 +189,13 @@ import { useAssociationCategories } from "@/composables/use-association-categori
 import { useResearchUseAcknowledgement } from "@/composables/use-research-use-acknowledgement";
 import { DRUG_SECTIONS } from "@/pages/node/associationColumns";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import GeneDiseaseTable from "@/pages/node/GeneDiseaseTable.vue";
+import PhenotypeProfileTable from "@/pages/node/PhenotypeProfileTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import SectionDrugUses from "@/pages/node/SectionDrugUses.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
+import SectionTermDiseases from "@/pages/node/SectionTermDiseases.vue";
+import { useDismech } from "@/util/dismech";
 import {
   expandLabelFor,
   predicateFilterState,
@@ -311,6 +332,79 @@ const hasTotals = (id: string) => totalsByCategory.value[id] !== undefined;
 const activeTabIsDirect = (id: string) =>
   (selectedTabs.value[id] ?? defaultTab(id)) === "direct";
 
+const dismechEnabled = useDismech();
+
+const DISEASE_PHENOTYPES = "biolink:DiseaseToPhenotypicFeatureAssociation";
+
+/** dismech phenotypes for a disease with no direct phenotypes in the KG */
+const dismechOnlyPhenotypes = ref(0);
+
+watch(
+  () => [props.node.id, dismechEnabled.value],
+  async () => {
+    dismechOnlyPhenotypes.value = 0;
+    if (!dismechEnabled.value || !isDiseaseNode.value) return;
+    try {
+      const profile = await getPhenotypeProfile(props.node.id, { limit: 1 });
+      dismechOnlyPhenotypes.value = profile.kg_total
+        ? 0
+        : profile.dismech_unmatched;
+    } catch {
+      /* dismech is an enrichment: the page still works without it */
+    }
+  },
+  { immediate: true },
+);
+
+/** dismech stands in for missing direct phenotypes */
+const dismechFills = (id: string) =>
+  id === DISEASE_PHENOTYPES && dismechOnlyPhenotypes.value > 0;
+
+/**
+ * the node's sections, plus a phenotype section from dismech alone when the KG
+ * has no phenotypes for the disease at all
+ */
+const sections = computed(() =>
+  dismechOnlyPhenotypes.value &&
+  !categoryOptions.value.some((o) => o.id === DISEASE_PHENOTYPES)
+    ? [
+        {
+          id: DISEASE_PHENOTYPES,
+          category: DISEASE_PHENOTYPES,
+          label: "Disease To Phenotype",
+          count: 0,
+        },
+        ...categoryOptions.value,
+      ]
+    : categoryOptions.value,
+);
+
+/**
+ * collapsed phenotype table, when the api serves dismech: a disease's direct
+ * phenotypes, or the diseases with a phenotype or anything under the term
+ * (UPHENO, UBERON, GO, ...)
+ */
+const showPhenotypeProfile = (id: string) =>
+  dismechEnabled.value &&
+  id.startsWith("biolink:DiseaseToPheno") &&
+  (!isDiseaseNode.value || activeTabIsDirect(id));
+
+const GENE_DISEASE_KINDS: Record<string, "causal" | "correlated"> = {
+  "biolink:CausalGeneToDiseaseAssociation": "causal",
+  "biolink:CorrelatedGeneToDiseaseAssociation": "correlated",
+};
+
+/**
+ * collapsed gene-disease table, when the api serves dismech: a gene's diseases,
+ * or a disease's direct genes
+ */
+const geneDiseaseKind = (id: string) =>
+  dismechEnabled.value &&
+  (props.node.category === "biolink:Gene" ||
+    (isDiseaseNode.value && activeTabIsDirect(id)))
+    ? GENE_DISEASE_KINDS[id]
+    : undefined;
+
 const onInferredLabel = ({
   categoryId,
   label,
@@ -325,6 +419,8 @@ const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
 };
 const directTooltip = (categoryId: string): string | undefined => {
+  if (dismechFills(categoryId) && !directFor(categoryId))
+    return `Phenotypes of ${props.node.name} from Dismech only (AI-assisted curation, may have mistakes)`;
   return formatDirectTooltip(categoryId, {
     node: props.node.name,
     label: labelFor(categoryId),
@@ -345,7 +441,7 @@ const inferredTooltip = (categoryId: string): string | undefined => {
 
 // Helper function to check if a specific category has any direct associations
 const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
-  return directFor(categoryId) > 0;
+  return directFor(categoryId) > 0 || dismechFills(categoryId);
 };
 
 const showAllTab = computed(() => {
@@ -369,7 +465,7 @@ function defaultTab(categoryId: string): "direct" | "all" {
     return "all";
   }
   // disease node: no direct → all, else → direct
-  return directCount > 0 ? "direct" : "all";
+  return directCount > 0 || dismechFills(categoryId) ? "direct" : "all";
 }
 
 /**

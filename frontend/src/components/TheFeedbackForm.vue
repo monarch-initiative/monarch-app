@@ -86,11 +86,11 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { truncate } from "lodash";
-import parser from "ua-parser-js";
 import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useQuery } from "@/composables/use-query";
+import { feedbackDetails } from "@/util/feedback";
 import { collapse } from "@/util/string";
 
 /** route info */
@@ -113,23 +113,7 @@ const github = useLocalStorage("feedback-form-github", "");
 const feedback = useLocalStorage("feedback-form-feedback", "");
 
 /** list of automatic details to record */
-const details = computed(() => {
-  /** get browser/device/os/etc details from ua parser library */
-  const { browser, device, os, engine, cpu } = parser();
-
-  /** filter and join strings together */
-  const concat = (...array: (string | undefined)[]) =>
-    array.filter((e) => e && e !== "()").join(" ");
-
-  /** make map of desired properties in desired stringified format */
-  return {
-    Page: route.fullPath,
-    Browser: concat(browser.name, browser.version),
-    Device: concat(device.vendor, device.model, device.type),
-    OS: concat(os.name, os.version, cpu.architecture),
-    Engine: concat(engine.name, engine.version),
-  };
-});
+const details = computed(() => feedbackDetails(route.fullPath));
 
 /** prevent implicit form submission (enter press) */
 /** https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter */
